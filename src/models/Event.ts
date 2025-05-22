@@ -33,6 +33,6 @@ export class Event {
 
     @OneToOne(() => Place, (place) => place.event)
     @JoinColumn({ name: "place_id" })
-    place?: Place
+    place!: Place
 
 }

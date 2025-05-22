@@ -1,7 +1,17 @@
 import express from 'express';
 
+import { AppDataSource } from "./db_config/AppDataSource"
+
 const server = express();
 
 server.use(express.json());
 
-export default server;
+AppDataSource.initialize()
+    .then(() => {
+        console.log("Database initialized");
+    })
+    .catch((error) => {
+        console.error(`Error initializing database ${error.get.message}`);
+    })
+
+export default server

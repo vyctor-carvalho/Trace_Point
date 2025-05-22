@@ -1,7 +1,8 @@
-import { IsEnum, IsNotEmpty, IsOptional, IsString, IsUUID, ValidateNested } from "class-validator";
+import { IsIn, IsNotEmpty, IsOptional, IsString, IsUUID, ValidateNested } from "class-validator";
 import { Type } from "class-transformer";
 
 import { LoginInfoDTO } from "./wrappersDTO/LoginInfoDTO";
+import { UserRole } from "../models/enum/UserRole";
 
 export class UserDTO {
     
@@ -18,7 +19,23 @@ export class UserDTO {
     @IsString()
     profilePick?: string;
 
-    @IsEnum(["organizer", "visitor"])
-    role!: "organizer" | "visitor";
+    @IsIn([UserRole.visitor, UserRole.admin])
+    role!: UserRole;
+
+    public getEmail() {
+        return this.userLogin.email;
+    }
     
+    public setEmail(email: string) {
+        this.userLogin.email = email;
+    }
+
+    public getPassword() {
+        return this.userLogin.password;
+    }
+
+    public setPassword(password: string) {
+        this.userLogin.password = password;
+    }
+
 }

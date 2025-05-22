@@ -4,10 +4,10 @@ export class BookingDTO {
 
     @IsNotEmpty()
     @IsUUID()
-    event_id!: string;
+    eventId!: string;
 
     @IsNotEmpty()
     @IsUUID()
-    user_id!: string;
+    userId!: string;
 
 }

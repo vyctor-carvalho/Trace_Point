@@ -1,0 +1,10 @@
+import { HttpException } from "../error/HttpException";
+
+export default function existsValidator(
+    object: Object | null | undefined, 
+    type: string = "Object"
+): asserts object {
+    if (!object) {
+        throw new HttpException(404, `${type} not found`);
+    }
+}

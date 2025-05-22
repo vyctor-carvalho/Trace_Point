@@ -1,30 +1,26 @@
-import { validate } from "class-validator";
-
+import { Event } from "../models/Event"
 import { EventDTO } from "../DTO/EventDTO";
-import { HttpException } from "../error/HttpException";
+import { PlaceService } from "../service/PlaceService";
 import { eventRepository } from "../repositories/EventRepository";
-import { placeRepository } from "../repositories/PlaceRepository";
+import existsValidator from "../utils/ExistsValidator";
+import validateDTO from "../utils/validateDTO";
 
 export class EventService {
 
-    async postEvent(eventDTO: EventDTO) {
+    private placeService = new PlaceService();
 
-        const error = await validate(eventDTO);
+    async postEvent(eventDTO: EventDTO): Promise<Event> {
 
-        if (error.length > 0) {
-            throw new HttpException(400, "Invalid json");
-        }
+        await validateDTO(eventDTO);
 
-        const place = await placeRepository.findOneBy({id: eventDTO.place })
+        const place = await this.placeService.getPlaceById(eventDTO.place);
 
-        if (!place) {
-            throw new HttpException(404, `Place whith id ${eventDTO.place} not found`)
-        }
+        existsValidator(place, "Place");
 
         const newEvent = eventRepository.create({
             title: eventDTO.title,
             eventDate: eventDTO.eventDate,
-            descriptin: eventDTO.descriptin,
+            descriptin: eventDTO.description,
             place: place,
         });
 
@@ -32,52 +28,42 @@ export class EventService {
 
     }
 
-    async getEvents() {
+    async getEvents(): Promise<Event[]> {
         return await eventRepository.find();
     }
 
-    async getEventById(id: string) {
+    async getEventById(id: string): Promise<Event | null> {
         return await eventRepository.findOneBy({id});
     }
 
-    async putEvent(id: string, eventDTO: EventDTO) {
+    async putEvent(id: string, eventDTO: EventDTO): Promise<Event> {
 
-        const error = await validate(eventDTO);
+        await validateDTO(eventDTO);
 
-        if (error.length > 0) {
-            throw new HttpException(400, "Invalid json");
-        }
+        const place = await this.placeService.getPlaceById(eventDTO.place);
 
-        const place = await placeRepository.findOneBy({ id: eventDTO.place })
-
-        if (!place) {
-            throw new HttpException(404, `Place whith id ${id} not fuond`);
-        }
+        existsValidator(place, "Place");
 
         const event = await eventRepository.findOneBy({id});
 
-        if (!event) {
-            throw new HttpException(404, `Event whith id ${id} not fuond`);
-        }
+        existsValidator(event, "Event");
 
         event.title = eventDTO.title;
         event.eventDate = eventDTO.eventDate;
         event.place = place;
-        event.descriptin = eventDTO.descriptin;
+        event.descriptin = eventDTO.description;
 
         return await eventRepository.save(event);
 
     }
 
-    async deleteEvent(id: string) {
+    async deleteEvent(id: string): Promise<void> {
 
         const event = await eventRepository.findOneBy({id});
 
-        if (!event) {
-            throw new HttpException(404, `Event whith id ${id} not fuond`);
-        }
+        existsValidator(event, "Event");
 
-        return await eventRepository.delete(event.id);
+        await eventRepository.delete(event.id);
 
     }
 

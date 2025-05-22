@@ -18,4 +18,12 @@ export class PlaceDTO {
     @Type(() => AddressDTO)
     address!: AddressDTO;
 
+    public getPostalCode() { return this.address.postalColde }
+
+    public getNumberHouse() { return this.address.numberHouse }
+
+    public getStreet() { return this.address.street }
+
+    public getComplement() { return this.address.complement }
+
 }

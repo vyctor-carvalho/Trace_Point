@@ -12,7 +12,7 @@ export class EventDTO {
     eventDate!: Date;
 
     @IsString()
-    descriptin?: string;
+    description?: string;
 
     @IsUUID()
     place!: string;

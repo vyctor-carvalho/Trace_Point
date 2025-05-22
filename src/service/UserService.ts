@@ -1,21 +1,18 @@
-import { validate } from "class-validator";
-
-import { UserDTO } from "../DTO/UserDTO";
-import { userRepository } from "../repositories/UserRepository";
 import { User } from "../models/User";
-import { HttpException } from "../error/HttpException";
+import { userRepository } from "../repositories/UserRepository";
+import { EventService } from "../service/EventService";
+import { UserDTO } from "../DTO/UserDTO";
 import { BookingDTO } from "../DTO/BookingDTO";
-import { eventRepository } from "../repositories/EventRepository";
+import validateDTO from "../utils/validateDTO";
+import existsValidator from "../utils/ExistsValidator";
 
 export class UserService {
 
+    private eventService = new EventService();
+
     async cadUser(userDTO: UserDTO): Promise<User> {
         
-        const error = await validate(userDTO);
-
-        if (error.length > 0) {
-            throw new HttpException(400, "Invalid json");
-        }
+        await validateDTO(userDTO);
 
         const newUser = userRepository.create({
             name: userDTO.name,
@@ -50,17 +47,11 @@ export class UserService {
 
     async putUser(id: string, userDTO: UserDTO): Promise<User> {
         
-        const error = await validate(userDTO);
-
-        if (error.length > 0) {
-            throw new HttpException(400, "Invalid json");
-        }
+        await validateDTO(userDTO);
 
         const user = await userRepository.findOneBy({id});
 
-        if (!user) {
-            throw new HttpException(404, `User whith id ${id} not found`)
-        }
+        existsValidator(user, "User");
 
         user.name = userDTO.name;
         user.profilePick = userDTO.profilePick;
@@ -72,28 +63,20 @@ export class UserService {
 
     }
 
-    async eventBooking(bookingDTO: BookingDTO) {
+    async eventBooking(bookingDTO: BookingDTO): Promise<User> {
 
-        const error = await validate(bookingDTO);
-        
-        if (error.length > 0) {
-            throw new HttpException(400, "Invalid json");
-        }
+        await validateDTO(bookingDTO);
 
         const user = await userRepository.findOne({
             where: { id: bookingDTO.eventId },
             relations: ["user"] 
         });
 
-        if (!user) {
-            throw new HttpException(404, `User whith id ${bookingDTO.userId} not fuond`);
-        }
+        existsValidator(user, "User");
 
-        const event = await eventRepository.findOneBy({ id: bookingDTO.eventId });
+        const event = await this.eventService.getEventById(bookingDTO.eventId)
 
-        if (!event) {
-            throw new HttpException(404, `Event whith id ${bookingDTO.eventId} not fuond`);
-        }
+        existsValidator(event, "Event");
 
         user.event?.push(event);
 
@@ -101,15 +84,13 @@ export class UserService {
 
     }
 
-    async deleteUser(id: string) {
+    async deleteUser(id: string): Promise<void> {
         
         const user = await userRepository.findOneBy({id});
 
-        if (!user) {
-            throw new HttpException(404, `User whith id ${id} not fuond`);
-        }
+        existsValidator(user, "User");
 
-        return userRepository.delete(user.id);
+        userRepository.delete(user.id);
 
     }
 

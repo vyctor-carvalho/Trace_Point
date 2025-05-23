@@ -4,10 +4,10 @@ import { UserService } from "../service/UserService";
 import { PlaceService } from "../service/PlaceService";
 import { VisitedPlaces } from "../models/VisitedPlaces";
 import { visitedPlacesRepository } from "../repositories/VisitedRepository";
-import validateDTO from "../utils/validateDTO";
+import validateRequestBody from "../utils/ValidateRequestBody";
 import existsValidator from "../utils/ExistsValidator";
 
-export class visitedService {
+export class VisitedService {
 
     private userService = new UserService();
 
@@ -15,7 +15,7 @@ export class visitedService {
     
     async postVisit(visitedDTO: VisitedDOT): Promise<VisitedPlaces> {
 
-        await validateDTO(visitedDTO);
+        await validateRequestBody(visitedDTO);
 
         const user = await this.userService.getUserById(visitedDTO.userId);
 
@@ -81,7 +81,7 @@ export class visitedService {
 
     async putVisit(visitedDTO: VisitedDOT): Promise<VisitedPlaces> {
 
-        await validateDTO(visitedDTO);
+        await validateRequestBody(visitedDTO);
 
         const user = await this.userService.getUserById(visitedDTO.userId);
         existsValidator(user, "User");

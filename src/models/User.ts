@@ -1,4 +1,3 @@
-import { hash } from "bcrypt"
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToMany } from "typeorm";
 
 import { LoginInfo } from "./wrappers/LoginInfo";
@@ -47,8 +46,8 @@ export class User {
         return this.userLogin.password;
     }
 
-    public async setPassword(password: string) {
-        this.userLogin.password = await hash(password, 10);
+    public setPassword(password: string) {
+        this.userLogin.password = password;
     }
 
 }

@@ -2,7 +2,7 @@ import { validate } from "class-validator";
 
 import { HttpException } from "../error/HttpException"
 
-export default async function validateDTO(dto: Object) {
+export default async function validateRequestBody(dto: Object) {
     const error = await validate(dto, {
     whitelist: true,
     forbidNonWhitelisted: true,

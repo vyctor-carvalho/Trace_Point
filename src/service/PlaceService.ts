@@ -4,7 +4,7 @@ import { Place } from "../models/Place";
 import { PlaceDTO } from "../DTO/PlaceDTO";
 import { placeRepository } from "../repositories/PlaceRepository";
 import existsValidator from "../utils/ExistsValidator";
-import validateDTO from "../utils/validateDTO";
+import validateRequestBody from "../utils/ValidateRequestBody";
 import { Address } from "../models/wrappers/Address";
 
 
@@ -12,7 +12,7 @@ export class PlaceService {
 
     async postPlace(placeDTO: PlaceDTO): Promise<Place> {
 
-        await validateDTO(placeDTO);
+        await validateRequestBody(placeDTO);
 
         const newPlace = placeRepository.create({
             name: placeDTO.name,
@@ -39,7 +39,7 @@ export class PlaceService {
 
     async putPlace(id: string, placeDTO: PlaceDTO): Promise<Place> {
 
-        await validateDTO(placeDTO);
+        await validateRequestBody(placeDTO);
 
         const place = await placeRepository.findOneBy({id});
 

@@ -1,9 +1,11 @@
+import { hash } from "bcrypt"
+
 import { User } from "../models/User";
 import { userRepository } from "../repositories/UserRepository";
 import { EventService } from "../service/EventService";
 import { UserDTO } from "../DTO/UserDTO";
 import { BookingDTO } from "../DTO/BookingDTO";
-import validateDTO from "../utils/validateDTO";
+import validateRequestBody from "../utils/ValidateRequestBody";
 import existsValidator from "../utils/ExistsValidator";
 
 export class UserService {
@@ -12,7 +14,7 @@ export class UserService {
 
     async cadUser(userDTO: UserDTO): Promise<User> {
         
-        await validateDTO(userDTO);
+        await validateRequestBody(userDTO);
 
         const newUser = userRepository.create({
             name: userDTO.name,
@@ -21,7 +23,7 @@ export class UserService {
         });
 
         newUser.setEmail(userDTO.getEmail());
-        await newUser.setPassword(userDTO.getPassword());
+        newUser.setPassword(await hash(userDTO.getPassword(), 10));
 
         return userRepository.save(newUser);
 
@@ -47,7 +49,7 @@ export class UserService {
 
     async putUser(id: string, userDTO: UserDTO): Promise<User> {
         
-        await validateDTO(userDTO);
+        await validateRequestBody(userDTO);
 
         const user = await userRepository.findOneBy({id});
 
@@ -65,7 +67,7 @@ export class UserService {
 
     async eventBooking(bookingDTO: BookingDTO): Promise<User> {
 
-        await validateDTO(bookingDTO);
+        await validateRequestBody(bookingDTO);
 
         const user = await userRepository.findOne({
             where: { id: bookingDTO.eventId },

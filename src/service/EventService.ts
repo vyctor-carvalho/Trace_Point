@@ -3,7 +3,7 @@ import { EventDTO } from "../DTO/EventDTO";
 import { PlaceService } from "../service/PlaceService";
 import { eventRepository } from "../repositories/EventRepository";
 import existsValidator from "../utils/ExistsValidator";
-import validateDTO from "../utils/validateDTO";
+import validateRequestBody from "../utils/ValidateRequestBody";
 
 export class EventService {
 
@@ -11,7 +11,7 @@ export class EventService {
 
     async postEvent(eventDTO: EventDTO): Promise<Event> {
 
-        await validateDTO(eventDTO);
+        await validateRequestBody(eventDTO);
 
         const place = await this.placeService.getPlaceById(eventDTO.place);
 
@@ -38,7 +38,7 @@ export class EventService {
 
     async putEvent(id: string, eventDTO: EventDTO): Promise<Event> {
 
-        await validateDTO(eventDTO);
+        await validateRequestBody(eventDTO);
 
         const place = await this.placeService.getPlaceById(eventDTO.place);
 

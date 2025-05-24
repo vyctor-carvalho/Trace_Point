@@ -10,3 +10,6 @@ export const DB_PORT = Number(process.env.DB_PORT) || 5432;
 export const DB_NAME = process.env.DB_NAME || "angel_visitor";
 
 export const JWT_SECRET = process.env.JWT_SECRET || "my_secret_key";
+export const REFRESH_SECRET = process.env.REFRESH_SECRET || "my_security_refresh_token";
+export  const TOKEN_EXPIRES_IN = Number(process.env.TOKEN_EXPIRES_IN) || 3600
+export const REFRESH_TOKEN_EXPIRES_IN = Number(process.env.REFRESH_TOKEN_EXPIRES_IN) || 604800

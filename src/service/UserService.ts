@@ -34,7 +34,12 @@ export class UserService {
     }
 
     async getUserById(id: string) {
-        return await userRepository.findOneBy({id})
+
+        const user = await userRepository.findOneBy({id});
+
+        existsValidator(user, "User");
+
+        return user;
     }
 
     async getUserByEmail(email: string) {

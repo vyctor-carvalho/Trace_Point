@@ -19,7 +19,7 @@ export class UserDTO {
     @IsString()
     profilePick?: string;
 
-    @IsIn([UserRole.visitor, UserRole.admin])
+    @IsIn([UserRole.visitor, UserRole.organizer])
     role!: UserRole;
 
     public getEmail() {

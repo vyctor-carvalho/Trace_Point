@@ -34,7 +34,12 @@ export class PlaceService {
     }
 
     async getPlaceById(id: string): Promise<Place | null> {
-        return placeRepository.findOneBy({id}); 
+        return placeRepository.findOne({
+            where: { id },
+            relations: {
+                event: true
+            }
+        }); 
     }
 
     async putPlace(id: string, placeDTO: PlaceDTO): Promise<Place> {

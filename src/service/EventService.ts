@@ -4,6 +4,7 @@ import { PlaceService } from "../service/PlaceService";
 import { eventRepository } from "../repositories/EventRepository";
 import existsValidator from "../utils/ExistsValidator";
 import validateRequestBody from "../utils/ValidateRequestBody";
+import { HttpException } from "../error/HttpException";
 
 export class EventService {
 
@@ -13,9 +14,17 @@ export class EventService {
 
         await validateRequestBody(eventDTO);
 
+        if (eventDTO.eventDate.getTime() < Date.now()) {
+            throw new HttpException(400, "Event cannot be created in the past");
+        }
+
         const place = await this.placeService.getPlaceById(eventDTO.place);
 
         existsValidator(place, "Place");
+
+        if (place.event) {
+            throw new HttpException(400, "Place already has an event");
+        }
 
         const newEvent = eventRepository.create({
             title: eventDTO.title,

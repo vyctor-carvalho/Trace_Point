@@ -7,6 +7,7 @@ import { UserDTO } from "../DTO/UserDTO";
 import { BookingDTO } from "../DTO/BookingDTO";
 import validateRequestBody from "../utils/ValidateRequestBody";
 import existsValidator from "../utils/ExistsValidator";
+import { HttpException } from "../error/HttpException";
 
 export class UserService {
 
@@ -16,14 +17,21 @@ export class UserService {
         
         await validateRequestBody(userDTO);
 
+        const userExistis = await this.getUserByEmail(userDTO.getEmail());
+
+        if (userExistis) {
+            throw new HttpException(400, "Email is already in use")
+        }
+
         const newUser = userRepository.create({
             name: userDTO.name,
             profilePick: userDTO.profilePick,
-            role: userDTO.role
+            role: userDTO.role,
+            userLogin: {
+                email: userDTO.getEmail(),
+                password: await hash(userDTO.getPassword(), 10)
+            }
         });
-
-        newUser.setEmail(userDTO.getEmail());
-        newUser.setPassword(await hash(userDTO.getPassword(), 10));
 
         return userRepository.save(newUser);
 
@@ -64,7 +72,7 @@ export class UserService {
         user.profilePick = userDTO.profilePick;
         user.role = userDTO.role;
         user.setEmail(userDTO.getEmail());
-        await user.setPassword(userDTO.getPassword());
+        user.setPassword(await hash(userDTO.getPassword(), 10));
 
         return userRepository.save(user);
 
@@ -75,8 +83,10 @@ export class UserService {
         await validateRequestBody(bookingDTO);
 
         const user = await userRepository.findOne({
-            where: { id: bookingDTO.eventId },
-            relations: ["user"] 
+            where: { id: bookingDTO.userId },
+            relations: {
+                event: true
+            }
         });
 
         existsValidator(user, "User");
@@ -85,7 +95,17 @@ export class UserService {
 
         existsValidator(event, "Event");
 
-        user.event?.push(event);
+        if (!user.event) {
+            user.event = [];
+        }
+
+        const alreadyBooked = user.event.some(e => e.id === event.id);
+
+        if (alreadyBooked) {
+            throw new HttpException(400, "User already booked in this event");
+        }
+
+        user.event.push(event);
 
         return userRepository.save(user);
 

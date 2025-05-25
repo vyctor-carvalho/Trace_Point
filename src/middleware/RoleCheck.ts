@@ -5,6 +5,7 @@ import { HttpException } from "../error/HttpException";
 export function roleCheck(userRole: UserRole[]) {
 
     return (req: Request, res: Response, next: NextFunction) => {
+        
         if (!req.user || !userRole.includes(req.user.role)) {
             throw new HttpException(403, "Access denied");
         }

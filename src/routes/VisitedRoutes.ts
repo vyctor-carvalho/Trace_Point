@@ -58,7 +58,7 @@ visitedRoutes.put("/", jwtRequired, allowAllUsers(), async (req: Request, res: R
 /**
  * Método DELETE de Visited
  */
-visitedRoutes.delete("/:userId/:placeId", validateId("userId"), validateId("placeId"), jwtRequired, allowOrganizer(), async (req: Request, res: Response, next: NextFunction) => {
-    console.log("DELETE in /visited/:userId/:placeId");
+visitedRoutes.delete("/", jwtRequired, allowOrganizer(), async (req: Request, res: Response, next: NextFunction) => {
+    console.log("DELETE in /visited/");
     visitedController.deleteVisit(req, res, next);
 });

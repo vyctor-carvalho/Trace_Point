@@ -21,6 +21,6 @@ export class VisitedPlaces {
     place!: Place;
 
     @Column({ name: "visit_date", type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
-    visitDate?: Date;
+    visitDate!: Date;
 
 }

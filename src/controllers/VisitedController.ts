@@ -49,7 +49,7 @@ export class VisitedController {
 
             if (visits.length === 0) {
                 return res.status(200).json({
-                    message: "User has no visit records"
+                    message: "No visits recorded for this user"
                 });
             }
 
@@ -97,7 +97,7 @@ export class VisitedController {
 
     async deleteVisit(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
         try {
-            const { userId, placeId } = req.params;
+            const { userId, placeId } = req.body;
 
             await this.visitedService.deleteVisit(userId, placeId);
 

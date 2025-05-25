@@ -1,5 +1,5 @@
 import { IsDate, IsNotEmpty, IsString, IsUUID } from "class-validator";
-
+import { Type } from "class-transformer";
 
 export class EventDTO {
     
@@ -9,6 +9,7 @@ export class EventDTO {
 
     @IsNotEmpty()
     @IsDate()
+    @Type(() => Date)
     eventDate!: Date;
 
     @IsString()

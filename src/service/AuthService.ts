@@ -43,7 +43,7 @@ export class AuthService {
     async refreshAuthenticate(refreshToken: string) {
 
         const decoded = this.tokenManager.verifyRefreshToken(refreshToken);
-
+        
         const payload = {
             id: decoded.id,
             email: decoded.email,

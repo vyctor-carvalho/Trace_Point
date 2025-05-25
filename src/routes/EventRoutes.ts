@@ -50,7 +50,7 @@ eventRouter.put("/:id", validateId("id"), jwtRequired, allowOrganizer(), async (
 /**
  * Método DELETE de Event
  */
-eventRouter.delete("/:id", validateId("id"), allowOrganizer(), async (req: Request, res: Response, next: NextFunction) => {
+eventRouter.delete("/:id", validateId("id"), jwtRequired, allowOrganizer(), async (req: Request, res: Response, next: NextFunction) => {
     console.log("DELETE in /event/:id");
     eventController.deleteEvent(req, res, next);
 });

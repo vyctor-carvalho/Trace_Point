@@ -11,6 +11,10 @@ export default function jwtRequired(req: Request, res: Response, next: NextFunct
 
     const authHeader = req.headers.authorization;
 
+    if (!authHeader) {
+        throw new HttpException(401, "Token is necessary");
+    }
+
     if (!authHeader?.startsWith("Bearer ")) {
         throw new HttpException(401, "Token not provided");
     }
@@ -19,8 +23,8 @@ export default function jwtRequired(req: Request, res: Response, next: NextFunct
 
     const decoded = tokenManager.verifyAccessToken(token);
 
-    req.body = decoded;
-
+    req.user = decoded;
+    
     next();
 
 }

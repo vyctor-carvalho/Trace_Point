@@ -1,4 +1,5 @@
 import { IsDate, IsNotEmpty, IsUUID } from  "class-validator";
+import { Type } from "class-transformer";
 
 export class VisitedDOT {
 
@@ -11,7 +12,8 @@ export class VisitedDOT {
     placeId!: string;
 
     @IsDate()
-    visitDate?: Date;
+    @Type(() => Date)
+    visitDate!: Date;
 
 
 }

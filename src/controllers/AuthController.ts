@@ -39,7 +39,7 @@ export class AuthController {
                 throw new HttpException(400, "Refresh token required");
             }
 
-            const accessToken = this.authService.refreshAuthenticate(refreshToken);
+            const accessToken = await this.authService.refreshAuthenticate(refreshToken);
 
             return res.status(200).json({ accessToken });
 

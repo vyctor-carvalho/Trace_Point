@@ -7,16 +7,13 @@ export default async function validateRequestBody(dto: Object) {
     throw new HttpException(400, "Invalid request body");
   }
 
-  try {
-    const errors = await validate(dto, {
-      whitelist: true,
-      forbidNonWhitelisted: true,
-    });
+  const errors = await validate(dto, {
+    whitelist: true,
+    forbidNonWhitelisted: true,
+  });
 
-    if (errors.length > 0) {
-      throw new HttpException(400, "Invalid JSON format or missing fields");
-    }
-  } catch (error) {
-    throw new HttpException(400, "Invalid request format");
+  if (errors.length > 0) {
+    throw new HttpException(400, "Invalid JSON format or missing fields");
   }
+  
 }

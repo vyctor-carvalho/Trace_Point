@@ -6,6 +6,7 @@ import { VisitedPlaces } from "../models/VisitedPlaces";
 import { visitedPlacesRepository } from "../repositories/VisitedRepository";
 import validateRequestBody from "../utils/ValidateRequestBody";
 import existsValidator from "../utils/ExistsValidator";
+import { HttpException } from "../error/HttpException";
 
 export class VisitedService {
 
@@ -24,6 +25,10 @@ export class VisitedService {
         const place = await this.placeService.getPlaceById(visitedDTO.placeId);
 
         existsValidator(place, "Place");
+
+        if (visitedDTO.visitDate.getTime() > Date.now()) {
+            throw new HttpException(400, "Visit cannot be in the future");
+        }
 
         const newVisited = visitedPlacesRepository.create({
             visitDate: visitedDTO.visitDate,

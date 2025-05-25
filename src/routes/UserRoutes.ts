@@ -14,7 +14,7 @@ export const userRouter = Router();
  * Métodos POST de User
  */
 userRouter.post("/register", async (req: Request, res: Response, next: NextFunction) => {
-    console.log("POST in /user/");
+    console.log("POST in /user/register");
     userController.registerUser(req, res, next);
 })
 
@@ -29,9 +29,9 @@ userRouter.post("/booking", jwtRequired, allowAllUsers(), async (req: Request, r
 
 
 /**
- * Métodos GET de User
+ * Métodos GET de Users
  */
-userRouter.get("/", jwtRequired, onlyAdmin(), async (req: Request, res: Response) => {
+userRouter.get("/",jwtRequired, onlyAdmin(), async (req: Request, res: Response) => {
     console.log("GET in /user/");
     userController.findAllUsers(req, res);
 });

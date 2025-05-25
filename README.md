@@ -1,23 +1,36 @@
-Aqui está uma versão melhorada e organizada do seu `README.md`, com instruções claras de instalação, uso e estrutura do projeto:
+# Trace Point - Backend
+
+API RESTful para organização de visitas durante a COP-30 em Belém. Permite o registro de **usuários** (admin, visitor, organizer), **eventos**, **locais visitados** e **agendamentos**.
 
 ---
 
-# 🌎 Angel Visitor - Backend
+## Tecnologias
 
-API RESTful para cadastro e organização de visitas durante a COP-30 em Belém. Permite o registro de **usuários** (admin, visitor, organizer), **eventos**, **lugares visitados** e **agendamentos**.
+* Node.js 18
+* TypeScript
+* PostgreSQL
+* TypeORM
+* Docker + Docker Compose
+* pgAdmin (interface de banco)
 
 ---
 
-## 📦 Requisitos
+## Requisitos
+
+Para rodar com Docker:
+
+* Docker
+* Docker Compose
+
+Para rodar manualmente:
 
 * Node.js 18+
 * PostgreSQL
-* Yarn ou NPM
-* TypeORM + TS
+* NPM
 
 ---
 
-## 🚀 Instalação
+## Instalação
 
 ### 1. Clone o repositório
 
@@ -26,30 +39,65 @@ git clone https://github.com/vyctor-carvalho/Trace_Point.git
 cd Trace_Point
 ```
 
-### 2. Instale as dependências
+---
 
-```bash
-npm install
-```
+## Rodando com Docker
 
-### 3. Configure o ambiente
-
-Crie um arquivo `.env` na raiz baseado no `.env.copy`:
+### 2. Copie o arquivo `.env`
 
 ```bash
 cp .env.copy .env
 ```
 
-Edite com suas credenciais do .env
+Edite as variáveis conforme necessário. Para uso com Docker, mantenha:
+
+```ini
+DB_HOST=db
+DB_PORT=5432
+DB_USER=postgres
+DB_PASSWORD=postgres
+DB_NAME=tracepoint
+```
+
+### 3. Suba os containers
+
+```bash
+docker-compose up --build
+```
+
+### 4. Acessar o banco de dados via pgAdmin
+
+Abra o **pgAdmin** em: `http://localhost:5050` (ou o endereço configurado)
+
+Na interface do pgAdmin, adicione uma nova conexão com os seguintes dados:
+
+* **Name**: `tracepoint-db` (ou qualquer nome)
+* **Host name/address**: `db`
+* **Port**: `5432`
+* **Username**: `postgres`
+* **Password**: `postgres`
+
+Após conectar, selecione o banco de dados `tracepoint` no painel lateral para visualizar tabelas, dados e executar queries.
+
+## Rodando Manualmente
+
+### 1. Instale as dependências
+
+```bash
+npm install
+```
+
+### 2. Configure o `.env` com seu PostgreSQL local
 
 ```ini
 # Configurações do servidor
 SYSTEM_API_PORT=sua_porta_pra_api
 
 # Dados do banco
-DB_USER=seu_usuario
+DB_HOST=db
+DB_USER=postgres
 DB_PORT=sua_porta
-DB_PASSWORD=sua_sneha
+DB_PASSWORD=postgres
 DB_NAME=nome_do_banco
 
 # JWT
@@ -59,15 +107,13 @@ JWT_EXPIRES_IN=3600
 REFRSH_TOKEN_EXPIRES_IN=604800
 ```
 
-### 4. Rode as migrations
+### 3. Rode as migrations
 
 ```bash
 npm run migration:run
 ```
 
-### 5. Inicie o servidor
-
-Em modo desenvolvimento:
+### 4. Inicie o servidor
 
 ```bash
 npm run dev
@@ -75,9 +121,9 @@ npm run dev
 
 ---
 
-## Criação de usuários
+## Criação de Usuários
 
-### Criar admin (somente via banco)
+### Admin (via SQL):
 
 ```sql
 INSERT INTO "user" (
@@ -92,33 +138,19 @@ INSERT INTO "user" (
 );
 ```
 
-Senha original: `admin123`
+Senha: `admin123`
 
-### Criar visitor `/user/register`
-
-```json
-{
-  "name": "João da Silva",
-  "userLogin": {
-    "email": "joao.silva@example.com",
-    "password": "senhaSegura123"
-  },
-  "profilePick": "https://example.com/images/joao.jpg",
-  "role": "visitor"
-}
-```
-
-### Criar organizer `/user/register`
+### Visitor ou Organizer (POST `/user/register`):
 
 ```json
 {
-  "name": "Fernanda Rocha",
+  "name": "Nome do usuário",
   "userLogin": {
-    "email": "fernanda.rocha@example.com",
-    "password": "organizadora@2025"
+    "email": "email@example.com",
+    "password": "senha123"
   },
-  "profilePick": "https://example.com/images/fernanda.jpg",
-  "role": "organizer"
+  "profilePick": "https://example.com/foto.jpg",
+  "role": "visitor" // ou "organizer"
 }
 ```
 
@@ -126,7 +158,9 @@ Senha original: `admin123`
 
 ## Autenticação
 
-### Login `/auth/login`
+### Login
+
+`POST /auth/login`
 
 ```json
 {
@@ -135,11 +169,13 @@ Senha original: `admin123`
 }
 ```
 
-### Refresh Token `/auth/refresh`
+### Refresh Token
+
+`POST /auth/refresh`
 
 ```json
 {
-  "refreshToken": "Seu refresh token"
+  "refreshToken": "token_aqui"
 }
 ```
 
@@ -147,47 +183,47 @@ Senha original: `admin123`
 
 ## Endpoints principais
 
-### Criar um `place` `/place`
+### Criar local (`/place`)
 
 ```json
 {
-  "name": "Mercado Ver-o-Peso",
-  "type": "market",
+  "name": "Estação das Docas",
+  "type": "cultural",
   "address": {
-    "postalColde": "66010-000",
-    "street": "Boulevard Castilhos França",
-    "numberHouse": 500,
-    "complement": "Pavilhão Central"
+    "postalColde": "66010-020",
+    "street": "Av. Boulevard Castilhos França",
+    "numberHouse": 600,
+    "complement": "Armazém 2"
   }
 }
 ```
 
-### Criar um `event` `/event`
+### Criar evento (`/event`)
 
 ```json
 {
-  "title": "Passeio Cultural pelo Centro Histórico",
+  "title": "Tour COP-30",
   "eventDate": "2025-07-15T14:00:00.000Z",
-  "description": "Uma visita guiada aos principais pontos históricos de Belém incluindo o Ver o Peso, Igreja Matriz e Forte do Presépio.",
-  "place": "6bd90f69-5ae4-47c5-a113-cab3fe9ec066"
+  "description": "Tour pelo centro histórico de Belém.",
+  "place": "UUID-do-place"
 }
 ```
 
-### Fazer `booking` `/user/booking`
+### Agendar visita (`/user/booking`)
 
 ```json
 {
-  "eventId": "38e62fae-a7f7-4677-add5-900b77c36db3",
-  "userId": "fa1858b8-5fe4-4821-9500-00ff77e80985"
+  "eventId": "UUID-event",
+  "userId": "UUID-user"
 }
 ```
 
-### Marcar como `visited` `/visited`
+### Marcar visita como feita (`/visited`)
 
 ```json
 {
-  "userId": "fa1858b8-5fe4-4821-9500-00ff77e80985",
-  "placeId": "6bd90f69-5ae4-47c5-a113-cab3fe9ec066",
+  "userId": "UUID-user",
+  "placeId": "UUID-place",
   "visitDate": "2025-05-24T10:30:00.000Z"
 }
 ```
@@ -199,15 +235,16 @@ Senha original: `admin123`
 ```
 📁 raiz/
 │
-├── .env                 # Variáveis de ambiente reais
-├── .env.copy            # Modelo para replicar o .env
-├── .gitignore
-├── package.json         # Dependências e scripts
-├── package-lock.json
-├── tsconfig.json        # Configuração do TypeScript
+├── .env               # Variáveis reais
+├── .env.copy          # Modelo para configuração
+├── .dockerignore      # Ignora arquivos do Docker
+├── docker-compose.yml # Arquitetura dos containers
+├── Dockerfile         # Imagem do app
+├── package.json
+├── tsconfig.json
 ├── README.md
-├── index.ts             # Ponto de entrada (pode ser movido para src/)
-├── sever.ts             # (Verificar se é um erro de digitação para server.ts)
+├── index.ts
+├── server.ts
 │
 └── src/
     │
@@ -222,10 +259,11 @@ Senha original: `admin123`
     │   └── VisitedController.ts
     │
     ├── DTO/
-    │   ├── AddressDTO.ts
+    │   ├── wrappers/
+    │   │   ├── AddressDTO.ts
+    │   │   └── LoginInfoDTO.ts
     │   ├── BookingDTO.ts
     │   ├── EventDTO.ts
-    │   ├── LoginInfoDTO.ts
     │   ├── PlaceDTO.ts
     │   ├── UserDTO.ts
     │   └── VisitedDTO.ts
@@ -241,18 +279,20 @@ Senha original: `admin123`
     │   └── ValidateId.ts
     │
     ├── migrations/
-    │   ├── 1747755304546-Generated.ts
-    │   └── 1747865261580-Generated.ts
+    │   ├── 1747755304546-GeneratedMigration.ts
+    │   └── 1747865261580-GeneratedMigration.ts
     │
     ├── models/
     │   ├── enum/
     │   │   ├── PlaceType.ts
     │   │   └── UserRole.ts
     │   ├── wrappers/
-    │   │   ├── Event.ts
-    │   │   ├── Place.ts
-    │   │   ├── User.ts
-    │   │   └── VisitedPlaces.ts
+    │   │   ├── Address.ts
+    │   │   └── LoginInfo.ts
+    │   ├── Event.ts
+    │   ├── Place.ts
+    │   ├── User.ts
+    │   └── VisitedPlaces.ts
     │
     ├── repositories/
     │   ├── EventRepository.ts
@@ -284,4 +324,6 @@ Senha original: `admin123`
     │   └── AppDataSource.ts
     │
     └── @types/
+        └── express
+            └── index.d.ts
 ```

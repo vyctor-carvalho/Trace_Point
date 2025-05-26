@@ -1,5 +1,6 @@
 import express from 'express';
 import { AppDataSource } from "./db_config/AppDataSource"
+import path from 'path';
 
 /**
  * @file server.ts
@@ -8,7 +9,6 @@ import { AppDataSource } from "./db_config/AppDataSource"
  */
 
 const server = express();
-
 
 // Middleware para parsear o corpo das requisições JSON
 server.use(express.json());

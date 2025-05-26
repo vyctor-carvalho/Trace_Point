@@ -1,4 +1,5 @@
-import server from './sever';
+import express from "express"
+import server from "./sever";
 import { PORT } from "./config/EsportEnv";
 import { errorsHandler } from "./middleware/ErrorsHandler";
 import { authRoutes } from "./routes/AuthRoutes";
@@ -6,6 +7,7 @@ import { userRouter } from "./routes/UserRoutes";
 import { eventRouter } from "./routes/EventRoutes";
 import { placeRouter } from "./routes/PlaceRoutes";
 import { visitedRoutes } from "./routes/VisitedRoutes";
+import path from 'path';
 
 /**
  * @file index.ts
@@ -16,9 +18,22 @@ import { visitedRoutes } from "./routes/VisitedRoutes";
 
 const port = PORT
 
+
+server.use(express.static(path.join(process.cwd(), 'public')));
+
 // Rota raiz para verificação de funcionamento
 server.get('/', (req, res) => {
-  res.send('<h1>Trace Point API</h1><p>Bem-vindo à API do Trace Point!</p>');
+  // Constrói o caminho absoluto para o arquivo HTML
+  // process.cwd() retorna o diretório de trabalho atual do processo Node.js
+  // Assumindo que a pasta 'public' está na raiz do seu projeto
+  const filePath = path.join(process.cwd(), 'public', 'index.html');
+  res.sendFile(filePath, (err) => {
+    if (err) {
+      console.error("Erro ao enviar o arquivo HTML:", err);
+      // Envie uma resposta de erro genérica ou trate o erro de forma mais específica
+      res.status((err as any).status || 500).send("Erro ao carregar a página.");
+    }
+  });
 });
 
 // Configuração das rotas da aplicação

@@ -4,6 +4,11 @@ import { LoginInfo } from "./wrappers/LoginInfo";
 import { UserRole } from "./enum/UserRole";
 import { VisitedPlaces } from "./VisitedPlaces";
 import { Event } from "./Event";
+/*
+    Entidade usuário
+    Se relaciona com Eventos e Lugares
+    Define os locais que o usuário já visitou, sua função e dados de Login
+*/
 
 @Entity("user")
 export class User {

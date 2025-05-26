@@ -1,5 +1,9 @@
 import { IsNotEmpty, IsNumber, IsOptional, IsPostalCode, IsString } from "class-validator";
 
+/*
+    Classe de validação de endereço por código postal, rua, número da casa e complemento.
+*/
+
 
 export class AddressDTO {
 

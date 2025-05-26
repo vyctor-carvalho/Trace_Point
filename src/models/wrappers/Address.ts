@@ -1,5 +1,8 @@
 import { Column } from "typeorm";
 
+/*
+    Entidade Endereço
+*/
 
 export class Address {
 

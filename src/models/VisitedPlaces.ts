@@ -2,6 +2,9 @@ import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
 
 import { User } from "./User";
 import { Place } from "./Place";
+/*
+    Entidades Lugares visitados
+*/
 
 @Entity("visited_places")
 export class VisitedPlaces {

@@ -1,6 +1,10 @@
 import { IsDate, IsNotEmpty, IsString, IsUUID } from "class-validator";
 import { Type } from "class-transformer";
 
+/*
+    Classe Eventos
+*/
+
 export class EventDTO {
     
     @IsNotEmpty()

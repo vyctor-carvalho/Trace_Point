@@ -9,7 +9,12 @@ import validateRequestBody from "../utils/ValidateRequestBody";
 import existsValidator from "../utils/ExistsValidator";
 import { HttpException } from "../error/HttpException";
 
+/*
+ * Serviço de gerenciamento de usuários.
+ * Responsável por criar, buscar, reservar (eventos) e deletar usuários.
+ */
 export class UserService {
+
 
     private eventService = new EventService();
 
@@ -36,10 +41,16 @@ export class UserService {
         return userRepository.save(newUser);
 
     }
+    /*
+    * Obtém todos os usuários cadastrados.
+    */
 
     async getUsers(): Promise<User[]> {
         return await userRepository.find();
     }
+    /*
+    * Busca usuário por ID.
+    */
 
     async getUserById(id: string) {
 
@@ -49,6 +60,9 @@ export class UserService {
 
         return user;
     }
+    /*
+    * Busca um usuário por e-mail.
+    */
 
     async getUserByEmail(email: string) {
         return await userRepository.findOne({ 
@@ -59,6 +73,9 @@ export class UserService {
             }
         })
     }
+    /*
+    * Atualiza um usuário existente.
+    */
 
     async putUser(id: string, userDTO: UserDTO): Promise<User> {
         
@@ -77,6 +94,9 @@ export class UserService {
         return userRepository.save(user);
 
     }
+    /*
+    * Reserva um evento.
+    */
 
     async eventBooking(bookingDTO: BookingDTO): Promise<User> {
 
@@ -110,7 +130,9 @@ export class UserService {
         return userRepository.save(user);
 
     }
-
+    /*
+    * Deletar um usuário.
+    */
     async deleteUser(id: string): Promise<void> {
         
         const user = await userRepository.findOneBy({id});

@@ -1,3 +1,7 @@
+/** 
+ * @class HttpException 
+ * @Error mensagem principal de erro interno
+*/
 export class HttpException extends Error {
     constructor (
         public status: number = 500,

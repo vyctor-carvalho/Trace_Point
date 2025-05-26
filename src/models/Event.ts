@@ -2,6 +2,11 @@ import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToOne, PrimaryGen
 import { Place } from "./Place";
 import { User } from "./User";
 
+/*
+    Entidade Evento
+    Se relaciona com lugar e usuário (através da Reserva)
+*/
+
 @Entity("event")
 export class Event {
 

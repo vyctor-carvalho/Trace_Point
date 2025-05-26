@@ -1,6 +1,10 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
 
+/*
+ * Configuração do banco de dados.
+*/
+
 import { DB_HOST, DB_NAME, DB_PASSWORD, DB_PORT, DB_USER } from "../config/EsportEnv"
 
 export const AppDataSource = new DataSource({

@@ -1,5 +1,9 @@
 import { Column } from "typeorm";
 
+/*  
+    Entidade Login
+*/
+
 export class LoginInfo {
 
     @Column({ name: "email", type: "varchar", length: 40, unique: true })

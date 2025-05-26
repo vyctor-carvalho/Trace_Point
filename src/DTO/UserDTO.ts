@@ -3,6 +3,10 @@ import { Type } from "class-transformer";
 
 import { LoginInfoDTO } from "./wrappersDTO/LoginInfoDTO";
 import { UserRole } from "../models/enum/UserRole";
+/*
+    Classe usuário (admin, visitor, organizer)
+    Retorna a classe LoginInfoDTO para autenticar login.
+*/
 
 export class UserDTO {
     

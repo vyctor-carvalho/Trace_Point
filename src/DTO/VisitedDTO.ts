@@ -1,5 +1,8 @@
 import { IsDate, IsNotEmpty, IsUUID } from  "class-validator";
 import { Type } from "class-transformer";
+/*
+    Classe visitantes
+*/
 
 export class VisitedDOT {
 

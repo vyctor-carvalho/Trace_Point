@@ -7,8 +7,17 @@ import existsValidator from "../utils/ExistsValidator";
 import validateRequestBody from "../utils/ValidateRequestBody";
 import { Address } from "../models/wrappers/Address";
 
+/**
+ * Serviço de gerenciamento de lugares.
+ * Responsável por criar, buscar, atualizar e deletar lugares.
+ */
+
 
 export class PlaceService {
+
+    /*
+    * Adiciona um novo lugar.
+    */
 
     async postPlace(placeDTO: PlaceDTO): Promise<Place> {
 
@@ -28,10 +37,16 @@ export class PlaceService {
         return await placeRepository.save(newPlace);
 
     }
+    /*
+    * Obtém todos os lugares cadastrados.
+    */
 
     async getPlaces(): Promise<Place[]> {
         return await placeRepository.find();
     }
+    /*
+    * Busca um lugar pelo ID.
+    */
 
     async getPlaceById(id: string): Promise<Place | null> {
         return placeRepository.findOne({
@@ -41,6 +56,9 @@ export class PlaceService {
             }
         }); 
     }
+    /*
+    * Atualiza um lugar existente.
+    */
 
     async putPlace(id: string, placeDTO: PlaceDTO): Promise<Place> {
 
@@ -57,6 +75,9 @@ export class PlaceService {
         return placeRepository.save(place);
 
     }
+    /*
+    * Deleta um lugar existente.
+    */
 
     async deletePlace(id: string): Promise<void> {
 

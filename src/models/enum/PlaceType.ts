@@ -1,3 +1,6 @@
+/*
+    Tipos de lugares a serem registrados.
+*/
 export enum PlaceType {
 
     turistc = "turistc",

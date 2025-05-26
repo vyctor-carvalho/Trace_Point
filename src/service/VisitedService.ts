@@ -8,11 +8,19 @@ import validateRequestBody from "../utils/ValidateRequestBody";
 import existsValidator from "../utils/ExistsValidator";
 import { HttpException } from "../error/HttpException";
 
+/**
+ * Serviço de gerenciamento de visitas.
+ * Responsável por registrar, buscar, atualizar e deletar visitas de usuários a locais.
+ */
+
 export class VisitedService {
 
     private userService = new UserService();
 
     private placeService = new PlaceService();
+     /*
+     * Registra uma visita de um usuário a um local.
+     */
     
     async postVisit(visitedDTO: VisitedDOT): Promise<VisitedPlaces> {
 
@@ -39,10 +47,16 @@ export class VisitedService {
         return await visitedPlacesRepository.save(newVisited);
 
     }
+    /*
+    * Obtém todas as visitas registradas.
+    */
 
     async getVesits(): Promise<VisitedPlaces[]> {
         return await visitedPlacesRepository.find();
     }
+    /*
+    * Busca todas as visitas feitas por um usuário.
+    */
 
     async getVisitByUser(userId: string): Promise<VisitedPlaces[]> {
 
@@ -63,6 +77,9 @@ export class VisitedService {
         })
     
     }
+    /*
+    *  Busca todas as visitas feitas a um local.
+    */
 
     async getVisitByPlace(placeId: string): Promise<VisitedPlaces[]> {
 
@@ -82,7 +99,10 @@ export class VisitedService {
             }
         })
     
-    }
+    } 
+    /*
+    * Atualiza a data de uma visita existente.
+    */
 
     async putVisit(visitedDTO: VisitedDOT): Promise<VisitedPlaces> {
 
@@ -111,6 +131,9 @@ export class VisitedService {
 
         return await visitedPlacesRepository.save(visitedPlaces);
     }
+    /*
+    * Deleta um registro de visita de um usuário a um local.
+    */
 
     async deleteVisit(userId: string, placeId: string): Promise<void> {
 

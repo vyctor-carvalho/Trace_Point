@@ -7,12 +7,25 @@ import { LoginInfoDTO } from "../DTO/wrappersDTO/LoginInfoDTO";
 import { UserService } from "./UserService";
 import { HttpException } from "../error/HttpException";
 
+/**
+ * Serviço de autenticação para usuários.
+ * Gerencia login e renovação de tokens de acesso.
+ */
+
 export class AuthService {
 
 
   private userService = new UserService();
 
   private tokenManager = new TokenManager();
+
+  /**
+     * Autentica um usuário com base no email e senha.
+     * 
+     * @param {LoginInfoDTO} loginDTO - Dados de login contendo email e senha.
+     * @returns {Promise<{ accessToken: string, refreshToken: string, user: any }>} - Tokens de acesso e usuário autenticado.
+     * @throws {HttpException} - Se o email ou senha forem inválidos.
+     */
 
     async authenticate(loginDTO: LoginInfoDTO) {
 
@@ -39,6 +52,14 @@ export class AuthService {
         return { accessToken, refreshToken, user };
 
     }
+
+    /**
+     * Renova o token de acesso com base no token de atualização fornecido.
+     * 
+     * @param {string} refreshToken - Token de atualização do usuário.
+     * @returns {Promise<string>} - Novo token de acesso.
+     * @throws {HttpException} - Se o token de atualização for inválido.
+     */
 
     async refreshAuthenticate(refreshToken: string) {
 

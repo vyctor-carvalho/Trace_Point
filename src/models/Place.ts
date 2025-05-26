@@ -5,6 +5,12 @@ import { PlaceType } from "./enum/PlaceType";
 import { VisitedPlaces } from "./VisitedPlaces";
 import { Event } from "./Event";
 
+/*
+    Entidade Lugares
+    Se relaciona com Eventos,tipos definidos de lugares
+    Define se o local já foi visitado e o seu endereço.
+*/
+
 
 @Entity("place")
 export class Place {

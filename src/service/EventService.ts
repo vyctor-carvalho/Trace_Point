@@ -5,9 +5,14 @@ import { eventRepository } from "../repositories/EventRepository";
 import existsValidator from "../utils/ExistsValidator";
 import validateRequestBody from "../utils/ValidateRequestBody";
 import { HttpException } from "../error/HttpException";
-
+/**
+ * Serviço de gerenciamento de eventos.
+ * Responsável por criar, buscar, atualizar e deletar eventos.
+ */
 export class EventService {
-
+    /*
+    *  Cria um novo evento.
+    */
     private placeService = new PlaceService();
 
     async postEvent(eventDTO: EventDTO): Promise<Event> {
@@ -36,14 +41,22 @@ export class EventService {
         return await eventRepository.save(newEvent);
 
     }
+    /*
+    * Obtém todos os eventos cadastrados.
+    */
 
     async getEvents(): Promise<Event[]> {
         return await eventRepository.find();
     }
-
+    /*
+    * Busca um evento pelo ID.
+    */
     async getEventById(id: string): Promise<Event | null> {
         return await eventRepository.findOneBy({id});
     }
+    /*
+    * Atualiza um evento existente.
+    */
 
     async putEvent(id: string, eventDTO: EventDTO): Promise<Event> {
 
@@ -65,7 +78,9 @@ export class EventService {
         return await eventRepository.save(event);
 
     }
-
+    /*
+    * Deleta um evento com base no ID fornecido.
+    */
     async deleteEvent(id: string): Promise<void> {
 
         const event = await eventRepository.findOneBy({id});

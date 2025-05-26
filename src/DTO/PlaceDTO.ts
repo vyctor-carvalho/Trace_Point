@@ -4,7 +4,10 @@ import { PlaceType } from "../models/enum/PlaceType";
 import { AddressDTO } from "./wrappersDTO/AddressDTO";
 import { Type } from "class-transformer";
 
-
+/*
+    Classe Lugares
+    Retorna a classe de validação AddressDTO (endereço)
+*/
 export class PlaceDTO {
 
     @IsNotEmpty()

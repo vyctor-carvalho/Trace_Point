@@ -1,5 +1,9 @@
 import * as dotenv from "dotenv";
 
+/*
+ * Parametros gerais da aplicação
+*/
+
 dotenv.config();
 
 export const PORT = process.env.SYSTEM_API_PORT || 3000; 

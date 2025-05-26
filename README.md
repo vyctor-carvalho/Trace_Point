@@ -357,8 +357,7 @@ Endpoint público para registro de novos usuários.
     ├── utils/
     │   ├── ExistsValidator.ts
     │   ├── TokenManager.ts
-    │   ├── ValidateRequestBody.ts
-    │   └── index.ts
+    │   └── ValidateRequestBody.ts
     │
     ├── db_config/
     │   └── AppDataSource.ts

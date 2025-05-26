@@ -6,7 +6,7 @@ const authController = new AuthController();
 export const authRoutes = Router();
 
 /**
- * Método POST de login
+ * @method POST de login
  */
 authRoutes.post("/login", async (req: Request, res: Response, next: NextFunction) => {
     console.log("POST in auth/login/");
@@ -14,7 +14,7 @@ authRoutes.post("/login", async (req: Request, res: Response, next: NextFunction
 });
 
 /**
- * Método POST de refresh de token
+ * @method POST de refresh de token
  */
 authRoutes.post("/refresh", async (req: Request, res: Response, next: NextFunction) => {
     console.log("POST in auth/refresh/");

@@ -12,7 +12,7 @@ const eventController = new EventController();
 
 
 /**
- * Método POST de Event
+ * @method POST de Event
  */
 eventRouter.post("/", jwtRequired, allowOrganizer(), async (req: Request, res: Response, next: NextFunction) => {
     console.log("POST in /event/");
@@ -21,7 +21,7 @@ eventRouter.post("/", jwtRequired, allowOrganizer(), async (req: Request, res: R
 
 
 /**
- * Método GET para todos os registros de Event
+ * @method GET para todos os registros de Event
  */
 eventRouter.get("/", jwtRequired, allowAllUsers(), async (req: Request, res: Response) => {
     console.log("GET in /event/");
@@ -30,7 +30,7 @@ eventRouter.get("/", jwtRequired, allowAllUsers(), async (req: Request, res: Res
 
 
 /**
- * Método GET de um Event pelo id
+ * @method GET de um Event pelo id
  */
 eventRouter.get("/:id", validateId("id"), jwtRequired, allowAllUsers(), async (req: Request, res: Response, next: NextFunction) => {
     console.log("GET in /event/:id");
@@ -39,7 +39,7 @@ eventRouter.get("/:id", validateId("id"), jwtRequired, allowAllUsers(), async (r
 
 
 /**
- * Método PUT de Event
+ * @method PUT de Event
  */
 eventRouter.put("/:id", validateId("id"), jwtRequired, allowOrganizer(), async (req: Request, res: Response, next: NextFunction) => {
     console.log("PUT in /event/:id");
@@ -48,7 +48,7 @@ eventRouter.put("/:id", validateId("id"), jwtRequired, allowOrganizer(), async (
 
 
 /**
- * Método DELETE de Event
+ * @method DELETE de Event
  */
 eventRouter.delete("/:id", validateId("id"), jwtRequired, allowOrganizer(), async (req: Request, res: Response, next: NextFunction) => {
     console.log("DELETE in /event/:id");

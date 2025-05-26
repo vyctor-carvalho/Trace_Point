@@ -11,7 +11,7 @@ const visitedController = new VisitedController();
 
 
 /**
- * Método POST de Visited
+ * @method POST de Visited
  */
 visitedRoutes.post("/", jwtRequired, allowAllUsers(), async (req: Request, res: Response, next: NextFunction) => {
     console.log("POST in /visited/");
@@ -20,7 +20,7 @@ visitedRoutes.post("/", jwtRequired, allowAllUsers(), async (req: Request, res: 
 
 
 /**
- * Método GET para todas os registros de Visited
+ * @method GET para todas os registros de Visited
  */
 visitedRoutes.get("/", jwtRequired, allowAllUsers(), async (req: Request, res: Response, next: NextFunction) => {
     console.log("GET in /visited/");
@@ -29,7 +29,7 @@ visitedRoutes.get("/", jwtRequired, allowAllUsers(), async (req: Request, res: R
 
 
 /**
- * Método GET por userId
+ * @method GET por userId
  */
 visitedRoutes.get("/user/:userId", validateId("userId"), jwtRequired, allowAllUsers(), async (req: Request, res: Response, next: NextFunction) => {
     console.log("GET in /visited/user/:userId");
@@ -38,7 +38,7 @@ visitedRoutes.get("/user/:userId", validateId("userId"), jwtRequired, allowAllUs
 
 
 /**
- * Método GET por placeId
+ * @method GET por placeId
  */
 visitedRoutes.get("/place/:placeId", validateId("placeId"), jwtRequired, allowAllUsers(), async (req: Request, res: Response, next: NextFunction) => {
     console.log("GET in /visited/place/:placeId");
@@ -47,7 +47,7 @@ visitedRoutes.get("/place/:placeId", validateId("placeId"), jwtRequired, allowAl
 
 
 /**
- * Método PUT de Visited
+ * @method PUT de Visited
  */
 visitedRoutes.put("/", jwtRequired, allowAllUsers(), async (req: Request, res: Response, next: NextFunction) => {
     console.log("PUT in /visited/");
@@ -56,7 +56,7 @@ visitedRoutes.put("/", jwtRequired, allowAllUsers(), async (req: Request, res: R
 
 
 /**
- * Método DELETE de Visited
+ * @method DELETE de Visited
  */
 visitedRoutes.delete("/", jwtRequired, allowOrganizer(), async (req: Request, res: Response, next: NextFunction) => {
     console.log("DELETE in /visited/");

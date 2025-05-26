@@ -1,5 +1,11 @@
 import * as dotenv from "dotenv";
 
+/**
+ * @file EsportEnv.ts
+ * @description Carrega e exporta as variáveis de ambiente da aplicação.
+ * Utiliza o pacote `dotenv` para carregar variáveis de um arquivo `.env` para `process.env`.
+ * Fornece valores padrão (fallbacks) caso as variáveis de ambiente não estejam definidas.
+ */
 dotenv.config();
 
 export const PORT = process.env.SYSTEM_API_PORT || 3000; 

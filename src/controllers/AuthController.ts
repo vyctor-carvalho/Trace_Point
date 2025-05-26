@@ -1,25 +1,29 @@
 import { NextFunction, Request, Response } from "express";
 import { plainToInstance } from "class-transformer";
-
 import { LoginInfoDTO } from "../DTO/wrappersDTO/LoginInfoDTO";
 import { AuthService } from "../service/AuthService"
 import { HttpException } from "../error/HttpException";
 import existsValidator from "../utils/ExistsValidator";
 
+/**
+ * @class AuthController
+ * @description Controller responsável por lidar com requisições de autenticação, como login e refresh de token.
+ */
 export class AuthController {
 
     private authService = new AuthService();
 
     /**
+     * @method login
      * Realiza o login de um usuário.
      * Recebe credenciais de login (email e senha) no corpo da requisição,
      * autentica o usuário e retorna tokens de acesso e atualização,
      * juntamente com informações básicas do usuário.
      *
-     * @param req - O objeto de requisição do Express, contendo o LoginInfoDTO no corpo.
-     * @param res - O objeto de resposta do Express.
-     * @param next - A função de middleware next do Express.
-     * @returns Uma Promise que resolve com a resposta JSON contendo os tokens e dados do usuário,
+     * @param {Request} req - O objeto de requisição do Express, contendo o LoginInfoDTO no corpo.
+     * @param {Response} res - O objeto de resposta do Express.
+     * @param {NextFunction} next - A função de middleware next do Express.
+     * @returns {Promise<Response>} Uma Promise que resolve com a resposta JSON contendo os tokens e dados do usuário,
      * ou chama `next` com um erro em caso de falha.
      */
     async login(req: Request, res: Response, next: NextFunction) {
@@ -44,14 +48,15 @@ export class AuthController {
     }       
 
     /**
+     * @method refreshToken
      * Atualiza o token de acesso de um usuário utilizando um refresh token.
      * Recebe um refresh token no corpo da requisição e, se válido,
      * retorna um novo token de acesso.
      *
-     * @param req - O objeto de requisição do Express, contendo o refreshToken no corpo.
-     * @param res - O objeto de resposta do Express.
-     * @param next - A função de middleware next do Express.
-     * @returns Uma Promise que resolve com a resposta JSON contendo o novo accessToken,
+     * @param {Request} req - O objeto de requisição do Express, contendo o refreshToken no corpo.
+     * @param {Response} res - O objeto de resposta do Express.
+     * @param {NextFunction} next - A função de middleware next do Express.
+     * @returns {Promise<Response>} Uma Promise que resolve com a resposta JSON contendo o novo accessToken,
      * ou chama `next` com um erro em caso de falha ou token inválido.
      */
     async refreshToken(req: Request, res: Response, next: NextFunction) {
@@ -65,7 +70,5 @@ export class AuthController {
         } catch (error) {
             next(error);
         }
-
     }
-
 }

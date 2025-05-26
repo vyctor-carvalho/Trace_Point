@@ -10,7 +10,7 @@ export const placeRouter = Router();
 const placeController = new PlaceController();
 
 /**
- * Método POST de Place
+ * @method POST de Place
  */
 placeRouter.post("/", jwtRequired, allowOrganizer(), async (req: Request, res: Response, next: NextFunction) => {
     console.log("POST in /place/");
@@ -19,7 +19,7 @@ placeRouter.post("/", jwtRequired, allowOrganizer(), async (req: Request, res: R
 
 
 /**
- * Método GET de Place
+ * @method GET de Place
  */
 placeRouter.get("/", jwtRequired, allowAllUsers(), async (req: Request, res: Response, next: NextFunction) => {
     console.log("GET in /place/");
@@ -28,7 +28,7 @@ placeRouter.get("/", jwtRequired, allowAllUsers(), async (req: Request, res: Res
 
 
 /**
- * Método GET de um Place pelo id
+ * @method GET de um Place pelo id
  */
 placeRouter.get("/:id", validateId("id"), jwtRequired, allowAllUsers(), async (req: Request, res: Response, next: NextFunction) => {
     console.log("GET in /place/:id");
@@ -37,7 +37,7 @@ placeRouter.get("/:id", validateId("id"), jwtRequired, allowAllUsers(), async (r
 
 
 /**
- * Método PUT de Place
+ * @method PUT de Place
  */
 placeRouter.put("/:id", validateId("id"), jwtRequired, allowOrganizer(), async (req: Request, res: Response, next: NextFunction) => {
     console.log("PUT in /place/:id");
@@ -46,7 +46,7 @@ placeRouter.put("/:id", validateId("id"), jwtRequired, allowOrganizer(), async (
 
 
 /**
- * Método DELETE de Place
+ * @method DELETE de Place
  */
 placeRouter.delete("/:id", validateId("id"), jwtRequired, onlyAdmin(), async (req: Request, res: Response, next: NextFunction) => {
     console.log("DELETE in /place/:id");

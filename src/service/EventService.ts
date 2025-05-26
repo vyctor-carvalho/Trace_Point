@@ -6,8 +6,12 @@ import existsValidator from "../utils/ExistsValidator";
 import validateRequestBody from "../utils/ValidateRequestBody";
 import { HttpException } from "../error/HttpException";
 
+/**
+ * Serviço de gerenciamento de eventos.
+ * Responsável por criar, buscar, atualizar e deletar eventos.
+ */
 export class EventService {
-
+    
     private placeService = new PlaceService();
 
     /**
@@ -40,7 +44,7 @@ export class EventService {
         const newEvent = eventRepository.create({
             title: eventDTO.title,
             eventDate: eventDTO.eventDate,
-            descriptin: eventDTO.description,
+            description: eventDTO.description,
             place: place,
         });
 
@@ -92,12 +96,12 @@ export class EventService {
         event.title = eventDTO.title;
         event.eventDate = eventDTO.eventDate;
         event.place = place;
-        event.descriptin = eventDTO.description;
+        event.description = eventDTO.description;
 
         return await eventRepository.save(event);
 
     }
-
+    
     /**
      * Deleta um evento específico pelo seu ID.
      * Verifica se o evento existe antes de tentar deletá-lo.

@@ -11,7 +11,7 @@ export const userRouter = Router();
 
 
 /**
- * Métodos POST de User
+ * @method POST de User
  */
 userRouter.post("/register", async (req: Request, res: Response, next: NextFunction) => {
     console.log("POST in /user/register");
@@ -20,7 +20,7 @@ userRouter.post("/register", async (req: Request, res: Response, next: NextFunct
 
 
 /**
- * Métodos POST de Booking pro um userId e um eventId
+ * @method POST de Booking pro um userId e um eventId
  */
 userRouter.post("/booking", jwtRequired, allowAllUsers(), async (req: Request, res: Response, next: NextFunction) => {
     console.log("POST in /user/booking");
@@ -29,7 +29,7 @@ userRouter.post("/booking", jwtRequired, allowAllUsers(), async (req: Request, r
 
 
 /**
- * Métodos GET de Users
+ * @method GET de Users
  */
 userRouter.get("/",jwtRequired, onlyAdmin(), async (req: Request, res: Response) => {
     console.log("GET in /user/");
@@ -38,7 +38,7 @@ userRouter.get("/",jwtRequired, onlyAdmin(), async (req: Request, res: Response)
 
 
 /**
- * Métodos GET de User pelo id
+ * @method GET de User pelo id
  */
 userRouter.get("/:id", validateId("id"), jwtRequired, onlyAdmin(), (req: Request, res: Response, next: NextFunction) => {
     console.log("GET in /user/:id");
@@ -47,7 +47,7 @@ userRouter.get("/:id", validateId("id"), jwtRequired, onlyAdmin(), (req: Request
 
 
 /**
- * Métodos PUT de User
+ * @method PUT de User
  */
 userRouter.put("/:id", validateId("id"), jwtRequired, (req: Request, res: Response, next: NextFunction) => {
     console.log("PUT in /user/:id");
@@ -56,7 +56,7 @@ userRouter.put("/:id", validateId("id"), jwtRequired, (req: Request, res: Respon
 
 
 /**
- * Métodos DELETE de User
+ * @method DELETE de User
  */
 userRouter.delete("/:id", validateId("id"), jwtRequired, onlyAdmin(), (req:Request, res: Response, next: NextFunction) => {
     console.log("DELETE in /user/:id");

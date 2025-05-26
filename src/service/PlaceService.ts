@@ -26,7 +26,7 @@ export class PlaceService {
             name: placeDTO.name,
             type: placeDTO.type,
             address: {
-                postalColde: placeDTO.getPostalCode(),
+                postalCode: placeDTO.getPostalCode(),
                 numberHouse: placeDTO.getNumberHouse(),
                 street: placeDTO.getStreet(),
                 complement: placeDTO.getComplement()

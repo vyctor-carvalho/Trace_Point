@@ -7,6 +7,10 @@ import { LoginInfoDTO } from "../DTO/wrappersDTO/LoginInfoDTO";
 import { UserService } from "./UserService";
 import { HttpException } from "../error/HttpException";
 
+/**
+ * Serviço de autenticação para usuários.
+ * Gerencia login e renovação de tokens de acesso.
+ */
 export class AuthService {
 
     private userService = new UserService();
@@ -43,7 +47,7 @@ export class AuthService {
             role: user.role
         }
 
-        const accessToken = this.tokenManager.geneareAccessToken(payload);
+        const accessToken = this.tokenManager.generateAccessToken(payload);
 
         const refreshToken = this.tokenManager.generateRefreshToken(payload);
 
@@ -72,7 +76,7 @@ export class AuthService {
             role: decoded.role,
         }
 
-        return this.tokenManager.geneareAccessToken(payload);
+        return this.tokenManager.generateAccessToken(payload);
 
     }
 

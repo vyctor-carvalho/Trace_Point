@@ -1,5 +1,5 @@
 
-import { VisitedDOT } from "../DTO/VisitedDTO";
+import { VisitedDTO } from "../DTO/VisitedDTO";
 import { UserService } from "../service/UserService";
 import { PlaceService } from "../service/PlaceService";
 import { VisitedPlaces } from "../models/VisitedPlaces";
@@ -8,12 +8,16 @@ import validateRequestBody from "../utils/ValidateRequestBody";
 import existsValidator from "../utils/ExistsValidator";
 import { HttpException } from "../error/HttpException";
 
+/**
+ * Serviço de gerenciamento de visitas.
+ * Responsável por registrar, buscar, atualizar e deletar visitas de usuários a locais.
+ */
 export class VisitedService {
 
     private userService = new UserService();
 
     private placeService = new PlaceService();
-    
+
     /**
      * Registra uma nova visita a um local por um usuário.
      * Valida o DTO da visita, busca o usuário e o local,
@@ -25,7 +29,7 @@ export class VisitedService {
      * se o usuário (via `userService.getUserById`) ou o local (via `placeService.getPlaceById` e `existsValidator`) não existirem,
      * ou se a data da visita for no futuro.
      */
-    async postVisit(visitedDTO: VisitedDOT): Promise<VisitedPlaces> {
+    async postVisit(visitedDTO: VisitedDTO): Promise<VisitedPlaces> {
 
         await validateRequestBody(visitedDTO);
 
@@ -124,7 +128,7 @@ export class VisitedService {
      * ou se o usuário (via `userService.getUserById`), o local (via `placeService.getPlaceById` e `existsValidator`),
      * ou o registro da visita a ser atualizado (via `existsValidator`) não existirem.
      */
-    async putVisit(visitedDTO: VisitedDOT): Promise<VisitedPlaces> {
+    async putVisit(visitedDTO: VisitedDTO): Promise<VisitedPlaces> {
 
         await validateRequestBody(visitedDTO);
 

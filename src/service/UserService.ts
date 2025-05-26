@@ -9,7 +9,12 @@ import validateRequestBody from "../utils/ValidateRequestBody";
 import existsValidator from "../utils/ExistsValidator";
 import { HttpException } from "../error/HttpException";
 
+/*
+ * Serviço de gerenciamento de usuários.
+ * Responsável por criar, buscar, reservar (eventos) e deletar usuários.
+ */
 export class UserService {
+
 
     private eventService = new EventService();
 

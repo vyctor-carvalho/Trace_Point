@@ -67,7 +67,7 @@ docker-compose up --build
 
 ### 4. Acessar o banco de dados via pgAdmin
 
-Abra o **pgAdmin** em: `http://localhost:5050` (ou o endereço configurado)
+Abra o **pgAdmin** em: `http://localhost:8080`
 
 Na interface do pgAdmin, adicione uma nova conexão com os seguintes dados:
 
@@ -121,9 +121,22 @@ npm run dev
 
 ---
 
+## Níveis de Acesso
+
+A API utiliza três níveis de acesso para proteger suas rotas:
+
+* **Visitor**: Usuário autenticado com permissões básicas, como visualizar eventos, locais e agendar visitas.
+* **Organizer**: Usuário autenticado com permissões de Visitor, além da capacidade de criar e gerenciar eventos e locais que criou.
+* **Admin**: Usuário autenticado com acesso total a todas as funcionalidades da API, incluindo gerenciamento de usuários.
+* **Público**: Rotas que não exigem autenticação.
+
+As rotas protegidas por JWT exigem um token de acesso válido no cabeçalho `Authorization` (ex: `Bearer seu_token_jwt`).
+
+---
+
 ## Criação de Usuários
 
-### Admin (via SQL):
+### Admin (somante via SQL):
 
 ```sql
 INSERT INTO "user" (
@@ -131,17 +144,16 @@ INSERT INTO "user" (
 ) VALUES (
   '9dfce170-5094-436f-9413-f5afc769a75e',
   'Admin User',
-  'https://example.com/avatar.png',
+  '[https://example.com/avatar.png](https://example.com/avatar.png)',
   'admin',
   'admin@example.com',
-  '$2b$10$yG9D2ihkLL6hTh5KCw/l5.BqAqJ3i49GIvksxCBStGSMEJtTHS2ey'
+  '$2b$10$yG9D2ihkLL6hTh5KCw/l5.BqAqJ3i49GIvksxCBStGSMEJtTHS2ey' -- Senha: admin123
 );
 ```
 
-Senha: `admin123`
-
 ### Visitor ou Organizer (POST `/user/register`):
 
+Endpoint público para registro de novos usuários.
 ```json
 {
   "name": "Nome do usuário",
@@ -156,35 +168,63 @@ Senha: `admin123`
 
 ---
 
-## Autenticação
+## Rotas da API
 
-### Login
+### Autenticação (`/auth`)
 
-`POST /auth/login`
+| Método | Rota             | Proteção JWT | Nível de Acesso | Descrição                     |
+| :----- | :--------------- | :----------- | :-------------- | :------------------------------ |
+| `POST` | `/auth/login`    | Não          | Público         | Realiza o login do usuário.     |
+| `POST` | `/auth/refresh`  | Não          | Público         | Atualiza o token de acesso.   |
 
-```json
-{
-  "email": "admin@example.com",
-  "password": "admin123"
-}
-```
+### Usuários (`/user`)
 
-### Refresh Token
+| Método | Rota                | Proteção JWT | Nível de Acesso        | Descrição                                                                |
+| :----- | :------------------ | :----------- | :--------------------- | :----------------------------------------------------------------------- |
+| `POST` | `/user/register`    | Não          | Público                | Registra um novo usuário (visitor ou organizer).                          |
+| `POST` | `/user/booking`     | Sim          | Visitor, Organizer, Admin | Agenda uma visita a um evento para um usuário.                             |
+| `GET`  | `/user/`            | Sim          | Admin                  | Lista todos os usuários.                                                 |
+| `GET`  | `/user/:id`         | Sim          | Admin                  | Busca um usuário específico pelo ID.                                      |
+| `PUT`  | `/user/:id`         | Sim          | Visitor, Organizer, Admin | Atualiza dados de um usuário (usuário atualiza o próprio, admin qualquer). |
+| `DELETE`| `/user/:id`        | Sim          | Admin                  | Deleta um usuário específico pelo ID.                                     |
 
-`POST /auth/refresh`
+### Locais (`/place`)
 
-```json
-{
-  "refreshToken": "token_aqui"
-}
-```
+| Método | Rota             | Proteção JWT | Nível de Acesso        | Descrição                               |
+| :----- | :--------------- | :----------- | :--------------------- | :---------------------------------------- |
+| `POST` | `/place/`        | Sim          | Organizer, Admin       | Cria um novo local.                       |
+| `GET`  | `/place/`        | Sim          | Visitor, Organizer, Admin | Lista todos os locais.                    |
+| `GET`  | `/place/:id`     | Sim          | Visitor, Organizer, Admin | Busca um local específico pelo ID.        |
+| `PUT`  | `/place/:id`     | Sim          | Organizer, Admin       | Atualiza um local específico pelo ID.   |
+| `DELETE`| `/place/:id`    | Sim          | Admin                  | Deleta um local específico pelo ID.     |
+
+### Eventos (`/event`)
+
+| Método | Rota             | Proteção JWT | Nível de Acesso        | Descrição                               |
+| :----- | :--------------- | :----------- | :--------------------- | :---------------------------------------- |
+| `POST` | `/event/`        | Sim          | Organizer, Admin       | Cria um novo evento.                      |
+| `GET`  | `/event/`        | Sim          | Visitor, Organizer, Admin | Lista todos os eventos.                   |
+| `GET`  | `/event/:id`     | Sim          | Visitor, Organizer, Admin | Busca um evento específico pelo ID.       |
+| `PUT`  | `/event/:id`     | Sim          | Organizer, Admin       | Atualiza um evento específico pelo ID.  |
+| `DELETE`| `/event/:id`    | Sim          | Organizer, Admin       | Deleta um evento específico pelo ID.    |
+
+### Visitas Realizadas (`/visited`)
+
+| Método | Rota                     | Proteção JWT | Nível de Acesso        | Descrição                                                               |
+| :----- | :----------------------- | :----------- | :--------------------- | :---------------------------------------------------------------------- |
+| `POST` | `/visited/`              | Sim          | Visitor, Organizer, Admin | Registra uma visita a um local.                                          |
+| `GET`  | `/visited/`              | Sim          | Visitor, Organizer, Admin | Lista todos os registros de visitas (admins veem todos, outros os seus). |
+| `GET`  | `/visited/user/:userId`  | Sim          | Visitor, Organizer, Admin | Lista visitas por ID de usuário (usuário vê o seu, admin/organizer mais). |
+| `GET`  | `/visited/place/:placeId`| Sim          | Visitor, Organizer, Admin | Lista visitas por ID de local.                                           |
+| `PUT`  | `/visited/`              | Sim          | Visitor, Organizer, Admin | Atualiza um registro de visita.                                          |
+| `DELETE`| `/visited/`             | Sim          | Organizer, Admin       | Deleta um registro de visita (identificado via body: userId, placeId).   |
 
 ---
 
-## Endpoints principais
+## Exemplos de Requisições (Corpo)
 
-### Criar local (`/place`)
-
+### Criar local (`POST /place`)
+*Acesso: Organizer, Admin*
 ```json
 {
   "name": "Estação das Docas",
@@ -198,8 +238,8 @@ Senha: `admin123`
 }
 ```
 
-### Criar evento (`/event`)
-
+### Criar evento (`POST /event`)
+*Acesso: Organizer, Admin*
 ```json
 {
   "title": "Tour COP-30",
@@ -209,8 +249,8 @@ Senha: `admin123`
 }
 ```
 
-### Agendar visita (`/user/booking`)
-
+### Agendar visita (`POST /user/booking`)
+*Acesso: Visitor, Organizer, Admin*
 ```json
 {
   "eventId": "UUID-event",
@@ -218,8 +258,8 @@ Senha: `admin123`
 }
 ```
 
-### Marcar visita como feita (`/visited`)
-
+### Marcar visita como feita (`POST /visited`)
+*Acesso: Visitor, Organizer, Admin*
 ```json
 {
   "userId": "UUID-user",

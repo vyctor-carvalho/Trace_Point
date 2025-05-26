@@ -8,6 +8,16 @@ export class EventController {
 
     private eventService = new EventService();
 
+    /**
+     * Cria um novo evento.
+     * Recebe os dados do evento (EventDTO) no corpo da requisição.
+     *
+     * @param req - O objeto de requisição do Express, contendo o EventDTO no corpo.
+     * @param res - O objeto de resposta do Express.
+     * @param next - A função de middleware next do Express.
+     * @returns Uma Promise que resolve com a resposta JSON contendo o evento criado e uma mensagem de sucesso,
+     * ou chama `next` com um erro em caso de falha.
+     */
     async createEvent(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
         try {
             const eventDTO = plainToInstance(EventDTO, req.body);
@@ -24,6 +34,14 @@ export class EventController {
         }
     }
 
+    /**
+     * Busca todos os eventos cadastrados.
+     *
+     * @param req - O objeto de requisição do Express.
+     * @param res - O objeto de resposta do Express.
+     * @returns Uma Promise que resolve com a resposta JSON contendo a lista de eventos
+     * ou uma mensagem caso nenhum evento seja encontrado.
+     */
     async findAllEvent(req: Request, res: Response): Promise<Response> {
 
         const events = await this.eventService.getEvents();
@@ -38,6 +56,16 @@ export class EventController {
 
     }
 
+    /**
+     * Busca um evento específico pelo seu ID.
+     * O ID do evento é passado como parâmetro na URL.
+     *
+     * @param req - O objeto de requisição do Express, contendo o ID do evento nos parâmetros da rota.
+     * @param res - O objeto de resposta do Express.
+     * @param next - A função de middleware next do Express.
+     * @returns Uma Promise que resolve com a resposta JSON contendo o evento encontrado,
+     * ou uma resposta 404 se não encontrado, ou chama `next` com um erro.
+     */
     async findEventByI(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
         try {
             const eventId = req.params.id;
@@ -57,6 +85,17 @@ export class EventController {
         }
     }
 
+    /**
+     * Atualiza um evento existente.
+     * O ID do evento a ser atualizado é passado como parâmetro na URL,
+     * e os novos dados do evento (EventDTO) são enviados no corpo da requisição.
+     *
+     * @param req - O objeto de requisição do Express, contendo o ID do evento nos parâmetros e EventDTO no corpo.
+     * @param res - O objeto de resposta do Express.
+     * @param next - A função de middleware next do Express.
+     * @returns Uma Promise que resolve com a resposta JSON contendo o evento atualizado e uma mensagem de sucesso,
+     * ou chama `next` com um erro em caso de falha (ex: evento não encontrado).
+     */
     async updateEvent(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
         try {
             const eventId = req.params.id;
@@ -75,6 +114,16 @@ export class EventController {
         }
     }
 
+    /**
+     * Deleta um evento existente.
+     * O ID do evento a ser deletado é passado como parâmetro na URL.
+     *
+     * @param req - O objeto de requisição do Express, contendo o ID do evento nos parâmetros da rota.
+     * @param res - O objeto de resposta do Express.
+     * @param next - A função de middleware next do Express.
+     * @returns Uma Promise que resolve com uma resposta JSON indicando sucesso na deleção,
+     * ou chama `next` com um erro em caso de falha (ex: evento não encontrado).
+     */
     async deleteEvent(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
         try {
             const eventId = req.params.id;

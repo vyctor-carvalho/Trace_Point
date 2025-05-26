@@ -10,6 +10,16 @@ export class UserController {
 
     private userService = new UserService();
 
+    /**
+     * Registra um novo usuário.
+     * Recebe os dados do usuário (UserDTO) no corpo da requisição.
+     *
+     * @param req - O objeto de requisição do Express, contendo o UserDTO no corpo.
+     * @param res - O objeto de resposta do Express.
+     * @param next - A função de middleware next do Express.
+     * @returns Uma Promise que resolve com a resposta JSON contendo o usuário registrado e uma mensagem de sucesso,
+     * ou chama `next` com um erro em caso de falha.
+     */
     async registerUser(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
         try {
             const userDTO = plainToInstance(UserDTO, req.body);
@@ -26,6 +36,16 @@ export class UserController {
         }
     }
 
+    /**
+     * Realiza o agendamento de um usuário para um evento.
+     * Recebe os dados de agendamento (BookingDTO - userId e eventId) no corpo da requisição.
+     *
+     * @param req - O objeto de requisição do Express, contendo o BookingDTO no corpo.
+     * @param res - O objeto de resposta do Express.
+     * @param next - A função de middleware next do Express.
+     * @returns Uma Promise que resolve com a resposta JSON contendo o agendamento realizado e uma mensagem de sucesso,
+     * ou chama `next` com um erro em caso de falha.
+     */
     async eventBooking(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
         try {
             const bookingDTO = plainToInstance(BookingDTO, req.body);
@@ -42,6 +62,15 @@ export class UserController {
         }
     }
 
+    /**
+     * Busca todos os usuários cadastrados.
+     * (Normalmente uma rota protegida para administradores)
+     *
+     * @param req - O objeto de requisição do Express.
+     * @param res - O objeto de resposta do Express.
+     * @returns Uma Promise que resolve com a resposta JSON contendo a lista de usuários
+     * ou uma mensagem caso nenhum usuário seja encontrado.
+     */
     async findAllUsers(req: Request, res: Response): Promise<Response> {
 
         const users = await this.userService.getUsers();
@@ -56,6 +85,17 @@ export class UserController {
 
     }
 
+    /**
+     * Busca um usuário específico pelo seu ID.
+     * O ID do usuário é passado como parâmetro na URL.
+     * (Normalmente uma rota protegida para administradores ou para o próprio usuário)
+     *
+     * @param req - O objeto de requisição do Express, contendo o ID do usuário nos parâmetros da rota.
+     * @param res - O objeto de resposta do Express.
+     * @param next - A função de middleware next do Express.
+     * @returns Uma Promise que resolve com a resposta JSON contendo o usuário encontrado,
+     * ou chama `next` com um erro (ex: usuário não encontrado, tratado pelo service/error handler).
+     */
     async findUserById(req: Request, res: Response, next: NextFunction) {
         try {
             const userId = req.params.id;
@@ -69,6 +109,17 @@ export class UserController {
         }
     }
 
+    /**
+     * Atualiza um usuário existente.
+     * O ID do usuário a ser atualizado é passado como parâmetro na URL,
+     * e os novos dados do usuário (UserDTO) são enviados no corpo da requisição.
+     *
+     * @param req - O objeto de requisição do Express, contendo o ID do usuário nos parâmetros e UserDTO no corpo.
+     * @param res - O objeto de resposta do Express.
+     * @param next - A função de middleware next do Express.
+     * @returns Uma Promise que resolve com a resposta JSON contendo o usuário atualizado e uma mensagem de sucesso,
+     * ou chama `next` com um erro em caso de falha (ex: usuário não encontrado).
+     */
     async updateUser(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
         try {
             const userId = req.params.id;
@@ -87,6 +138,17 @@ export class UserController {
         }
     }
 
+    /**
+     * Deleta um usuário existente.
+     * O ID do usuário a ser deletado é passado como parâmetro na URL.
+     * (Normalmente uma rota protegida para administradores)
+     *
+     * @param req - O objeto de requisição do Express, contendo o ID do usuário nos parâmetros da rota.
+     * @param res - O objeto de resposta do Express.
+     * @param next - A função de middleware next do Express.
+     * @returns Uma Promise que resolve com uma resposta JSON indicando sucesso na deleção,
+     * ou chama `next` com um erro em caso de falha (ex: usuário não encontrado).
+     */
     async deleteUser(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
         try {
             const id = req.params.id;

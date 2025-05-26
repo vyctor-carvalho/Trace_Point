@@ -10,6 +10,17 @@ export class EventService {
 
     private placeService = new PlaceService();
 
+    /**
+     * Cria um novo evento.
+     * Valida o DTO do evento, verifica se a data do evento não é no passado,
+     * busca o local associado e verifica se o local já não possui um evento.
+     *
+     * @param eventDTO - O Data Transfer Object contendo os dados do evento.
+     * @returns Uma Promise que resolve para a entidade Event recém-criada e salva.
+     * @throws HttpException Se a validação dos dados de entrada falhar (via `validateRequestBody`),
+     * se a data do evento for no passado, se o local associado não for encontrado (via `existsValidator` no `placeService.getPlaceById` ou aqui),
+     * ou se o local já possuir um evento.
+     */
     async postEvent(eventDTO: EventDTO): Promise<Event> {
 
         await validateRequestBody(eventDTO);
@@ -37,14 +48,35 @@ export class EventService {
 
     }
 
+    /**
+     * Retorna uma lista de todos os eventos cadastrados.
+     *
+     * @returns Uma Promise que resolve para um array de entidades Event.
+     */
     async getEvents(): Promise<Event[]> {
         return await eventRepository.find();
     }
 
+    /**
+     * Busca um evento específico pelo seu ID.
+     *
+     * @param id - O ID (UUID) do evento a ser buscado.
+     * @returns Uma Promise que resolve para a entidade Event encontrada ou null se não existir.
+     */
     async getEventById(id: string): Promise<Event | null> {
         return await eventRepository.findOneBy({id});
     }
 
+    /**
+     * Atualiza um evento existente.
+     * Valida o DTO do evento, busca o local e o evento a serem atualizados.
+     *
+     * @param id - O ID (UUID) do evento a ser atualizado.
+     * @param eventDTO - O Data Transfer Object contendo os novos dados do evento.
+     * @returns Uma Promise que resolve para a entidade Event atualizada e salva.
+     * @throws HttpException Se a validação dos dados de entrada falhar (via `validateRequestBody`),
+     * ou se o local ou o evento não forem encontrados (via `existsValidator` no `placeService.getPlaceById` ou para o próprio evento).
+     */
     async putEvent(id: string, eventDTO: EventDTO): Promise<Event> {
 
         await validateRequestBody(eventDTO);
@@ -66,6 +98,14 @@ export class EventService {
 
     }
 
+    /**
+     * Deleta um evento específico pelo seu ID.
+     * Verifica se o evento existe antes de tentar deletá-lo.
+     *
+     * @param id - O ID (UUID) do evento a ser deletado.
+     * @returns Uma Promise que resolve quando a operação de deleção é concluída.
+     * @throws HttpException Se o evento não for encontrado (via `existsValidator`).
+     */
     async deleteEvent(id: string): Promise<void> {
 
         const event = await eventRepository.findOneBy({id});

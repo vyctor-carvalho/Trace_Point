@@ -9,11 +9,22 @@ import { HttpException } from "../error/HttpException";
 
 export class AuthService {
 
+    private userService = new UserService();
 
-  private userService = new UserService();
+    private tokenManager = new TokenManager();
 
-  private tokenManager = new TokenManager();
-
+    /**
+   * Autentica um usuário com base nas credenciais fornecidas.
+   * Valida o corpo da requisição, busca o usuário pelo email,
+   * compara a senha fornecida com a senha armazenada (hash) e,
+   * se bem-sucedido, gera tokens de acesso e atualização.
+   *
+   * @param loginDTO - O Data Transfer Object contendo email e senha do usuário.
+   * @returns Uma Promise que resolve para um objeto contendo o accessToken, refreshToken e os dados do usuário.
+   * @throws HttpException Se a validação do DTO de login falhar (via `validateRequestBody`),
+   * se o usuário não for encontrado (via `existsValidator` chamado internamente por `userService.getUserByEmail` ou aqui),
+   * ou se a senha for inválida.
+   */
     async authenticate(loginDTO: LoginInfoDTO) {
 
         await validateRequestBody(loginDTO);
@@ -40,7 +51,18 @@ export class AuthService {
 
     }
 
+   /**
+   * Gera um novo token de acesso utilizando um refresh token válido.
+   * Valida a existência do refresh token, verifica sua validade e,
+   * se bem-sucedido, gera um novo token de acesso com base nos dados do refresh token.
+   *
+   * @param refreshToken - O refresh token string fornecido pelo cliente.
+   * @returns Uma Promise que resolve para o novo accessToken.
+   * @throws HttpException Se o refresh token não for fornecido (via `existsValidator`) ou for inválido (verificado por `tokenManager`).
+   */
     async refreshAuthenticate(refreshToken: string) {
+
+        existsValidator(refreshToken, "Refresh token", "is required");
 
         const decoded = this.tokenManager.verifyRefreshToken(refreshToken);
         

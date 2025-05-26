@@ -4,7 +4,6 @@ import { plainToInstance } from "class-transformer";
 import { UserService } from "../service/UserService";
 import { UserDTO } from "../DTO/UserDTO";
 import { BookingDTO } from "../DTO/BookingDTO";
-import existsValidator from "../utils/ExistsValidator";
 
 /**
  * @class UserController

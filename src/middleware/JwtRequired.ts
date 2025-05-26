@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import {  } from "jsonwebtoken";
 
-import { JWT_SECRET } from "../config/EsportEnv";
 import { HttpException } from "../error/HttpException";
 import { TokenManager } from "../utils/TokenManager";
 

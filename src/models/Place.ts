@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn, JoinColumn } from "typeorm"; // Adicionado JoinColumn
+import { Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm"; // Adicionado JoinColumn
 
 import { Address } from "./wrappers/Address"; // Verifique o caminho
 import { PlaceType } from "./enum/PlaceType"; // Verifique o caminho

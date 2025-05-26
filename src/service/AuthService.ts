@@ -1,4 +1,4 @@
-import { compare, hash } from "bcrypt";
+import { compare } from "bcrypt";
 
 import { TokenManager } from "../utils/TokenManager";
 import existsValidator from "../utils/ExistsValidator";

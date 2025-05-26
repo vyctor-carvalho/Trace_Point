@@ -2,8 +2,6 @@ import { NextFunction, Request, Response } from "express";
 import { plainToInstance } from "class-transformer";
 import { LoginInfoDTO } from "../DTO/wrappersDTO/LoginInfoDTO";
 import { AuthService } from "../service/AuthService"
-import { HttpException } from "../error/HttpException";
-import existsValidator from "../utils/ExistsValidator";
 
 /**
  * @class AuthController

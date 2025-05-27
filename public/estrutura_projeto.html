@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estrutura do Projeto & DER - Trace Point API</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo"><h1>Trace Point API</h1></div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Visão Geral</a></li>
+                <li><a href="instalacao.html">Instalação</a></li>
+                <li><a href="autenticacao_usuarios.html">Usuários & Acesso</a></li>
+                <li><a href="api_referencia.html">API Referência</a></li>
+                <li><a href="estrutura_projeto.html" class="active">Projeto & DER</a></li>
+            </ul>
+        </nav>
+    </nav>
+
+    <div class="container">
+        <header class="page-header">
+            <h1 class="project-title">Estrutura do Projeto e DER</h1>
+        </header>
+
+        <section id="estrutura-pastas">
+            <h2>9. Estrutura do Projeto</h2>
+            <p>A estrutura de pastas e arquivos principais do projeto é organizada da seguinte forma:</p>
+            <pre><code>Trace_Point/
+├── .env
+├── .env.copy
+├── .dockerignore
+├── docker-compose.yml
+├── Dockerfile
+├── package.json
+├── tsconfig.json
+├── README.md
+├── index.ts
+├── server.ts
+└── src/
+    ├── config/EsportEnv.ts
+    ├── controllers/
+    │   ├── AuthController.ts
+    │   ├── EventController.ts
+    │   ├── PlaceController.ts
+    │   ├── UserController.ts
+    │   └── VisitedController.ts
+    ├── DTO/
+    │   ├── wrappersDTO/      # (Adicionado baseado no README anterior)
+    │   │   ├── AddressDTO.ts # (Adicionado baseado no README anterior)
+    │   │   └── LoginInfoDTO.ts# (Adicionado baseado no README anterior)
+    │   ├── BookingDTO.ts
+    │   ├── EventDTO.ts       [cite: 71]
+    │   ├── PlaceDTO.ts
+    │   ├── UserDTO.ts
+    │   └── VisitedDTO.ts     # (Ou VisitedDOT.ts conforme seu DTO)
+    ├── error/
+    │   ├── ErrorsHandler.ts
+    │   └── HttpException.ts
+    ├── middleware/
+    │   ├── ErrorsHandler.ts
+    │   ├── JwtRequired.ts
+    │   ├── RoleCheck.ts
+    │   └── ValidateId.ts
+    ├── migrations/           # (Arquivos de migração)
+    ├── models/
+    │   ├── enum/             [cite: 72]
+    │   │   ├── PlaceType.ts  # (Adicionado baseado no README anterior)
+    │   │   └── UserRole.ts   # (Adicionado baseado no README anterior)
+    │   ├── wrappers/         [cite: 72]
+    │   │   ├── Address.ts    # (Adicionado baseado no README anterior)
+    │   │   └── LoginInfo.ts  # (Adicionado baseado no README anterior)
+    │   ├── Event.ts          [cite: 72]
+    │   ├── Place.ts          [cite: 72]
+    │   ├── User.ts           [cite: 72]
+    │   └── VisitedPlaces.ts  [cite: 72]
+    ├── repositories/         # (Arquivos de repositório)
+    ├── routes/               # (Arquivos de rotas)
+    ├── service/              # (Arquivos de serviço)
+    ├── utils/                # (Arquivos utilitários)
+    ├── db_config/AppDataSource.ts
+    └── @types/express/index.d.ts</code></pre>
+            <p><em>Nota: Alguns diretórios e arquivos foram complementados com base na estrutura do README anterior para maior detalhamento, como `wrappersDTO` e os arquivos dentro de `enum` e `wrappers` em `models`.</em></p>
+        </section>
+
+        <section id="der">
+            <h2>10. Diagrama Entidade-Relacionamento (DER)</h2>
+            <p>O diagrama abaixo ilustra as principais entidades do banco de dados e seus relacionamentos:</p>
+            <div class="der-image-container">
+                <p><strong>Instrução:</strong> Coloque sua imagem do DER (por exemplo, <code>der.png</code>) na pasta <code>public/images/</code> e descomente a tag <code>&lt;img&gt;</code> abaixo, ajustando o caminho se necessário.</p>
+                <img src="images/der.png" alt="Diagrama Entidade-Relacionamento do Trace Point" style="border:1px solid #ccc; max-width:100%;">
+                </div>
+        </section>
+
+        <footer>
+            <p>Trace Point API &copy; 2025</p>
+            <p><a href="https://github.com/vyctor-carvalho/Trace_Point" target="_blank" rel="noopener noreferrer">Ver Projeto no GitHub</a></p>
+        </footer>
+    </div>
+</body>
+</html>

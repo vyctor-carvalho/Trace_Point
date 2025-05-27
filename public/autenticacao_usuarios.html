@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuários e Autenticação - Trace Point API</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo"><h1>Trace Point API</h1></div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Visão Geral</a></li>
+                <li><a href="instalacao.html">Instalação</a></li>
+                <li><a href="autenticacao_usuarios.html" class="active">Usuários & Acesso</a></li>
+                <li><a href="api_referencia.html">API Referência</a></li>
+                <li><a href="estrutura_projeto.html">Projeto & DER</a></li>
+            </ul>
+        </nav>
+    </nav>
+
+    <div class="container">
+        <header class="page-header">
+            <h1 class="project-title">Níveis de Acesso, Autenticação e Usuários</h1>
+        </header>
+
+        <section id="niveis-acesso">
+            <h2>6. Níveis de Acesso e Autenticação</h2>
+            <p>A autenticação na API é realizada via JSON Web Tokens (JWT), enviados no cabeçalho <code>Authorization</code> como <code>Bearer Token</code>.</p>
+            <p>Existem os seguintes níveis de acesso:</p>
+            <ul>
+                <li><strong>Visitor:</strong> Acesso básico, permitindo visualização de informações e agendamento de visitas.</li>
+                <li><strong>Organizer:</strong> Além das permissões de Visitor, pode criar e gerenciar seus próprios eventos e locais. [cite: 16]</li>
+                <li><strong>Admin:</strong> Acesso total a todas as funcionalidades da API, incluindo gerenciamento de todos os dados e usuários.</li>
+                <li><strong>Público:</strong> Rotas que não requerem autenticação, como login e registro de novos usuários. [cite: 17]</li>
+            </ul>
+        </section>
+
+        <section id="criacao-usuarios">
+            <h3>6.1. Criação de Usuários</h3>
+            <h4>Admin</h4>
+            <p>Usuários administradores são criados via inserção direta no banco de dados (SQL):</p>
+            <pre><code>INSERT INTO "user" (id, name, profile_pick, role, email, "password")
+VALUES ('seu-uuid-aqui', 'Admin User', 'https://example.com/avatar.png', 'admin', 'admin@example.com', '&lt;hash_da_senha_bcrypt&gt;');</code></pre>
+            <p><em>Nota: Substitua <code>'seu-uuid-aqui'</code> por um UUID válido e <code>'&lt;hash_da_senha_bcrypt&gt;'</code> pelo hash Bcrypt da senha desejada.</em></p>
+
+            <h4>Visitor / Organizer [cite: 18]</h4>
+            <p>Visitantes e Organizadores podem se registrar através do endpoint público <code>POST /user/register</code>:</p>
+            <pre><code>POST /user/register
+{
+  "name": "Nome do Usuário",
+  "userLogin": { 
+    "email": "usuario@example.com", 
+    "password": "senhaSegura123" 
+  },
+  "profilePick": "https://example.com/foto.jpg",
+  "role": "visitor"  // ou "organizer"
+}</code></pre>
+        </section>
+
+        <footer>
+            <p>Trace Point API &copy; 2025</p>
+            <p><a href="https://github.com/vyctor-carvalho/Trace_Point" target="_blank" rel="noopener noreferrer">Ver Projeto no GitHub</a></p>
+        </footer>
+    </div>
+</body>
+</html>

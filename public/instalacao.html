@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instalação - Trace Point API</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo"><h1>Trace Point API</h1></div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Visão Geral</a></li>
+                <li><a href="instalacao.html" class="active">Instalação</a></li>
+                <li><a href="autenticacao_usuarios.html">Usuários & Acesso</a></li>
+                <li><a href="api_referencia.html">API Referência</a></li>
+                <li><a href="estrutura_projeto.html">Projeto & DER</a></li>
+            </ul>
+        </nav>
+    </nav>
+
+    <div class="container">
+        <header class="page-header">
+            <h1 class="project-title">Guia de Instalação e Configuração</h1>
+        </header>
+
+        <section id="requisitos">
+            <h2>4. Requisitos de Ambiente</h2>
+            <h3>4.1. Com Docker:</h3>
+            <ul>
+                <li>Docker</li>
+                <li>Docker Compose</li>
+            </ul>
+            <h3>4.2. Execução Manual:</h3>
+            <ul>
+                <li>Node.js 18+ [cite: 12]</li>
+                <li>PostgreSQL [cite: 12]</li>
+                <li>NPM [cite: 12]</li>
+            </ul>
+        </section>
+
+        <section id="instalacao-config">
+            <h2>5. Instalação e Configuração</h2>
+            <h3>5.1. Clonagem do Repositório</h3>
+            <pre><code>git clone https://github.com/vyctor-carvalho/Trace_Point.git
+cd Trace_Point</code></pre>
+            
+            <h3>5.2. Rodando com Docker (Recomendado) [cite: 13]</h3>
+            <p>Copie o arquivo de ambiente:</p>
+            <pre><code>cp .env.copy .env</code></pre>
+            <p>Edite as variáveis no arquivo <code>.env</code> conforme necessário. Para o Docker, um exemplo de configuração seria[cite: 13]:</p>
+            <pre><code>DB_HOST=db
+DB_PORT=5432
+DB_USER=postgres
+DB_PASSWORD=postgres
+DB_NAME=tracepoint</code></pre>
+            <p>Suba os containers:</p>
+            <pre><code>docker-compose up --build</code></pre>
+
+            <h3>5.3. Acesso via pgAdmin (com Docker) [cite: 14]</h3>
+            <p>Acesse o pgAdmin (geralmente em <code>http://localhost:8080</code> ou a porta que você configurou para o container do pgAdmin) e conecte-se ao servidor do banco de dados com as seguintes credenciais[cite: 14]:</p>
+            <ul>
+                <li><strong>Host:</strong> <code>db</code> [cite: 14]</li>
+                <li><strong>Porta:</strong> <code>5432</code> [cite: 14]</li>
+                <li><strong>Usuário:</strong> <code>postgres</code> [cite: 14]</li>
+                <li><strong>Senha:</strong> <code>postgres</code> [cite: 14]</li>
+            </ul>
+
+            <h3>5.4. Execução Manual [cite: 15]</h3>
+            <p>Instale as dependências:</p>
+            <pre><code>npm install</code></pre>
+            <p>Configure seu arquivo <code>.env</code> manualmente com as credenciais do seu banco de dados PostgreSQL local e outras variáveis necessárias (como <code>SYSTEM_API_PORT</code>, <code>JWT_SECRET</code>, etc.).</p>
+            <p>Rode as migrações do banco de dados:</p>
+            <pre><code>npm run migration:run</code></pre>
+            <p>Inicie o servidor de desenvolvimento:</p>
+            <pre><code>npm run dev</code></pre>
+        </section>
+
+        <footer>
+            <p>Trace Point API &copy; 2025</p>
+            <p><a href="https://github.com/vyctor-carvalho/Trace_Point" target="_blank" rel="noopener noreferrer">Ver Projeto no GitHub</a></p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -4,516 +4,84 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trace Point API - Documentação</title>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <nav class="navbar">
-        <h1>Trace Point - API Backend</h1>
+        <div class="logo"><h1>Trace Point API</h1></div>
+        <nav>
+            <ul>
+                <li><a href="index.html" class="active">Visão Geral</a></li>
+                <li><a href="instalacao.html">Instalação</a></li>
+                <li><a href="autenticacao_usuarios.html">Usuários & Acesso</a></li>
+                <li><a href="api_referencia.html">API Referência</a></li>
+                <li><a href="estrutura_projeto.html">Projeto & DER</a></li>
+            </ul>
+        </nav>
     </nav>
 
     <div class="container">
-        <header>
-            <h1>API Trace Point</h1>
-            <p class="subtitle">API RESTful para organização de visitas durante a COP-30 em Belém. Permite o registro de usuários (admin, visitor, organizer), eventos, locais visitados e agendamentos.</p>
+        <header class="page-header">
+            <h1 class="project-title">Trace Point Backend API RESTful</h1>
+            <p class="meta-info"><strong>Versão:</strong> 1.0.0 (Conforme Documento)</p>
+            <p class="meta-info"><strong>Data de Publicação do Documento:</strong> 26 de Maio de 2025</p>
+            <p class="meta-info"><strong>Autor:</strong> Vyctor Carvalho</p>
+            <p class="meta-info"><strong>Coautor:</strong> Paulo Silva</p>
         </header>
 
+        <section id="visao-geral">
+            <h2><span class="section-number">1.</span> Visão Geral do Projeto</h2>
+            <p>O Trace Point - Backend é uma API RESTful robusta e escalável, projetada para gerenciar visitas e fluxo de participantes durante a <strong>COP-30 em Belém, PA</strong>. [cite: 1]</p>
+            <p>A solução permite[cite: 2]:</p>
+            <ul>
+                <li>Registro de usuários com diferentes níveis de acesso (Administrador, Visitante, Organizador)[cite: 2];</li>
+                <li>Criação e gerenciamento de eventos e locais[cite: 2];</li>
+                <li>Agendamento de visitas, proporcionando organização e eficiência[cite: 3].</li>
+            </ul>
+        </section>
+
+        <hr class="section-divider">
+
+        <section id="missao">
+            <h2><span class="section-number">2.</span> Missão do Projeto</h2>
+            <p>Ser a principal plataforma de referência na gestão inteligente de visitas, eventos e pontos turísticos em grandes conferências e eventos internacionais, proporcionando controle, segurança e experiência eficiente para todos os participantes.</p>
+            <p>Ademais, desenvolver uma solução tecnológica escalável, segura e intuitiva que[cite: 4]:</p>
+            <ul>
+                <li>Facilite o planejamento e acompanhamento de visitas durante a COP-30[cite: 4];</li>
+                <li>Promova a valorização de pontos culturais, turísticos e ambientais de Belém[cite: 5];</li>
+                <li>Otimize a logística de recepção de milhares de visitantes com dados em tempo real[cite: 6];</li>
+                <li>Apoie os organizadores e autoridades com informações estratégicas para tomada de decisão[cite: 7].</li>
+            </ul>
+        </section>
+
+        <hr class="section-divider">
+
         <section id="tecnologias">
-            <h2>Tecnologias Utilizadas</h2>
+            <h2><span class="section-number">3.</span> Tecnologias Empregadas</h2>
             <ul class="tech-list">
-                <li>Node.js 18</li>
-                <li>TypeScript</li>
-                <li>PostgreSQL</li>
-                <li>TypeORM</li>
-                <li>Docker + Docker Compose</li>
-                <li>pgAdmin (interface de banco)</li>
+                <li><strong>Node.js 18:</strong> Ambiente de execução assíncrono para aplicações de alta performance. [cite: 8]</li>
+                <li><strong>TypeScript:</strong> Superset do JavaScript com tipagem estática. [cite: 9]</li>
+                <li><strong>PostgreSQL:</strong> Banco de dados relacional open-source robusto.</li>
+                <li><strong>TypeORM:</strong> ORM para integração com PostgreSQL usando TypeScript. [cite: 10]</li>
+                <li><strong>Docker + Docker Compose:</strong> Conteinerização da aplicação e banco.</li>
+                <li><strong>pgAdmin:</strong> Interface gráfica para gerenciar o banco PostgreSQL. [cite: 11]</li>
             </ul>
-        </section>
-
-        <section id="instalacao">
-            <h2>Configuração e Instalação</h2>
-
-            <h3>Requisitos</h3>
-            <h4>Para rodar com Docker:</h4>
-            <ul>
-                <li>Docker</li>
-                <li>Docker Compose</li>
-            </ul>
-            <h4>Para rodar manualmente:</h4>
-            <ul>
-                <li>Node.js 18+</li>
-                <li>PostgreSQL</li>
-                <li>NPM</li>
-            </ul>
-
-            <h3>1. Clone o repositório</h3>
-            <pre><code>git clone https://github.com/vyctor-carvalho/Trace_Point.git
-cd Trace_Point</code></pre>
-
-            <h3>Rodando com Docker</h3>
-            <h4>2. Copie o arquivo `.env`</h4>
-            <pre><code>cp .env.copy .env</code></pre>
-            <p>Edite as variáveis conforme necessário. Para uso com Docker, mantenha:</p>
-            <pre><code>DB_HOST=db
-DB_PORT=5432
-DB_USER=postgres
-DB_PASSWORD=postgres
-DB_NAME=tracepoint</code></pre>
-            <h4>3. Suba os containers</h4>
-            <pre><code>docker-compose up --build</code></pre>
-            <h4>4. Acessar o banco de dados via pgAdmin</h4>
-            <p>Abra o <strong>pgAdmin</strong> em: <code>http://localhost:8080</code> (Conforme seu README mais recente. Ajuste se o seu pgAdmin estiver em outra porta, como 5050, que é um padrão comum para o container pgAdmin).</p>
-            <p>Na interface do pgAdmin, adicione uma nova conexão com os seguintes dados:</p>
-            <ul>
-                <li><strong>Name</strong>: <code>tracepoint-db</code> (ou qualquer nome)</li>
-                <li><strong>Host name/address</strong>: <code>db</code></li>
-                <li><strong>Port</strong>: <code>5432</code></li>
-                <li><strong>Username</strong>: <code>postgres</code></li>
-                <li><strong>Password</strong>: <code>postgres</code></li>
-            </ul>
-            <p>Após conectar, selecione o banco de dados <code>tracepoint</code>.</p>
-
-            <h3>Rodando Manualmente</h3>
-            <h4>1. Instale as dependências</h4>
-            <pre><code>npm install</code></pre>
-            <h4>2. Configure o <code>.env</code> com seu PostgreSQL local</h4>
-            <pre><code># Configurações do servidor
-SYSTEM_API_PORT=sua_porta_pra_api
-
-# Dados do banco
-DB_HOST=localhost # ou seu host local
-DB_USER=postgres
-DB_PORT=sua_porta_do_postgres # ex: 5432
-DB_PASSWORD=sua_senha_do_postgres
-DB_NAME=nome_do_banco # ex: tracepoint
-
-# JWT
-JWT_SECRET=sua_chave_secreta_forte
-REFRESH_SECRET=sua_outra_chave_secreta_forte
-JWT_EXPIRES_IN=3600
-REFRSH_TOKEN_EXPIRES_IN=604800</code></pre>
-            <h4>3. Rode as migrations</h4>
-            <pre><code>npm run migration:run</code></pre>
-            <h4>4. Inicie o servidor</h4>
-            <pre><code>npm run dev</code></pre>
-        </section>
-
-        <section id="niveis-acesso">
-            <h2>Níveis de Acesso</h2>
-            <p>A API utiliza três níveis de acesso para proteger suas rotas:</p>
-            <ul>
-                <li><strong>Visitor</strong>: Usuário autenticado com permissões básicas, como visualizar eventos, locais e agendar visitas.</li>
-                <li><strong>Organizer</strong>: Usuário autenticado com permissões de Visitor, além da capacidade de criar e gerenciar eventos e locais que criou.</li>
-                <li><strong>Admin</strong>: Usuário autenticado com acesso total a todas as funcionalidades da API, incluindo gerenciamento de usuários.</li>
-                <li><strong>Público</strong>: Rotas que não exigem autenticação.</li>
-            </ul>
-            <p>As rotas protegidas por JWT exigem um token de acesso válido no cabeçalho <code>Authorization</code> (ex: <code>Bearer seu_token_jwt</code>).</p>
-        </section>
-
-        <section id="criacao-usuarios">
-            <h2>Criação de Usuários</h2>
-            <h3>Admin (somente via SQL):</h3>
-            <pre><code>INSERT INTO "user" (
-  id, name, profile_pick, role, email, "password"
-) VALUES (
-  '9dfce170-5094-436f-9413-f5afc769a75e',
-  'Admin User',
-  'https://example.com/avatar.png',
-  'admin',
-  'admin@example.com',
-  '$2b$10$yG9D2ihkLL6hTh5KCw/l5.BqAqJ3i49GIvksxCBStGSMEJtTHS2ey' -- Senha: admin123
-);</code></pre>
-            <p><em>Observação: No seu README, a URL da imagem do admin estava formatada como um link Markdown dentro do SQL. Aqui foi simplificado para a URL direta.</em></p>
-
-            <h3>Visitor ou Organizer (POST <code>/user/register</code>):</h3>
-            <p>Endpoint público para registro de novos usuários.</p>
-            <pre><code>{
-  "name": "Nome do usuário",
-  "userLogin": {
-    "email": "email@example.com",
-    "password": "senha123"
-  },
-  "profilePick": "https://example.com/foto.jpg",
-  "role": "visitor" // ou "organizer"
-}</code></pre>
-        </section>
-
-        <section id="rotas-api">
-            <h2>Rotas da API</h2>
-            <p>A seguir, uma visão geral dos principais grupos de rotas da API.</p>
-
-            <h3>Autenticação (<code>/auth</code>)</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Método</th>
-                        <th>Rota</th>
-                        <th>Proteção JWT</th>
-                        <th>Nível de Acesso</th>
-                        <th>Descrição</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>POST</code></td>
-                        <td><code>/auth/login</code></td>
-                        <td>Não</td>
-                        <td>Público</td>
-                        <td>Realiza o login do usuário.</td>
-                    </tr>
-                    <tr>
-                        <td><code>POST</code></td>
-                        <td><code>/auth/refresh</code></td>
-                        <td>Não</td>
-                        <td>Público</td>
-                        <td>Atualiza o token de acesso.</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h3>Usuários (<code>/user</code>)</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Método</th>
-                        <th>Rota</th>
-                        <th>Proteção JWT</th>
-                        <th>Nível de Acesso</th>
-                        <th>Descrição</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>POST</code></td>
-                        <td><code>/user/register</code></td>
-                        <td>Não</td>
-                        <td>Público</td>
-                        <td>Registra um novo usuário (visitor ou organizer).</td>
-                    </tr>
-                    <tr>
-                        <td><code>POST</code></td>
-                        <td><code>/user/booking</code></td>
-                        <td>Sim</td>
-                        <td>Visitor, Organizer, Admin</td>
-                        <td>Agenda uma visita a um evento para um usuário.</td>
-                    </tr>
-                    <tr>
-                        <td><code>GET</code></td>
-                        <td><code>/user/</code></td>
-                        <td>Sim</td>
-                        <td>Admin</td>
-                        <td>Lista todos os usuários.</td>
-                    </tr>
-                    <tr>
-                        <td><code>GET</code></td>
-                        <td><code>/user/:id</code></td>
-                        <td>Sim</td>
-                        <td>Admin</td>
-                        <td>Busca um usuário específico pelo ID.</td>
-                    </tr>
-                    <tr>
-                        <td><code>PUT</code></td>
-                        <td><code>/user/:id</code></td>
-                        <td>Sim</td>
-                        <td>Visitor, Organizer, Admin</td>
-                        <td>Atualiza dados de um usuário (usuário atualiza o próprio, admin qualquer).</td>
-                    </tr>
-                    <tr>
-                        <td><code>DELETE</code></td>
-                        <td><code>/user/:id</code></td>
-                        <td>Sim</td>
-                        <td>Admin</td>
-                        <td>Deleta um usuário específico pelo ID.</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h3>Locais (<code>/place</code>)</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Método</th>
-                        <th>Rota</th>
-                        <th>Proteção JWT</th>
-                        <th>Nível de Acesso</th>
-                        <th>Descrição</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>POST</code></td>
-                        <td><code>/place/</code></td>
-                        <td>Sim</td>
-                        <td>Organizer, Admin</td>
-                        <td>Cria um novo local.</td>
-                    </tr>
-                    <tr>
-                        <td><code>GET</code></td>
-                        <td><code>/place/</code></td>
-                        <td>Sim</td>
-                        <td>Visitor, Organizer, Admin</td>
-                        <td>Lista todos os locais.</td>
-                    </tr>
-                    <tr>
-                        <td><code>GET</code></td>
-                        <td><code>/place/:id</code></td>
-                        <td>Sim</td>
-                        <td>Visitor, Organizer, Admin</td>
-                        <td>Busca um local específico pelo ID.</td>
-                    </tr>
-                    <tr>
-                        <td><code>PUT</code></td>
-                        <td><code>/place/:id</code></td>
-                        <td>Sim</td>
-                        <td>Organizer, Admin</td>
-                        <td>Atualiza um local específico pelo ID.</td>
-                    </tr>
-                    <tr>
-                        <td><code>DELETE</code></td>
-                        <td><code>/place/:id</code></td>
-                        <td>Sim</td>
-                        <td>Admin</td>
-                        <td>Deleta um local específico pelo ID.</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h3>Eventos (<code>/event</code>)</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Método</th>
-                        <th>Rota</th>
-                        <th>Proteção JWT</th>
-                        <th>Nível de Acesso</th>
-                        <th>Descrição</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>POST</code></td>
-                        <td><code>/event/</code></td>
-                        <td>Sim</td>
-                        <td>Organizer, Admin</td>
-                        <td>Cria um novo evento.</td>
-                    </tr>
-                    <tr>
-                        <td><code>GET</code></td>
-                        <td><code>/event/</code></td>
-                        <td>Sim</td>
-                        <td>Visitor, Organizer, Admin</td>
-                        <td>Lista todos os eventos.</td>
-                    </tr>
-                    <tr>
-                        <td><code>GET</code></td>
-                        <td><code>/event/:id</code></td>
-                        <td>Sim</td>
-                        <td>Visitor, Organizer, Admin</td>
-                        <td>Busca um evento específico pelo ID.</td>
-                    </tr>
-                    <tr>
-                        <td><code>PUT</code></td>
-                        <td><code>/event/:id</code></td>
-                        <td>Sim</td>
-                        <td>Organizer, Admin</td>
-                        <td>Atualiza um evento específico pelo ID.</td>
-                    </tr>
-                    <tr>
-                        <td><code>DELETE</code></td>
-                        <td><code>/event/:id</code></td>
-                        <td>Sim</td>
-                        <td>Organizer, Admin</td>
-                        <td>Deleta um evento específico pelo ID.</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h3>Visitas Realizadas (<code>/visited</code>)</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Método</th>
-                        <th>Rota</th>
-                        <th>Proteção JWT</th>
-                        <th>Nível de Acesso</th>
-                        <th>Descrição</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>POST</code></td>
-                        <td><code>/visited/</code></td>
-                        <td>Sim</td>
-                        <td>Visitor, Organizer, Admin</td>
-                        <td>Registra uma visita a um local.</td>
-                    </tr>
-                    <tr>
-                        <td><code>GET</code></td>
-                        <td><code>/visited/</code></td>
-                        <td>Sim</td>
-                        <td>Visitor, Organizer, Admin</td>
-                        <td>Lista todos os registros de visitas (admins veem todos, outros os seus).</td>
-                    </tr>
-                    <tr>
-                        <td><code>GET</code></td>
-                        <td><code>/visited/user/:userId</code></td>
-                        <td>Sim</td>
-                        <td>Visitor, Organizer, Admin</td>
-                        <td>Lista visitas por ID de usuário.</td>
-                    </tr>
-                    <tr>
-                        <td><code>GET</code></td>
-                        <td><code>/visited/place/:placeId</code></td>
-                        <td>Sim</td>
-                        <td>Visitor, Organizer, Admin</td>
-                        <td>Lista visitas por ID de local.</td>
-                    </tr>
-                    <tr>
-                        <td><code>PUT</code></td>
-                        <td><code>/visited/</code></td>
-                        <td>Sim</td>
-                        <td>Visitor, Organizer, Admin</td>
-                        <td>Atualiza um registro de visita.</td>
-                    </tr>
-                    <tr>
-                        <td><code>DELETE</code></td>
-                        <td><code>/visited/</code></td>
-                        <td>Sim</td>
-                        <td>Organizer, Admin</td>
-                        <td>Deleta um registro de visita (body: userId, placeId).</td>
-                    </tr>
-                </tbody>
-            </table>
         </section>
         
-        <section id="exemplos-requisicoes">
-            <h2>Exemplos de Requisições (Corpo)</h2>
-            <p>Para detalhes completos e mais exemplos, consulte o README no GitHub.</p>
+        <hr class="section-divider">
 
-            <h3>Criar local (<code>POST /place</code>)</h3>
-            <p><em>Acesso: Organizer, Admin</em></p>
-            <pre><code>{
-  "name": "Estação das Docas",
-  "type": "cultural",
-  "address": {
-    "postalColde": "66010-020", 
-    "street": "Av. Boulevard Castilhos França",
-    "numberHouse": 600,
-    "complement": "Armazém 2"
-  }
-}</code></pre>
-
-            <h3>Criar evento (<code>POST /event</code>)</h3>
-            <p><em>Acesso: Organizer, Admin</em></p>
-            <pre><code>{
-  "title": "Tour COP-30",
-  "eventDate": "2025-07-15T14:00:00.000Z",
-  "description": "Tour pelo centro histórico de Belém.",
-  "place": "UUID-do-place"
-}</code></pre>
-        </section>
-
-        <section id="estrutura-projeto">
-            <h2>Estrutura do Projeto</h2>
-            <p>A estrutura de pastas e arquivos principais do projeto é a seguinte:</p>
-            <pre><code>📁 raiz/
-│
-├── .env               # Variáveis reais
-├── .env.copy          # Modelo para configuração
-├── .dockerignore      # Ignora arquivos do Docker
-├── docker-compose.yml # Arquitetura dos containers
-├── Dockerfile         # Imagem do app
-├── package.json
-├── tsconfig.json
-├── README.md
-├── index.ts
-├── server.ts
-│
-└── src/
-    │
-    ├── config/
-    │   └── EsportEnv.ts
-    │
-    ├── controllers/
-    │   ├── AuthController.ts
-    │   ├── EventController.ts
-    │   ├── PlaceController.ts
-    │   ├── UserController.ts
-    │   └── VisitedController.ts
-    │
-    ├── DTO/
-    │   ├── wrappers/
-    │   │   ├── AddressDTO.ts
-    │   │   └── LoginInfoDTO.ts
-    │   ├── BookingDTO.ts
-    │   ├── EventDTO.ts
-    │   ├── PlaceDTO.ts
-    │   ├── UserDTO.ts
-    │   └── VisitedDTO.ts
-    │
-    ├── error/
-    │   ├── ErrorsHandler.ts
-    │   └── HttpException.ts
-    │
-    ├── middleware/
-    │   ├── ErrorsHandler.ts
-    │   ├── JwtRequired.ts
-    │   ├── RoleCheck.ts
-    │   └── ValidateId.ts
-    │
-    ├── migrations/
-    │   ├── 1747755304546-GeneratedMigration.ts
-    │   └── 1747865261580-GeneratedMigration.ts
-    │
-    ├── models/
-    │   ├── enum/
-    │   │   ├── PlaceType.ts
-    │   │   └── UserRole.ts
-    │   ├── wrappers/
-    │   │   ├── Address.ts
-    │   │   └── LoginInfo.ts
-    │   ├── Event.ts
-    │   ├── Place.ts
-    │   ├── User.ts
-    │   └── VisitedPlaces.ts
-    │
-    ├── repositories/
-    │   ├── EventRepository.ts
-    │   ├── PlaceRepository.ts
-    │   ├── UserRepository.ts
-    │   └── VisitedRepository.ts
-    │
-    ├── routes/
-    │   ├── AuthRoutes.ts
-    │   ├── EventRoutes.ts
-    │   ├── PlaceRoutes.ts
-    │   ├── UserRoutes.ts
-    │   └── VisitedRoutes.ts
-    │
-    ├── service/
-    │   ├── AuthService.ts
-    │   ├── EventService.ts
-    │   ├── PlaceService.ts
-    │   ├── UserService.ts
-    │   └── VisitedService.ts
-    │
-    ├── utils/
-    │   ├── ExistsValidator.ts
-    │   ├── TokenManager.ts
-    │   └── ValidateRequestBody.ts
-    │
-    ├── db_config/
-    │   └── AppDataSource.ts
-    │
-    └── @types/
-        └── express
-            └── index.d.ts
-</code></pre>
-            <p>Para uma exploração mais detalhada, navegue pelo <a href="https://github.com/vyctor-carvalho/Trace_Point" target="_blank" rel="noopener noreferrer">repositório no GitHub</a>.</p>
+        <section id="proximos-passos">
+            <h2>Próximos Passos</h2>
+            <p>Explore as outras seções da documentação para detalhes sobre instalação, uso da API e mais, utilizando o menu de navegação no topo da página.</p>
+            <p style="text-align: center; margin-top: 25px;">
+                <a href="instalacao.html" class="button-link">Guia de Instalação Detalhado</a>
+                <a href="api_referencia.html" class="button-link">Referência Completa da API</a>
+            </p>
         </section>
 
         <footer>
-            Trace Point API &copy; 2025. Feito com ❤️ em Belém.
+            <p>Trace Point API &copy; 2025</p>
             <p><a href="https://github.com/vyctor-carvalho/Trace_Point" target="_blank" rel="noopener noreferrer">Ver Projeto no GitHub</a></p>
         </footer>
     </div>

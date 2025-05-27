@@ -42,11 +42,6 @@ body {
     font-weight: 700;
 }
 
-/* Container dos links de navegação (para desktop e base para o menu lateral) */
-.nav-links {
-    /* Estilos desktop são aplicados diretamente na ul ou nos itens */
-}
-
 .navbar .nav-links ul {
     list-style: none;
     padding: 0;
@@ -71,6 +66,11 @@ body {
 .navbar .nav-links ul li a:hover,
 .navbar .nav-links ul li a.active {
     background-color: #006400; 
+}
+
+.sidebar-header {
+    padding: 5px;
+    display: none;
 }
 
 /* Botão Hamburger - Visível apenas em mobile */
@@ -180,66 +180,99 @@ footer p { margin-bottom: 0.5em; }
 
 /* Media Queries para Responsividade */
 @media (max-width: 768px) {
+    /* Ajusta o tamanho do logo principal na navbar em telas menores */
     .navbar .logo h1 {
         font-size: 1.3em;
     }
 
-    /* Estilos para o menu lateral (antigo .nav-links) */
+    /* Estilos para o .nav-links, que se torna o menu lateral */
     .navbar .nav-links {
-        position: fixed; /* Fixo na tela */
+        position: fixed;
         top: 0;
         left: 0;
         width: 260px; /* Largura do menu lateral */
         height: 100vh; /* Altura total da tela */
-        background-color: #003300; /* Cor de fundo escura para o menu, como no exemplo */
-        padding-top: 20px; /* Espaço no topo do menu */
+        background-color: #003300; /* Cor de fundo escura para o menu */
+        padding-top: 0; /* Removido padding-top, o .sidebar-header e a ul controlarão seus espaços */
         transform: translateX(-100%); /* Escondido fora da tela à esquerda */
         transition: transform 0.3s ease-in-out;
-        z-index: 1001; /* Abaixo do hamburger, mas acima do conteúdo */
-        display: flex; /* Para permitir que a ul use flex-direction */
-        flex-direction: column; /* Itens da ul em coluna */
-        box-shadow: 3px 0px 10px rgba(0,0,0,0.3); /* Sombra para dar profundidade */
+        z-index: 1001; /* Abaixo do hamburger (1003) e da navbar principal (1002), mas acima do conteúdo */
+        display: flex;
+        flex-direction: column; /* Empilha o .sidebar-header e a ul */
+        box-shadow: 3px 0px 10px rgba(0,0,0,0.3); 
     }
 
     .navbar .nav-links.active { /* Quando o menu está ativo/aberto */
         transform: translateX(0); /* Desliza para a tela */
     }
 
+    /* Estilo para o cabeçalho DENTRO do menu lateral (.sidebar-header) */
+    .navbar .nav-links .sidebar-header {
+        display: block; /* Torna o header visível no contexto do menu lateral móvel */
+        padding: 18px 25px; /* Espaçamento interno do header do menu */
+        text-align: left;
+        /* border-bottom: 1px solid #004d00; */ /* Opcional: linha separadora abaixo do título */
+        opacity: 0; /* Começa invisível */
+        transition: opacity 0.3s ease-in-out 0.1s; /* Transição suave para opacidade, com delay */
+    }
+
+    .navbar .nav-links.active .sidebar-header {
+        opacity: 1; /* Torna o header visível quando o menu lateral (.nav-links.active) está aberto */
+    }
+
+    .navbar .nav-links .sidebar-header h1 {
+        color: white;
+        font-size: 1.5em; /* Tamanho do título no menu lateral */
+        margin: 0;
+        font-weight: 700;
+    }
+
+    /* Estilos para a lista de links (ul) DENTRO do menu lateral */
     .navbar .nav-links ul {
         flex-direction: column; /* Links em coluna */
         width: 100%;
-        padding-top: 60px; /* Mais espaço se o logo/botão X estiver dentro do menu */
-                           /* Se não, pode ser menor, como 20px */
+        padding-top: 10px; /* Espaço entre o .sidebar-header e o primeiro link */
+                           /* Se o .sidebar-header tiver margin-bottom, este pode ser 0 */
+        list-style: none; /* Remove marcadores de lista */
     }
 
     .navbar .nav-links ul li {
         margin-left: 0;
-        text-align: left; /* Alinhamento à esquerda, como no exemplo */
+        text-align: left; 
         width: 100%;
     }
 
     .navbar .nav-links ul li a {
-        padding: 15px 25px; /* Mais padding para melhor toque */
-        border-top: 1px solid #004d00; /* Separador sutil */
-        color: #e8f5e9; /* Cor clara para o texto no fundo escuro */
-        font-weight: 400; /* Peso normal para os itens */
+        display: block; 
+        padding: 15px 25px; 
+        border-top: 1px solid #004d00; 
+        color: #e8f5e9; 
+        font-weight: 400; 
         font-size: 1.1em;
+        text-decoration: none;
+        transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
     }
 
+    /* Remove a borda do topo do primeiro item de link */
     .navbar .nav-links ul li:first-child a {
          border-top: none;
     }
+
     .navbar .nav-links ul li a:hover,
-    .navbar .nav-links ul li a.active {
-        background-color: #006400; /* Destaque ao passar o mouse/ativo */
+    .navbar .nav-links ul li a.active { /* Estilo para link ativo ou em hover */
+        background-color: #006400; 
         color: white;
     }
 
+    /* Botão Hamburger */
     .hamburger-menu {
-        display: flex; /* Mostra o botão hamburger */
+        display: flex; /* Mostra o botão hamburger em telas menores */
+        /* Os estilos de animação do hamburger (.hamburger-menu.active .bar) 
+           devem estar definidos FORA desta media query para funcionarem corretamente
+           quando a classe .active é aplicada via JS. */
     }
     
-    /* Outros ajustes responsivos que você já tinha */
+    /* Outros ajustes responsivos que você já tinha para .container, h2, etc. */
     .container {
         width: 95%;
         padding: 20px 15px;
@@ -253,8 +286,11 @@ footer p { margin-bottom: 0.5em; }
     .page-header .project-title {
         font-size: 1.8em;
     }
-    table {
-        font-size: 0.8em;
+    table { 
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        font-size: 0.8em; 
     }
     table th, table td {
         padding: 8px 10px;

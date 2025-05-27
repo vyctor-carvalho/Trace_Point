@@ -10,74 +10,123 @@
 
 body { 
     font-family: 'Lato', sans-serif; 
-    background-color: #e8f5e9; /* Verde bem claro para o fundo geral */
     color: #333; 
     line-height: 1.7;
     font-weight: 400;
-    background-image:  url('./img/ver-o-peso.webp');
-    background-color: #F3F7F3;
+    /* Sua imagem de fundo e cor de fallback */
+    background-image: url('img/ver-o-peso.webp'); /* Certifique-se que public/img/ver-o-peso.webp existe */
+    background-color: #F3F7F3; 
     background-size: cover;
     background-position: center center;
     background-attachment: fixed; 
 }
 
-/* Navbar Principal */
+/* Navbar Principal (Barra do Topo) */
 .navbar {
-    background-color: #004d00; /* Verde escuro principal */
+    background-color: #004d00; 
     color: white;
-    padding: 1em 5%; /* Padding responsivo */
-    text-align: center;
+    padding: 0 5%; /* Padding horizontal, altura controlada por min-height e conteúdo */
     box-shadow: 0 2px 5px rgba(0,0,0,0.15);
     position: sticky;
     top: 0;
-    z-index: 1000;
+    z-index: 1002; /* Acima do menu lateral e do overlay */
     display: flex;
     justify-content: space-between;
     align-items: center;
+    min-height: 60px; 
 }
 
 .navbar .logo h1 {
     margin: 0;
-    font-size: 1.6em;
+    font-size: 1.5em; 
     font-weight: 700;
 }
 
-.navbar nav ul {
+/* Container dos links de navegação (para desktop e base para o menu lateral) */
+.nav-links {
+    /* Estilos desktop são aplicados diretamente na ul ou nos itens */
+}
+
+.navbar .nav-links ul {
     list-style: none;
     padding: 0;
     margin: 0;
-    display: flex;
+    display: flex; /* Layout horizontal para desktop */
 }
 
-.navbar nav ul li {
-    margin-left: 20px;
+.navbar .nav-links ul li {
+    margin-left: 20px; /* Espaçamento entre itens no desktop */
 }
 
-.navbar nav ul li a {
+.navbar .nav-links ul li a {
     color: white;
     text-decoration: none;
     font-weight: 700;
-    padding: 5px 10px;
+    padding: 8px 12px;
     border-radius: 4px;
     transition: background-color 0.3s ease;
+    display: block;
 }
 
-.navbar nav ul li a:hover,
-.navbar nav ul li a.active {
-    background-color: #006400; /* Verde um pouco mais claro para hover/ativo */
+.navbar .nav-links ul li a:hover,
+.navbar .nav-links ul li a.active {
+    background-color: #006400; 
 }
+
+/* Botão Hamburger - Visível apenas em mobile */
+.hamburger-menu {
+    display: none; /* Escondido em desktop por padrão */
+    flex-direction: column;
+    justify-content: space-around;
+    width: 30px;
+    height: 25px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 1003; /* Acima de tudo para garantir clique */
+}
+
+.hamburger-menu .bar {
+    display: block;
+    width: 100%;
+    height: 3px;
+    background-color: white;
+    border-radius: 3px;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Animação do Hamburger para 'X' quando ativo */
+.hamburger-menu.active .bar:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+}
+.hamburger-menu.active .bar:nth-child(2) {
+    opacity: 0;
+}
+.hamburger-menu.active .bar:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+}
+
 
 /* Container Principal do Conteúdo */
 .container { 
-    width: 90%; /* Mais largo para documentação */
+    width: 90%; 
     max-width: 1200px; 
     margin: 30px auto; 
-    background-color: #F3F7F3; 
+    background-color: rgba(243, 247, 243, 0.95); 
     padding: 30px 40px; 
     border-radius: 8px; 
     box-shadow: 0 5px 20px rgba(0,0,0,0.1); 
+    transition: filter 0.3s ease-in-out; /* Para efeito de desfoque com overlay */
 }
 
+/* Estilo para quando o menu lateral está aberto (opcional, para desfocar o conteúdo) */
+body.sidebar-open .container {
+    filter: blur(2px) brightness(0.7);
+}
+
+
+/* ... (Seus estilos para .page-header, h2, h3, p, li, .tech-list, tabelas, pre, code, etc. permanecem aqui) ... */
 /* Cabeçalho da Página (Título Principal do Projeto) */
 .page-header {
     text-align: left;
@@ -85,248 +134,115 @@ body {
     padding-bottom: 20px;
     border-bottom: 1px solid #d9ead3;
 }
+.page-header .project-title { color: #004d00; font-size: 2.5em; margin-bottom: 5px; font-weight: 900; }
+.page-header .project-subtitle, .page-header .meta-info { font-size: 1.1em; color: #444; margin-bottom: 5px; }
+.page-header .meta-info strong { color: #004d00; }
 
-.page-header .project-title {
-    color: #004d00;
-    font-size: 2.5em; /* Maior para o título principal */
-    margin-bottom: 5px;
-    font-weight: 900;
-}
+h2 .section-number, h3 .section-number { color: #2E8B57; margin-right: 10px; font-weight: bold; }
+.section-divider { border: 0; height: 1px; background-color: #c9dcc9; margin: 50px 0; }
 
-.page-header .project-subtitle,
-.page-header .meta-info {
-    font-size: 1.1em;
-    color: #444;
-    margin-bottom: 5px;
-}
-.page-header .meta-info strong {
-    color: #004d00;
-}
+h2 { color: #004d00; border-bottom: 2px solid #b2d8b2; padding-bottom: 12px; margin-top: 45px; margin-bottom: 25px; font-size: 2em; font-weight: 700; }
+h3 { color: #2E8B57; font-size: 1.6em; margin-top: 35px; margin-bottom: 18px; font-weight: 700; }
+h4 { color: #333; font-size: 1.3em; margin-top: 25px; margin-bottom: 12px; font-weight: 700; }
+section:first-of-type > h2:first-of-type { margin-top: 0; }
 
+p, li { font-size: 1rem; color: #3c3c3c; margin-bottom: 1em; }
+ul, ol { padding-left: 30px; margin-bottom: 1.5em; }
+ul li, ol li { margin-bottom: 0.5em; }
+strong { font-weight: 700; color: #004200; }
 
-/* Títulos de Seção */
-h2 { 
-    color: #004d00; 
-    border-bottom: 2px solid #b2d8b2; 
-    padding-bottom: 12px;
-    margin-top: 45px; 
-    margin-bottom: 25px;
-    font-size: 2em;
-    font-weight: 700;
-}
+.tech-list { list-style: none; padding-left: 0; }
+.tech-list li { background-color: #e0f0e0; margin: 8px 0; padding: 10px 15px; border-radius: 5px; border-left: 4px solid #004d00; font-weight: bold; }
 
-h3 {
-    color: #2E8B57; /* SeaGreen para sub-títulos */
-    font-size: 1.6em;
-    margin-top: 35px;
-    margin-bottom: 18px;
-    font-weight: 700;
-}
+a { color: #2E8B57; text-decoration: none; font-weight: bold; }
+a:hover { text-decoration: underline; color: #004d00; }
 
-h4 {
-    color: #333;
-    font-size: 1.3em;
-    margin-top: 25px;
-    margin-bottom: 12px;
-    font-weight: 700;
-}
+.button-link { display: inline-block; background-color: #004d00; color: white !important; padding: 12px 25px; border-radius: 5px; text-align: center; font-size: 1.1em; margin-top: 20px; transition: background-color 0.3s ease, transform 0.2s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.15); font-weight: bold; }
+.button-link:hover { background-color: #003300; text-decoration: none; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
 
-section:first-of-type > h2:first-of-type {
-    margin-top: 0;
-}
+table { width: 100%; border-collapse: collapse; margin: 30px 0; font-size: 0.95em; box-shadow: 0 2px 8px rgba(0,0,0,0.1); overflow-x: auto; display: block; }
+table thead tr { background-color: #004d00; color: #ffffff; text-align: left; font-weight: bold; }
+table th, table td { padding: 12px 15px; border: 1px solid #c9dcc9; vertical-align: top; }
+table tbody tr { border-bottom: 1px solid #dddddd; }
+table tbody tr:nth-of-type(even) { background-color: #f3f9f3; }
+table tbody tr:last-of-type { border-bottom: 2px solid #004d00; }
+table tbody tr:hover { background-color: #e0f0e0; }
 
-/* Parágrafos e Listas */
-p, li { 
-    font-size: 1rem; 
-    color: #3c3c3c; 
-    margin-bottom: 1em;
-}
+pre { background-color: #282c34; color: #abb2bf; padding: 1.2em; border-radius: 6px; overflow-x: auto; font-size: 0.9em; line-height: 1.5; margin: 1.8em 0; box-shadow: inset 0 0 8px rgba(0,0,0,0.25); white-space: pre-wrap; word-wrap: break-word; }
+code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace; }
+p > code, li > code, td > code, h3 > code, h4 > code { background-color: #d9ead3; color: #004d00; padding: 0.2em 0.5em; border-radius: 4px; font-size: 0.9em; font-weight: normal; }
 
-ul, ol {
-    padding-left: 30px;
-    margin-bottom: 1.5em;
-}
-ul li, ol li {
-    margin-bottom: 0.5em;
-}
+.der-image-container { text-align: center; margin: 30px 0; }
+.der-image-container img { max-width: 100%; height: auto; border: 1px solid #ccc; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
 
-strong {
-    font-weight: 700;
-    color: #004200; /* Um tom de verde para destaque */
-}
-
-/* Lista de Tecnologias (Exemplo) */
-.tech-list {
-    list-style: none;
-    padding-left: 0;
-}
-
-.tech-list li {
-    background-color: #e0f0e0; 
-    margin: 8px 0;
-    padding: 10px 15px;
-    border-radius: 5px;
-    border-left: 4px solid #004d00; 
-    font-weight: bold; /* Mantido bold para destaque */
-}
-
-/* Links */
-a { 
-    color: #2E8B57; 
-    text-decoration: none; 
-    font-weight: bold; /* Links em bold para mais destaque */
-}
-
-a:hover { 
-    text-decoration: underline; 
-    color: #004d00; 
-}
-
-.button-link {
-    display: inline-block;
-    background-color: #004d00; 
-    color: white !important;
-    padding: 12px 25px; 
-    border-radius: 5px;
-    text-align: center;
-    font-size: 1.1em;
-    margin-top: 20px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
-    font-weight: bold;
-}
-
-.button-link:hover {
-    background-color: #003300; 
-    text-decoration: none;
-    transform: translateY(-2px); 
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-}
-
-/* Estilos para Tabelas de API */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 30px 0;
-    font-size: 0.95em;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    overflow-x: auto; /* Permite rolagem horizontal em tabelas largas */
-    display: block; /* Necessário para overflow-x funcionar bem em tabelas */
-}
-
-table thead tr {
-    background-color: #004d00; 
-    color: #ffffff;
-    text-align: left;
-    font-weight: bold;
-}
-
-table th, table td {
-    padding: 12px 15px;
-    border: 1px solid #c9dcc9; 
-    vertical-align: top; /* Alinha conteúdo ao topo */
-}
-
-table tbody tr {
-    border-bottom: 1px solid #dddddd;
-}
-
-table tbody tr:nth-of-type(even) {
-    background-color: #f3f9f3; 
-}
-
-table tbody tr:last-of-type {
-    border-bottom: 2px solid #004d00; 
-}
-
-table tbody tr:hover {
-    background-color: #e0f0e0; /* Verde mais claro para hover da linha */
-}
-
-/* Estilos para Blocos de Código */
-pre {
-    background-color: #282c34; 
-    color: #abb2bf; 
-    padding: 1.2em;
-    border-radius: 6px;
-    overflow-x: auto;
-    font-size: 0.9em;
-    line-height: 1.5;
-    margin: 1.8em 0;
-    box-shadow: inset 0 0 8px rgba(0,0,0,0.25);
-    white-space: pre-wrap; /* Permite quebra de linha no código */
-    word-wrap: break-word; /* Quebra palavras longas */
-}
-
-code {
-    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
-}
-
-/* Código Inline */
-p > code, li > code, td > code, h3 > code, h4 > code { 
-    background-color: #d9ead3; /* Fundo verde mais sutil para código inline */
-    color: #004d00; 
-    padding: 0.2em 0.5em;
-    border-radius: 4px;
-    font-size: 0.9em;
-    font-weight: normal; /* Código inline não precisa ser bold se o link já é */
-}
-
-/* Imagem do DER */
-.der-image-container {
-    text-align: center;
-    margin: 30px 0;
-}
-
-.der-image-container img {
-    max-width: 100%;
-    height: auto;
-    border: 1px solid #ccc;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-}
-
-
-/* Rodapé */
-footer { 
-    margin-top: 50px; 
-    padding: 30px 0;
-    border-top: 1px solid #d9ead3; 
-    font-size: 0.95em; 
-    text-align: center; 
-    color: #555;
-}
-footer p {
-    margin-bottom: 0.5em;
-}
+footer { margin-top: 50px; padding: 30px 0; border-top: 1px solid #d9ead3; font-size: 0.95em; text-align: center; color: #555; }
+footer p { margin-bottom: 0.5em; }
 
 /* Media Queries para Responsividade */
 @media (max-width: 768px) {
-    .navbar {
-        flex-direction: column;
-    }
     .navbar .logo h1 {
-        margin-bottom: 10px;
-        font-size: 1.5em;
+        font-size: 1.3em;
     }
-    .navbar nav ul {
-        flex-direction: column;
+
+    /* Estilos para o menu lateral (antigo .nav-links) */
+    .navbar .nav-links {
+        position: fixed; /* Fixo na tela */
+        top: 0;
+        left: 0;
+        width: 260px; /* Largura do menu lateral */
+        height: 100vh; /* Altura total da tela */
+        background-color: #003300; /* Cor de fundo escura para o menu, como no exemplo */
+        padding-top: 20px; /* Espaço no topo do menu */
+        transform: translateX(-100%); /* Escondido fora da tela à esquerda */
+        transition: transform 0.3s ease-in-out;
+        z-index: 1001; /* Abaixo do hamburger, mas acima do conteúdo */
+        display: flex; /* Para permitir que a ul use flex-direction */
+        flex-direction: column; /* Itens da ul em coluna */
+        box-shadow: 3px 0px 10px rgba(0,0,0,0.3); /* Sombra para dar profundidade */
+    }
+
+    .navbar .nav-links.active { /* Quando o menu está ativo/aberto */
+        transform: translateX(0); /* Desliza para a tela */
+    }
+
+    .navbar .nav-links ul {
+        flex-direction: column; /* Links em coluna */
+        width: 100%;
+        padding-top: 60px; /* Mais espaço se o logo/botão X estiver dentro do menu */
+                           /* Se não, pode ser menor, como 20px */
+    }
+
+    .navbar .nav-links ul li {
+        margin-left: 0;
+        text-align: left; /* Alinhamento à esquerda, como no exemplo */
         width: 100%;
     }
-    .navbar nav ul li {
-        margin-left: 0;
-        text-align: center;
-        border-top: 1px solid #006400;
+
+    .navbar .nav-links ul li a {
+        padding: 15px 25px; /* Mais padding para melhor toque */
+        border-top: 1px solid #004d00; /* Separador sutil */
+        color: #e8f5e9; /* Cor clara para o texto no fundo escuro */
+        font-weight: 400; /* Peso normal para os itens */
+        font-size: 1.1em;
     }
-    .navbar nav ul li:first-child {
-        border-top: none;
+
+    .navbar .nav-links ul li:first-child a {
+         border-top: none;
     }
-    .navbar nav ul li a {
-        display: block;
-        padding: 10px;
+    .navbar .nav-links ul li a:hover,
+    .navbar .nav-links ul li a.active {
+        background-color: #006400; /* Destaque ao passar o mouse/ativo */
+        color: white;
     }
+
+    .hamburger-menu {
+        display: flex; /* Mostra o botão hamburger */
+    }
+    
+    /* Outros ajustes responsivos que você já tinha */
     .container {
         width: 95%;
-        padding: 20px 25px;
+        padding: 20px 15px;
     }
     h2 {
         font-size: 1.6em;
@@ -335,10 +251,10 @@ footer p {
         font-size: 1.3em;
     }
     .page-header .project-title {
-        font-size: 2em;
+        font-size: 1.8em;
     }
     table {
-        font-size: 0.85em; /* Reduz fonte da tabela em telas menores */
+        font-size: 0.8em;
     }
     table th, table td {
         padding: 8px 10px;

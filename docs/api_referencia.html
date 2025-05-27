@@ -9,15 +9,23 @@
 <body>
     <nav class="navbar">
         <div class="logo"><h1>Trace Point API</h1></div>
-        <nav>
+        <button class="hamburger-menu" id="hamburgerMenu" aria-label="Toggle navigation" aria-expanded="false">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </button>
+        <div class="nav-links" id="navLinks">
+            <div class="sidebar-header">
+                <h1>Trace Point API</h1>
+            </div>
             <ul>
                 <li><a href="index.html">Visão Geral</a></li>
                 <li><a href="instalacao.html">Instalação</a></li>
                 <li><a href="autenticacao_usuarios.html">Usuários & Acesso</a></li>
-                <li><a href="api_referencia.html" class="active">API Referência</a></li>
+                <li><a href="api_referencia.html">API Referência</a></li>
                 <li><a href="estrutura_projeto.html">Projeto & DER</a></li>
             </ul>
-        </nav>
+        </div>
     </nav>
 
     <div class="container">
@@ -313,6 +321,9 @@ Content-Type: application/json
             <p>Trace Point API &copy; 2025</p>
             <p><a href="https://github.com/vyctor-carvalho/Trace_Point" target="_blank" rel="noopener noreferrer">Ver Projeto no GitHub</a></p>
         </footer>
+
+        <script src="script.js"></script>
+
     </div>
 </body>
 </html>

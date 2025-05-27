@@ -257,59 +257,133 @@
             </table>
         </section>
 
+<hr class="section-divider">
+
         <section id="exemplos-requisicoes">
-            <h2>8. Exemplos de Requisição</h2>
-            <h3>8.1. Criar Local</h3>
-            <pre><code>POST /place
-Content-Type: application/json
+            <h2><span class="section-number">8.</span> Exemplos de Requisição (Corpo JSON)</h2>
+            <p>Abaixo estão exemplos de corpos de requisição JSON esperados para algumas das principais operações de criação e atualização da API. O método HTTP e a rota estão indicados no título de cada exemplo.</p>
+
+            <h3><span class="section-number">8.1.</span> Login de Usuário (<code>POST /auth/login</code>)</h3>
+            <p>Utiliza <code>LoginInfoDTO</code> para autenticar um usuário.</p>
+            <pre><code>Content-Type: application/json
+
+{
+  "email": "usuario@example.com",
+  "password": "senhaSegura123"
+}</code></pre>
+
+            <h3><span class="section-number">8.2.</span> Registrar Novo Usuário (<code>POST /user/register</code>)</h3>
+            <p>Utiliza <code>UserDTO</code> para criar um novo usuário (visitor ou organizer).</p>
+            <pre><code>Content-Type: application/json
+
+{
+  "name": "Nome Completo do Novo Usuário",
+  "userLogin": {
+    "email": "novo.usuario@example.com",
+    "password": "outraSenhaSegura456"
+  },
+  "profilePick": "https://example.com/perfil.jpg",
+  "role": "visitor" 
+}</code></pre>
+
+            <h3><span class="section-number">8.3.</span> Atualizar Usuário (<code>PUT /user/:id</code>)</h3>
+            <p>Utiliza <code>UserDTO</code> para atualizar os dados de um usuário existente. Substitua <code>:id</code> no título da rota pelo ID do usuário.</p>
+            <pre><code>Content-Type: application/json
+
+{
+  "name": "Nome Atualizado do Usuário",
+  "userLogin": {
+    "email": "usuario.atualizado@example.com",
+    "password": "novaSenhaSuperSegura789"
+  },
+  "profilePick": "https://example.com/nova_perfil.jpg",
+  "role": "organizer"
+}</code></pre>
+
+            <h3><span class="section-number">8.4.</span> Criar Local (<code>POST /place/</code>)</h3>
+            <p>Utiliza <code>PlaceDTO</code> para registrar um novo local.</p>
+            <pre><code>Content-Type: application/json
 
 {
   "name": "Estação das Docas",
   "type": "cultural",
   "address": {
-    "postalColde": "66010-020", 
+    "postalCode": "66010-020",
     "street": "Av. Boulevard Castilhos França",
     "numberHouse": 600,
     "complement": "Armazém 2"
   }
 }</code></pre>
 
-            <h3>8.2. Criar Evento </h3>
-            <pre><code>POST /event
-Content-Type: application/json
+            <h3><span class="section-number">8.5.</span> Atualizar Local (<code>PUT /place/:id</code>)</h3>
+            <p>Utiliza <code>PlaceDTO</code> para atualizar um local existente. Substitua <code>:id</code> no título da rota pelo ID do local.</p>
+            <pre><code>Content-Type: application/json
 
 {
-  "title": "Tour COP-30",
-  "eventDate": "2025-07-15T14:00:00.000Z",
-  "description": "Tour pelo centro histórico de Belém.",
-  "place": "UUID-do-place"
+  "name": "Mercado Ver-o-Peso Renovado",
+  "type": "market",
+  "address": {
+    "postalCode": "66010-030",
+    "street": "Av. Boulevard Castilhos França",
+    "numberHouse": 100,
+    "complement": "Setor Peixes"
+  }
 }</code></pre>
 
-            <h3>8.3. Agendar Visita </h3>
-            <pre><code>POST /user/booking
-Content-Type: application/json
+            <h3><span class="section-number">8.6.</span> Criar Evento (<code>POST /event/</code>)</h3>
+            <p>Utiliza <code>EventDTO</code> para criar um novo evento.</p>
+            <pre><code>Content-Type: application/json
 
 {
-  "eventId": "UUID-event",
-  "userId": "UUID-user"
+  "title": "Festival Gastronômico Amazônico",
+  "eventDate": "2025-11-10T18:00:00.000Z",
+  "description": "Uma celebração dos sabores únicos da Amazônia na COP-30.",
+  "place": "UUID-do-local-EstacaoDasDocas"
 }</code></pre>
 
-            <h3>8.4. Registrar Visita</h3>
-            <pre><code>POST /visited
-Content-Type: application/json
+            <h3><span class="section-number">8.7.</span> Atualizar Evento (<code>PUT /event/:id</code>)</h3>
+            <p>Utiliza <code>EventDTO</code> para atualizar um evento existente. Substitua <code>:id</code> no título da rota pelo ID do evento.</p>
+            <pre><code>Content-Type: application/json
 
 {
-  "userId": "UUID-user",
-  "placeId": "UUID-place",
-  "visitDate": "2025-05-24T10:30:00.000Z"
+  "title": "Festival Gastronômico Amazônico (Edição Especial COP-30)",
+  "eventDate": "2025-11-12T19:00:00.000Z",
+  "description": "Edição especial do festival, com foco em sustentabilidade e culinária local.",
+  "place": "UUID-do-local-EstacaoDasDocas"
+}</code></pre>
+            
+            <h3><span class="section-number">8.8.</span> Agendar Visita em Evento (<code>POST /user/booking</code>)</h3>
+            <p>Utiliza <code>BookingDTO</code> para que um usuário se inscreva em um evento.</p>
+            <pre><code>Content-Type: application/json
+
+{
+  "eventId": "UUID-do-evento-FestivalAmazonico",
+  "userId": "UUID-do-usuario-Visitante"
+}</code></pre>
+
+            <h3><span class="section-number">8.9.</span> Registrar Visita a um Local (<code>POST /visited/</code>)</h3>
+            <p>Utiliza <code>VisitedDTO</code> para marcar um local como visitado por um usuário em uma data específica.</p>
+            <pre><code>Content-Type: application/json
+
+{
+  "userId": "UUID-do-usuario-Visitante",
+  "placeId": "UUID-do-local-VerOPeso",
+  "visitDate": "2025-10-20T10:30:00.000Z"
+}</code></pre>
+
+            <h3><span class="section-number">8.10.</span> Atualizar Registro de Visita (<code>PUT /visited/</code>)</h3>
+            <p>Utiliza <code>VisitedDTO</code> para atualizar a data de uma visita existente. A visita é identificada pela combinação de <code>userId</code> e <code>placeId</code> no corpo da requisição.</p>
+            <pre><code>Content-Type: application/json
+
+{
+  "userId": "UUID-do-usuario-Visitante",
+  "placeId": "UUID-do-local-VerOPeso",
+  "visitDate": "2025-10-20T11:00:00.000Z" 
 }</code></pre>
         </section>
-
         <hr class="section-divider">
 
         <section id="navegacao">
-            <h2>Navegue pela Documentação</h2>
-            <p>Veja a estrutura do projeto e o DER, ou retorne à visão geral:</p>
             <p style="text-align: center; margin-top: 25px;">
                 <a href="index.html" class="button-link">Voltar para Visão Geral</a>
                 <a href="estrutura_projeto.html" class="button-link">Estrutura do Projeto e DER</a>

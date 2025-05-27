@@ -21,7 +21,7 @@
             <ul>
                 <li><a href="index.html">Visão Geral</a></li>
                 <li><a href="instalacao.html">Instalação</a></li>
-                <li><a href="autenticacao_usuarios.html">Usuários & Acesso</a></li>
+                <li><a href="autenticacao_usuarios.html" class="active">Usuários & Acesso</a></li>
                 <li><a href="api_referencia.html">API Referência</a></li>
                 <li><a href="estrutura_projeto.html">Projeto & DER</a></li>
             </ul>
@@ -34,7 +34,7 @@
         </header>
 
         <section id="niveis-acesso">
-            <h2>6. Níveis de Acesso e Autenticação</h2>
+            <h2><span class="section-number">6.</span> Níveis de Acesso e Autenticação</h2>
             <p>A autenticação na API é realizada via JSON Web Tokens (JWT), enviados no cabeçalho <code>Authorization</code> como <code>Bearer Token</code>.</p>
             <p>Existem os seguintes níveis de acesso:</p>
             <ul>
@@ -45,17 +45,39 @@
             </ul>
         </section>
 
-        <section id="criacao-usuarios">
-            <h3>6.1. Criação de Usuários</h3>
-            <h4>Admin</h4>
-            <p>Usuários administradores são criados via inserção direta no banco de dados (SQL):</p>
-            <pre><code>INSERT INTO "user" (id, name, profile_pick, role, email, "password")
-VALUES ('seu-uuid-aqui', 'Admin User', 'https://example.com/avatar.png', 'admin', 'admin@example.com', '&lt;hash_da_senha_bcrypt&gt;');</code></pre>
-            <p><em>Nota: Substitua <code>'seu-uuid-aqui'</code> por um UUID válido e <code>'&lt;hash_da_senha_bcrypt&gt;'</code> pelo hash Bcrypt da senha desejada.</em></p>
+        <hr class="section-divider">
 
-            <h4>Visitor / Organizer</h4>
-            <p>Visitantes e Organizadores podem se registrar através do endpoint público <code>POST /user/register</code>:</p>
+        <section id="criacao-usuarios">
+            <h2><span class="section-number">6.1.</span> Criação de Usuários</h2>
+            
+            <h3>Usuário Administrador Padrão (Admin)</h3>
+            <p>Para facilitar o primeiro acesso, configuração inicial e testes da API, você pode inserir um usuário administrador padrão diretamente no banco de dados. Execute o seguinte comando SQL utilizando uma ferramenta de gerenciamento PostgreSQL (como o pgAdmin):</p>
+            <pre><code>INSERT INTO "user" (
+  id, name, profile_pick, role, email, "password"
+) VALUES (
+  '9dfce170-5094-436f-9413-f5afc769a75e',
+  'Admin User',
+  'https://l1nq.com/icone-de-perfil-de-avatar-padrao',
+  'admin',
+  'admin@example.com',
+  '$2b$10$yG9D2ihkLL6hTh5KCw/l5.BqAqJ3i49GIvksxCBStGSMEJtTHS2ey' -- Senha: admin123
+);</code></pre>
+            <p>
+                Este comando criará um usuário com as seguintes credenciais prontas para uso:
+                <ul>
+                    <li><strong>Email para login:</strong> <code>admin@example.com</code></li>
+                    <li><strong>Senha para login:</strong> <code>admin123</code></li>
+                    <li><strong>Nível de acesso (Role):</strong> <code>admin</code></li>
+                    <li><strong>ID do Usuário:</strong> <code>9dfce170-5094-436f-9413-f5afc769a75e</code></li>
+                </ul>
+            </p>
+            <p><strong>Importante:</strong> Por questões de segurança, é altamente recomendável que você altere a senha deste usuário padrão assim que possível, especialmente se estiver configurando um ambiente de homologação ou produção.</p>
+
+            <h3>Visitor / Organizer</h3>
+            <p>Visitantes e Organizadores podem se registrar de forma independente através do endpoint público da API:</p>
             <pre><code>POST /user/register
+Content-Type: application/json
+
 {
   "name": "Nome do Usuário",
   "userLogin": { 
@@ -65,13 +87,12 @@ VALUES ('seu-uuid-aqui', 'Admin User', 'https://example.com/avatar.png', 'admin'
   "profilePick": "https://example.com/foto.jpg",
   "role": "visitor"  // ou "organizer"
 }</code></pre>
+            <p>Este endpoint permite que novos usuários criem suas contas e comecem a interagir com a plataforma de acordo com o papel (<code>role</code>) especificado.</p>
         </section>
 
         <hr class="section-divider">
 
         <section id="navegacao">
-            <h2>Navegue pela Documentação</h2>
-            <p>Veja os detalhes de todos os endpoints ou retorne à visão geral:</p>
             <p style="text-align: center; margin-top: 25px;">
                 <a href="index.html" class="button-link">Voltar para Visão Geral</a>
                 <a href="api_referencia.html" class="button-link">Referência da API</a>
@@ -83,9 +104,8 @@ VALUES ('seu-uuid-aqui', 'Admin User', 'https://example.com/avatar.png', 'admin'
             <p>Trace Point API &copy; 2025</p>
             <p><a href="https://github.com/vyctor-carvalho/Trace_Point" target="_blank" rel="noopener noreferrer">Ver Projeto no GitHub</a></p>
         </footer>
-
-        <script src="script.js"></script>
-
     </div>
+    {/* Mantenha o seu script aqui, por exemplo: <script src="js/main.js" defer></script> ou <script src="script.js" defer></script> */}
+    <script src="script.js" defer></script> 
 </body>
 </html>

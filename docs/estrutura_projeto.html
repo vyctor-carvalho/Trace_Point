@@ -34,63 +34,97 @@
         </header>
 
         <section id="estrutura-pastas">
-            <h2>9. Estrutura do Projeto</h2>
+            <h2><span class="section-number">9.</span> Estrutura do Projeto</h2>
             <p>A estrutura de pastas e arquivos principais do projeto é organizada da seguinte forma:</p>
             <pre><code>Trace_Point/
-├── .env
-├── .env.copy
-├── .dockerignore
-├── docker-compose.yml
-├── Dockerfile
-├── package.json
-├── tsconfig.json
-├── README.md
-├── index.ts
-├── server.ts
-└── src/
-    ├── config/EsportEnv.ts
-    ├── controllers/
-    │   ├── AuthController.ts
-    │   ├── EventController.ts
-    │   ├── PlaceController.ts
-    │   ├── UserController.ts
-    │   └── VisitedController.ts
-    ├── DTO/
-    │   ├── wrappersDTO/      # (Adicionado baseado no README anterior)
-    │   │   ├── AddressDTO.ts # (Adicionado baseado no README anterior)
-    │   │   └── LoginInfoDTO.ts# (Adicionado baseado no README anterior)
-    │   ├── BookingDTO.ts
-    │   ├── EventDTO.ts      
-    │   ├── PlaceDTO.ts
-    │   ├── UserDTO.ts
-    │   └── VisitedDTO.ts     # (Ou VisitedDOT.ts conforme seu DTO)
-    ├── error/
-    │   ├── ErrorsHandler.ts
-    │   └── HttpException.ts
-    ├── middleware/
-    │   ├── ErrorsHandler.ts
-    │   ├── JwtRequired.ts
-    │   ├── RoleCheck.ts
-    │   └── ValidateId.ts
-    ├── migrations/           # (Arquivos de migração)
-    ├── models/
-    │   ├── enum/             
-    │   │   ├── PlaceType.ts  # (Adicionado baseado no README anterior)
-    │   │   └── UserRole.ts   # (Adicionado baseado no README anterior)
-    │   ├── wrappers/         
-    │   │   ├── Address.ts    # (Adicionado baseado no README anterior)
-    │   │   └── LoginInfo.ts  # (Adicionado baseado no README anterior)
-    │   ├── Event.ts          
-    │   ├── Place.ts          
-    │   ├── User.ts           
-    │   └── VisitedPlaces.ts  
-    ├── repositories/         # (Arquivos de repositório)
-    ├── routes/               # (Arquivos de rotas)
-    ├── service/              # (Arquivos de serviço)
-    ├── utils/                # (Arquivos utilitários)
-    ├── db_config/AppDataSource.ts
-    └── @types/express/index.d.ts</code></pre>
-            <p><em>Nota: Alguns diretórios e arquivos foram complementados com base na estrutura do README anterior para maior detalhamento, como `wrappersDTO` e os arquivos dentro de `enum` e `wrappers` em `models`.</em></p>
+├── .env                       # Variáveis de ambiente (local, não versionado)
+├── .env.copy                  # Arquivo de exemplo para .env
+├── .dockerignore              # Especifica arquivos a serem ignorados pelo Docker
+├── docker-compose.yml         # Define e orquestra os serviços Docker (app, banco, etc.)
+├── Dockerfile                 # Instruções para construir a imagem Docker da aplicação
+├── package.json               # Metadados do projeto, dependências e scripts NPM
+├── tsconfig.json              # Configurações do compilador TypeScript
+├── README.md                  # Documentação principal do projeto (Markdown)
+└── src/                       # Código fonte da aplicação
+    ├── index.ts               # Ponto de entrada principal da aplicação, inicia o servidor
+    ├── server.ts              # Configuração do servidor Express e inicialização do AppDataSource]
+    │
+    ├── config/
+    │   └── EsportEnv.ts       # Carrega e exporta variáveis de ambiente da aplicação
+    │
+    ├── controllers/           # Camada de controle (lida com requisições HTTP e envia respostas)
+    │   ├── AuthController.ts    # Controller para autenticação (login, refresh token)
+    │   ├── EventController.ts   # Controller para gerenciar operações de Eventos
+    │   ├── PlaceController.ts   # Controller para gerenciar operações de Locais
+    │   ├── UserController.ts    # Controller para gerenciar operações de Usuários
+    │   └── VisitedController.ts # Controller para gerenciar operações de Visitas a Locais
+    │
+    ├── DTO/                   # Data Transfer Objects (definem a estrutura dos dados de entrada/saída da API)
+    │   ├── wrappersDTO/       # DTOs para estruturas de dados aninhadas ou específicas
+    │   │   ├── AddressDTO.ts  # DTO para dados de endereço
+    │   │   └── LoginInfoDTO.ts# DTO para dados de login (email, senha)
+    │   ├── BookingDTO.ts      # DTO para agendamento de usuário em evento
+    │   ├── EventDTO.ts        # DTO para criação/atualização de Eventos
+    │   ├── PlaceDTO.ts        # DTO para criação/atualização de Locais
+    │   ├── UserDTO.ts         # DTO para criação/atualização de Usuários
+    │   └── VisitedDTO.ts      # DTO para registro/atualização de Visitas (ou VisitedDOT.ts)
+    │
+    ├── error/                 # Classes e manipuladores de erro customizados
+    │   ├── ErrorsHandler.ts   # Middleware global para tratamento de erros
+    │   └── HttpException.ts   # Classe base para exceções HTTP customizadas
+    │
+    ├── middleware/            # Middlewares Express para diversas funcionalidades
+    │   ├── ErrorsHandler.ts   # (Arquivo do middleware de erro, usado no final da pilha)
+    │   ├── JwtRequired.ts     # Middleware para exigir autenticação JWT em rotas protegidas
+    │   ├── RoleCheck.ts       # Middleware para verificação de papéis (roles) de usuário
+    │   └── ValidateId.ts      # Middleware para validar formato de IDs em parâmetros de rota
+    │
+    ├── migrations/            # Arquivos de migração de banco de dados (TypeORM)
+    │
+    ├── models/                # Entidades do banco de dados (TypeORM) e Enums
+    │   ├── enum/              # Enumerações utilizadas nos modelos e DTOs
+    │   │   ├── PlaceType.ts   # Enum para os tipos de Local (ex: cultural, restaurante)
+    │   │   └── UserRole.ts    # Enum para os papéis de Usuário (ex: admin, visitor)
+    │   ├── wrappers/          # Classes embutidas ou auxiliares para modelos complexos
+    │   │   ├── Address.ts     # Classe/entidade embutida para Endereço
+    │   │   └── LoginInfo.ts   # Classe/entidade embutida para Informações de Login
+    │   ├── Event.ts           # Entidade Evento (tabela 'event')
+    │   ├── Place.ts           # Entidade Local (tabela 'place')
+    │   ├── User.ts            # Entidade Usuário (tabela 'user')
+    │   └── VisitedPlaces.ts   # Entidade para Locais Visitados (tabela 'visited_places')
+    │
+    ├── repositories/          # Camada de acesso a dados (interação direta com o banco via TypeORM)
+    │   ├── EventRepository.ts   # Exemplo: Repositório para a entidade Evento
+    │   ├── PlaceRepository.ts   # Exemplo: Repositório para a entidade Local
+    │   ├── UserRepository.ts    # Exemplo: Repositório para a entidade Usuário
+    │   └── VisitedRepository.ts # Exemplo: Repositório para a entidade VisitedPlaces
+    │
+    ├── routes/                # Definição das rotas da API (endpoints)
+    │   ├── AuthRoutes.ts      # Rotas relacionadas à autenticação
+    │   ├── EventRoutes.ts     # Rotas para o recurso Evento
+    │   ├── PlaceRoutes.ts     # Rotas para o recurso Local
+    │   ├── UserRoutes.ts      # Rotas para o recurso Usuário
+    │   └── VisitedRoutes.ts   # Rotas para o recurso Visitas
+    │
+    ├── service/               # Camada de serviço (lógica de negócios da aplicação)
+    │   ├── AuthService.ts     # Serviço para lógica de autenticação
+    │   ├── EventService.ts    # Serviço para lógica de negócios de Eventos
+    │   ├── PlaceService.ts    # Serviço para lógica de negócios de Locais
+    │   ├── UserService.ts     # Serviço para lógica de negócios de Usuários
+    │   └── VisitedService.ts  # Serviço para lógica de negócios de Visitas
+    │
+    ├── utils/                 # Funções e classes utilitárias diversas
+    │   ├── ExistsValidator.ts # Utilitário para validar a existência de objetos/entidades
+    │   ├── TokenManager.ts    # Utilitário para gerar e verificar tokens JWT
+    │   └── ValidateRequestBody.ts # Utilitário para validar corpos de requisição usando class-validator
+    │
+    ├── db_config/
+    │   └── AppDataSource.ts   # Configuração da fonte de dados TypeORM (conexão com o banco)
+    │
+    └── @types/                # Arquivos de definição de tipos TypeScript
+        └── express/
+            └── index.d.ts     # Extensões de tipo para o Express (ex: para req.user)</code></pre>
+            <p>Para uma exploração mais detalhada, navegue pelo <a href="https://github.com/vyctor-carvalho/Trace_Point" target="_blank" rel="noopener noreferrer">repositório no GitHub</a>.</p>
         </section>
 
         <section id="der">
@@ -104,8 +138,6 @@
         <hr class="section-divider">
 
         <section id="navegacao">
-            <h2>Navegue pela Documentação</h2>
-            <p>Explore outras seções ou retorne à página inicial:</p>
             <p style="text-align: center; margin-top: 25px;">
                 <a href="index.html" class="button-link">Voltar para Visão Geral</a>
                 <a href="api_referencia.html" class="button-link">Referência da API</a>

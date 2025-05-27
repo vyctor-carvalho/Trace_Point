@@ -20,7 +20,7 @@
             </div>
             <ul>
                 <li><a href="index.html">Visão Geral</a></li>
-                <li><a href="instalacao.html">Instalação</a></li>
+                <li><a href="instalacao.html" class="active">Instalação</a></li>
                 <li><a href="autenticacao_usuarios.html">Usuários & Acesso</a></li>
                 <li><a href="api_referencia.html">API Referência</a></li>
                 <li><a href="estrutura_projeto.html">Projeto & DER</a></li>
@@ -31,65 +31,119 @@
     <div class="container">
         <header class="page-header">
             <h1 class="project-title">Guia de Instalação e Configuração</h1>
+            <p class="project-subtitle">Este guia detalha os passos para configurar e executar o backend da API Trace Point em seu ambiente de desenvolvimento, tanto com Docker quanto manualmente.</p>
         </header>
 
         <section id="requisitos">
-            <h2>4. Requisitos de Ambiente</h2>
-            <h3>4.1. Com Docker:</h3>
+            <h2><span class="section-number">4.</span> Requisitos de Ambiente</h2>
+            <p>Antes de iniciar, certifique-se de que você possui os seguintes softwares instalados em sua máquina, dependendo do método de execução escolhido:</p>
+            <h3><span class="section-number">4.1.</span> Com Docker (Método Recomendado):</h3>
             <ul>
-                <li>Docker</li>
-                <li>Docker Compose</li>
+                <li><strong>Docker:</strong> Para gerenciamento de contêineres. Certifique-se de que o Docker Desktop (ou Docker Engine no Linux) está em execução.</li>
+                <li><strong>Docker Compose:</strong> Para orquestração de múltiplos contêineres definidos no arquivo <code>docker-compose.yml</code>.</li>
             </ul>
-            <h3>4.2. Execução Manual:</h3>
+            <h3><span class="section-number">4.2.</span> Execução Manual:</h3>
             <ul>
-                <li>Node.js 18+ </li>
-                <li>PostgreSQL </li>
-                <li>NPM </li>
+                <li><strong>Node.js:</strong> Versão 18 ou superior. Recomenda-se usar um gerenciador de versões como o NVM.</li>
+                <li><strong>PostgreSQL:</strong> Um servidor de banco de dados PostgreSQL instalado e em execução localmente ou acessível.</li>
+                <li><strong>NPM (Node Package Manager):</strong> Geralmente instalado junto com o Node.js, usado para gerenciar as dependências do projeto.</li>
             </ul>
         </section>
 
+        <hr class="section-divider">
+
         <section id="instalacao-config">
-            <h2>5. Instalação e Configuração</h2>
-            <h3>5.1. Clonagem do Repositório</h3>
+            <h2><span class="section-number">5.</span> Instalação e Configuração Detalhada</h2>
+            
+            <h3><span class="section-number">5.1.</span> Clonagem do Repositório</h3>
+            <p>Primeiramente, clone o repositório do projeto do GitHub para o seu ambiente local e navegue para o diretório criado:</p>
             <pre><code>git clone https://github.com/vyctor-carvalho/Trace_Point.git
 cd Trace_Point</code></pre>
             
-            <h3>5.2. Rodando com Docker (Recomendado) </h3>
-            <p>Copie o arquivo de ambiente:</p>
+            <h3><span class="section-number">5.2.</span> Rodando com Docker (Recomendado)</h3>
+            <p>A utilização do Docker simplifica a configuração do ambiente, pois todos os serviços (aplicação e banco de dados) são executados em contêineres isolados.</p>
+            
+            <h4>Passo 1: Copie e Configure o Arquivo de Ambiente</h4>
+            <p>O projeto utiliza um arquivo <code>.env</code> para configurar as variáveis de ambiente. Copie o arquivo de exemplo <code>.env.copy</code> para criar seu próprio arquivo <code>.env</code>:</p>
             <pre><code>cp .env.copy .env</code></pre>
-            <p>Edite as variáveis no arquivo <code>.env</code> conforme necessário. Para o Docker, um exemplo de configuração seria:</p>
-            <pre><code>DB_HOST=db
+            <p>Para a configuração padrão com Docker, o conteúdo do <code>.env</code> copiado de <code>.env.copy</code> que já está otimizado e deve ser semelhante a este:</p>
+            <pre><code># Configurações para Docker
+DB_HOST=db
 DB_PORT=5432
 DB_USER=postgres
 DB_PASSWORD=postgres
-DB_NAME=tracepoint</code></pre>
-            <p>Suba os containers:</p>
+DB_NAME=tracepoint
+
+# Porta da API (pode ser definida aqui ou usada a padrão do Docker Compose)
+SYSTEM_API_PORT=3000 
+
+# Configurações de JWT (substitua por valores seguros em um ambiente real)
+JWT_SECRET=sua_chave_secreta_docker
+REFRESH_SECRET=sua_outra_chave_secreta_docker
+JWT_EXPIRES_IN=3600
+REFRSH_TOKEN_EXPIRES_IN=604800</code></pre>
+            <p><em>Nota: As variáveis de JWT e `SYSTEM_API_PORT` no <code>.env.copy</code> podem variar. Ajuste-as se necessário, mas as de banco de dados (<code>DB_*</code>) são cruciais para a comunicação entre o container da aplicação e o container do banco de dados (`db`).</em></p>
+
+            <h4>Passo 2: Suba os Contêineres</h4>
+            <p>Com o Docker e Docker Compose instalados e o arquivo <code>.env</code> configurado, execute o seguinte comando na raiz do projeto para construir as imagens (se ainda não existirem) e iniciar os contêineres:</p>
             <pre><code>docker-compose up --build</code></pre>
+            <p>Este comando pode levar alguns minutos na primeira vez. Após a conclusão, a API estará rodando e o banco de dados estará acessível.</p>
 
-            <h3>5.3. Acesso via pgAdmin (com Docker) </h3>
-            <p>Acesse o pgAdmin (geralmente em <code>http://localhost:8080</code> ou a porta que você configurou para o container do pgAdmin) e conecte-se ao servidor do banco de dados com as seguintes credenciais:</p>
+            <h3><span class="section-number">5.3.</span> Acesso via pgAdmin (com Docker)</h3>
+            <p>Se o seu <code>docker-compose.yml</code> inclui o serviço do pgAdmin, você poderá acessá-lo. Conforme a documentação do projeto, ele estaria em <code>http://localhost:8080</code> (verifique a porta no seu `docker-compose.yml` se for diferente).</p>
+            <p>Para conectar-se ao banco de dados PostgreSQL que está rodando no container `db`:</p>
             <ul>
-                <li><strong>Host:</strong> <code>db</code> </li>
-                <li><strong>Porta:</strong> <code>5432</code> </li>
-                <li><strong>Usuário:</strong> <code>postgres</code> </li>
-                <li><strong>Senha:</strong> <code>postgres</code></li>
+                <li><strong>Servidor/Host:</strong> <code>db</code> (este é o nome do serviço do banco de dados definido no <code>docker-compose.yml</code>)</li>
+                <li><strong>Porta:</strong> <code>5432</code> (porta padrão do PostgreSQL, exposta internamente entre os containers)</li>
+                <li><strong>Usuário:</strong> <code>postgres</code> (ou o valor de <code>DB_USER</code> no seu <code>.env</code>)</li>
+                <li><strong>Senha:</strong> <code>postgres</code> (ou o valor de <code>DB_PASSWORD</code> no seu <code>.env</code>)</li>
+                <li><strong>Banco de Dados para Manutenção:</strong> pode ser `postgres` ou o nome do seu banco principal (`tracepoint`).</li>
             </ul>
+            <p>Após conectar ao servidor, você poderá ver e gerenciar o banco de dados <code>tracepoint</code>.</p>
 
-            <h3>5.4. Execução Manual </h3>
-            <p>Instale as dependências:</p>
+            <h3><span class="section-number">5.4.</span> Execução Manual (Sem Docker)</h3>
+            <p>Se preferir não usar Docker, você pode configurar e rodar a aplicação diretamente na sua máquina.</p>
+
+            <h4>Passo 1: Instale as Dependências</h4>
+            <p>Certifique-se de ter o Node.js (v18+) e NPM instalados. Navegue até a raiz do projeto e instale as dependências listadas no `package.json`:</p>
             <pre><code>npm install</code></pre>
-            <p>Configure seu arquivo <code>.env</code> manualmente com as credenciais do seu banco de dados PostgreSQL local e outras variáveis necessárias (como <code>SYSTEM_API_PORT</code>, <code>JWT_SECRET</code>, etc.).</p>
-            <p>Rode as migrações do banco de dados:</p>
+
+            <h4>Passo 2: Configure o Arquivo de Ambiente (<code>.env</code>)</h4>
+            <p>Copie o arquivo <code>.env.copy</code> para <code>.env</code> (se ainda não o fez):</p>
+            <pre><code>cp .env.copy .env</code></pre>
+            <p>Agora, edite o arquivo <code>.env</code> com as configurações para o seu ambiente local. Você precisará fornecer os detalhes da sua instância PostgreSQL local e definir segredos para JWT. Um exemplo completo seria:</p>
+            <pre><code># Configurações do servidor
+SYSTEM_API_PORT=3001 # Defina a porta em que sua API local irá rodar
+
+# Dados do banco de dados para execução manual
+DB_HOST=localhost    # Ou o IP/host do seu servidor PostgreSQL local
+DB_PORT=5432         # A porta em que seu PostgreSQL está escutando
+DB_USER=seu_usuario_postgres  # Seu nome de usuário do PostgreSQL
+DB_PASSWORD=sua_senha_postgres # A senha do seu usuário do PostgreSQL
+DB_NAME=tracepoint   # O nome do banco de dados que você criou para este projeto
+
+# Configurações de JWT - JSON Web Token
+# IMPORTANTE: Use chaves fortes, longas e aleatórias em um ambiente real!
+JWT_SECRET=minhaChaveSecretaMuitoForteParaDesenvolvimento123!@#
+REFRESH_SECRET=outraChaveSecretaMaisForteAindaParaRefreshTokenABC#$%
+JWT_EXPIRES_IN=3600      # Tempo de expiração do token de acesso em segundos (1 hora)
+REFRSH_TOKEN_EXPIRES_IN=604800 # Tempo de expiração do refresh token em segundos (7 dias)</code></pre>
+            <p><strong>Importante:</strong> Substitua os valores de exemplo (como `seu_usuario_postgres`, `sua_senha_postgres`, e as chaves JWT) pelos seus próprios valores. As chaves JWT devem ser strings longas, complexas e secretas.</p>
+
+            <h4>Passo 3: Rode as Migrações do Banco de Dados</h4>
+            <p>Com o banco de dados PostgreSQL em execução e o <code>.env</code> configurado, aplique as migrações para criar as tabelas e a estrutura necessárias no banco:</p>
             <pre><code>npm run migration:run</code></pre>
-            <p>Inicie o servidor de desenvolvimento:</p>
+            <p>Este comando executará todos os arquivos de migração pendentes localizados na pasta de migrações.</p>
+
+            <h4>Passo 4: Inicie o Servidor de Desenvolvimento</h4>
+            <p>Finalmente, inicie a aplicação em modo de desenvolvimento:</p>
             <pre><code>npm run dev</code></pre>
+            <p>O servidor deverá iniciar na porta que você especificou em `SYSTEM_API_PORT` (ou a padrão, se não definida). Você verá uma mensagem no console indicando que o servidor está rodando.</p>
         </section>
 
         <hr class="section-divider">
 
         <section id="navegacao">
-            <h2>Navegue pela Documentação</h2>
-            <p>Após configurar o ambiente, explore como os usuários são gerenciados ou veja os detalhes dos endpoints da API:</p>
             <p style="text-align: center; margin-top: 25px;">
                 <a href="index.html" class="button-link">Voltar para Visão Geral</a>
                 <a href="autenticacao_usuarios.html" class="button-link">Usuários e Autenticação</a>
@@ -101,9 +155,8 @@ DB_NAME=tracepoint</code></pre>
             <p>Trace Point API &copy; 2025</p>
             <p><a href="https://github.com/vyctor-carvalho/Trace_Point" target="_blank" rel="noopener noreferrer">Ver Projeto no GitHub</a></p>
         </footer>
-
-        <script src="script.js"></script>
-
     </div>
+    {/* Mantenha o seu script aqui, por exemplo: <script src="js/main.js" defer></script> ou <script src="script.js" defer></script> */}
+    <script src="script.js" defer></script>
 </body>
 </html>

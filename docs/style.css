@@ -168,7 +168,18 @@ table tbody tr:nth-of-type(even) { background-color: #f3f9f3; }
 table tbody tr:last-of-type { border-bottom: 2px solid #004d00; }
 table tbody tr:hover { background-color: #e0f0e0; }
 
-pre { background-color: #282c34; color: #abb2bf; padding: 1.2em; border-radius: 6px; overflow-x: auto; font-size: 0.9em; line-height: 1.5; margin: 1.8em 0; box-shadow: inset 0 0 8px rgba(0,0,0,0.25); white-space: pre-wrap; word-wrap: break-word; }
+pre { 
+    background-color: #282c34; 
+    color: #abb2bf; 
+    padding: 1.2em; 
+    border-radius: 6px; 
+    overflow-x: auto; 
+    font-size: 0.9em; 
+    line-height: 1.5; 
+    margin: 1.8em 0;
+    box-shadow: inset 0 0 8px rgba(0,0,0,0.25);
+    white-space: pre; 
+    word-wrap: break-word; }
 code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace; }
 p > code, li > code, td > code, h3 > code, h4 > code { background-color: #d9ead3; color: #004d00; padding: 0.2em 0.5em; border-radius: 4px; font-size: 0.9em; font-weight: normal; }
 

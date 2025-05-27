@@ -34,7 +34,7 @@
         </header>
 
         <section id="auth-endpoints">
-            <h3>7.1. Autenticação (<code>/auth</code>) [cite: 19]</h3>
+            <h3>7.1. Autenticação (<code>/auth</code>)</h3>
             <table>
                 <thead>
                     <tr>
@@ -49,13 +49,13 @@
                         <td><code>POST</code></td>
                         <td><code>/auth/login</code></td>
                         <td>Não</td>
-                        <td>Login de usuário. [cite: 20, 22]</td>
+                        <td>Login de usuário.</td>
                     </tr>
                     <tr>
                         <td><code>POST</code></td>
                         <td><code>/auth/refresh</code></td>
-                        <td>Não [cite: 23]</td>
-                        <td>Atualização de token. [cite: 23]</td>
+                        <td>Não </td>
+                        <td>Atualização de token. </td>
                     </tr>
                 </tbody>
             </table>
@@ -76,45 +76,45 @@
                     <tr>
                         <td><code>POST</code></td>
                         <td><code>/user/register</code></td>
-                        <td>Não [cite: 27]</td>
-                        <td>Público [cite: 27]</td>
+                        <td>Não </td>
+                        <td>Público </td>
                     </tr>
                     <tr>
                         <td><code>POST</code></td>
                         <td><code>/user/booking</code></td>
                         <td>Sim</td>
-                        <td>Visitor, Organizer, Admin [cite: 29]</td>
+                        <td>Visitor, Organizer, Admin </td>
                     </tr>
                     <tr>
                         <td><code>GET</code></td>
                         <td><code>/user/</code></td>
                         <td>Sim</td>
-                        <td>Admin [cite: 31]</td>
+                        <td>Admin </td>
                     </tr>
                     <tr>
                         <td><code>GET</code></td>
                         <td><code>/user/:id</code></td>
                         <td>Sim</td>
-                        <td>Admin [cite: 33]</td>
+                        <td>Admin </td>
                     </tr>
                     <tr>
                         <td><code>PUT</code></td>
                         <td><code>/user/:id</code></td>
                         <td>Sim</td>
-                        <td>Todos (restrito ao próprio usuário ou Admin) [cite: 35]</td>
+                        <td>Todos (restrito ao próprio usuário ou Admin) </td>
                     </tr>
                     <tr>
                         <td><code>DELETE</code></td>
                         <td><code>/user/:id</code></td>
-                        <td>Sim [cite: 36]</td>
-                        <td>Admin [cite: 36]</td>
+                        <td>Sim </td>
+                        <td>Admin </td>
                     </tr>
                 </tbody>
             </table>
         </section>
 
         <section id="place-endpoints">
-            <h3>7.3. Locais (<code>/place</code>) [cite: 37]</h3>
+            <h3>7.3. Locais (<code>/place</code>) </h3>
             <table>
                 <thead>
                     <tr>
@@ -129,38 +129,38 @@
                         <td><code>POST</code></td>
                         <td><code>/place/</code></td>
                         <td>Sim</td>
-                        <td>Organizer, Admin [cite: 40]</td>
+                        <td>Organizer, Admin </td>
                     </tr>
                     <tr>
                         <td><code>GET</code></td>
                         <td><code>/place/</code></td>
-                        <td>Sim [cite: 41]</td>
-                        <td>Todos [cite: 41]</td>
+                        <td>Sim </td>
+                        <td>Todos </td>
                     </tr>
                     <tr>
                         <td><code>GET</code></td>
                         <td><code>/place/:id</code></td>
-                        <td>Sim [cite: 42]</td>
-                        <td>Todos [cite: 43]</td>
+                        <td>Sim </td>
+                        <td>Todos </td>
                     </tr>
                     <tr>
                         <td><code>PUT</code></td>
                         <td><code>/place/:id</code></td>
                         <td>Sim</td>
-                        <td>Organizer, Admin [cite: 44]</td>
+                        <td>Organizer, Admin </td>
                     </tr>
                     <tr>
                         <td><code>DELETE</code></td>
                         <td><code>/place/:id</code></td>
-                        <td>Sim [cite: 45]</td>
-                        <td>Admin [cite: 45]</td>
+                        <td>Sim </td>
+                        <td>Admin </td>
                     </tr>
                 </tbody>
             </table>
         </section>
 
         <section id="event-endpoints">
-            <h3>7.4. Eventos (<code>/event</code>) [cite: 46]</h3>
+            <h3>7.4. Eventos (<code>/event</code>) </h3>
             <table>
                 <thead>
                     <tr>
@@ -175,31 +175,31 @@
                         <td><code>POST</code></td>
                         <td><code>/event/</code></td>
                         <td>Sim</td>
-                        <td>Organizer, Admin [cite: 49]</td>
+                        <td>Organizer, Admin</td>
                     </tr>
                     <tr>
                         <td><code>GET</code></td>
                         <td><code>/event/</code></td>
-                        <td>Sim [cite: 50]</td>
-                        <td>Todos [cite: 50]</td>
+                        <td>Sim </td>
+                        <td>Todos </td>
                     </tr>
                     <tr>
                         <td><code>GET</code></td>
                         <td><code>/event/:id</code></td>
-                        <td>Sim [cite: 51]</td>
-                        <td>Todos [cite: 52]</td>
+                        <td>Sim </td>
+                        <td>Todos </td>
                     </tr>
                     <tr>
                         <td><code>PUT</code></td>
                         <td><code>/event/:id</code></td>
                         <td>Sim</td>
-                        <td>Organizer, Admin [cite: 53]</td>
+                        <td>Organizer, Admin </td>
                     </tr>
                     <tr>
                         <td><code>DELETE</code></td>
                         <td><code>/event/:id</code></td>
-                        <td>Sim [cite: 54]</td>
-                        <td>Organizer, Admin [cite: 54]</td>
+                        <td>Sim </td>
+                        <td>Organizer, Admin </td>
                     </tr>
                 </tbody>
             </table>
@@ -220,38 +220,38 @@
                     <tr>
                         <td><code>POST</code></td>
                         <td><code>/visited/</code></td>
-                        <td>Sim [cite: 58]</td>
-                        <td>Todos [cite: 59]</td>
+                        <td>Sim </td>
+                        <td>Todos </td>
                     </tr>
                     <tr>
                         <td><code>GET</code></td>
                         <td><code>/visited/</code></td>
-                        <td>Sim [cite: 61]</td>
-                        <td>Todos (Admin vê tudo) [cite: 61]</td>
+                        <td>Sim </td>
+                        <td>Todos (Admin vê tudo) </td>
                     </tr>
                     <tr>
                         <td><code>GET</code></td>
                         <td><code>/visited/user/:id</code></td>
-                        <td>Sim [cite: 62]</td>
-                        <td>Visitor/Admin/Organizer [cite: 62]</td>
+                        <td>Sim </td>
+                        <td>Visitor/Admin/Organizer </td>
                     </tr>
                     <tr>
                         <td><code>GET</code></td>
                         <td><code>/visited/place/:id</code></td>
-                        <td>Sim [cite: 63]</td>
-                        <td>Todos [cite: 63]</td>
+                        <td>Sim </td>
+                        <td>Todos </td>
                     </tr>
                     <tr>
                         <td><code>PUT</code></td>
                         <td><code>/visited/</code></td>
-                        <td>Sim [cite: 65]</td>
-                        <td>Todos [cite: 65]</td>
+                        <td>Sim </td>
+                        <td>Todos</td>
                     </tr>
                     <tr>
                         <td><code>DELETE</code></td>
                         <td><code>/visited/</code></td>
-                        <td>Sim [cite: 67]</td>
-                        <td>Organizer, Admin [cite: 67]</td>
+                        <td>Sim </td>
+                        <td>Organizer, Admin </td>
                     </tr>
                 </tbody>
             </table>
@@ -259,7 +259,7 @@
 
         <section id="exemplos-requisicoes">
             <h2>8. Exemplos de Requisição</h2>
-            <h3>8.1. Criar Local [cite: 68]</h3>
+            <h3>8.1. Criar Local</h3>
             <pre><code>POST /place
 Content-Type: application/json
 
@@ -274,7 +274,7 @@ Content-Type: application/json
   }
 }</code></pre>
 
-            <h3>8.2. Criar Evento [cite: 69]</h3>
+            <h3>8.2. Criar Evento </h3>
             <pre><code>POST /event
 Content-Type: application/json
 
@@ -285,7 +285,7 @@ Content-Type: application/json
   "place": "UUID-do-place"
 }</code></pre>
 
-            <h3>8.3. Agendar Visita [cite: 70]</h3>
+            <h3>8.3. Agendar Visita </h3>
             <pre><code>POST /user/booking
 Content-Type: application/json
 

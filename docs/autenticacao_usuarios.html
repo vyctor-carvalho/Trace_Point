@@ -39,9 +39,9 @@
             <p>Existem os seguintes níveis de acesso:</p>
             <ul>
                 <li><strong>Visitor:</strong> Acesso básico, permitindo visualização de informações e agendamento de visitas.</li>
-                <li><strong>Organizer:</strong> Além das permissões de Visitor, pode criar e gerenciar seus próprios eventos e locais. [cite: 16]</li>
+                <li><strong>Organizer:</strong> Além das permissões de Visitor, pode criar e gerenciar seus próprios eventos e locais.</li>
                 <li><strong>Admin:</strong> Acesso total a todas as funcionalidades da API, incluindo gerenciamento de todos os dados e usuários.</li>
-                <li><strong>Público:</strong> Rotas que não requerem autenticação, como login e registro de novos usuários. [cite: 17]</li>
+                <li><strong>Público:</strong> Rotas que não requerem autenticação, como login e registro de novos usuários. </li>
             </ul>
         </section>
 
@@ -53,7 +53,7 @@
 VALUES ('seu-uuid-aqui', 'Admin User', 'https://example.com/avatar.png', 'admin', 'admin@example.com', '&lt;hash_da_senha_bcrypt&gt;');</code></pre>
             <p><em>Nota: Substitua <code>'seu-uuid-aqui'</code> por um UUID válido e <code>'&lt;hash_da_senha_bcrypt&gt;'</code> pelo hash Bcrypt da senha desejada.</em></p>
 
-            <h4>Visitor / Organizer [cite: 18]</h4>
+            <h4>Visitor / Organizer</h4>
             <p>Visitantes e Organizadores podem se registrar através do endpoint público <code>POST /user/register</code>:</p>
             <pre><code>POST /user/register
 {

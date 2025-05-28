@@ -21,7 +21,7 @@
             <ul>
                 <li><a href="index.html">Visão Geral</a></li>
                 <li><a href="instalacao.html">Instalação</a></li>
-                <li><a href="autenticacao_usuarios.html">Usuários & Acesso</a></li>
+                <li><a href="autenticacao_usuarios.html" class="active">Usuários & Acesso</a></li>
                 <li><a href="api_referencia.html">API Referência</a></li>
                 <li><a href="estrutura_projeto.html">Estrutura do Projeto</a></li> 
                 <li><a href="dependencias_tecnologias.html">Dependências</a></li>
@@ -53,27 +53,29 @@
             <h2><span class="section-number">6.1.</span> Criação de Usuários</h2>
             
             <h3>Usuário Administrador Padrão (Admin)</h3>
-            <p>Para facilitar o primeiro acesso, configuração inicial e testes da API, você pode inserir um usuário administrador padrão diretamente no banco de dados. Execute o seguinte comando SQL utilizando uma ferramenta de gerenciamento PostgreSQL (como o pgAdmin):</p>
-            <pre><code>INSERT INTO "user" (
+            <p>Para facilitar o primeiro acesso e a configuração inicial, um usuário administrador padrão é <strong>automaticamente criado no banco de dados</strong> quando as migrações do projeto são executadas. Esta criação é realizada por um script de "seed" dentro de uma das migrações (por exemplo, um arquivo como <code>CreateDefaultAdminUserSeed.ts</code>).</p>
+            <p>As credenciais deste administrador padrão são:</p>
+            <ul>
+                <li><strong>Email para login:</strong> <code>admin@example.com</code></li>
+                <li><strong>Senha para login:</strong> <code>admin123</code></li>
+                <li><strong>Nível de acesso (Role):</strong> <code>admin</code></li>
+                <li><strong>ID do Usuário (UUID):</strong> <code>9dfce170-5094-436f-9413-f5afc769a75e</code></li>
+                <li><strong>Foto de Perfil (URL):</strong> <a href="https://avatar/icone-de-perfil-de-avatar-padrao" target="_blank" rel="noopener noreferrer">https://avatar/icone-de-perfil-de-avatar-padrao</a></li>
+            </ul>
+            <p>Com este usuário, você pode acessar imediatamente todas as funcionalidades administrativas da API após a configuração inicial e execução das migrações do banco de dados.</p>
+            <p><strong>Importante:</strong> Por questões de segurança, é altamente recomendável que você altere a senha deste usuário padrão assim que possível após o primeiro login, especialmente se estiver configurando um ambiente de homologação ou produção.</p>
+            <p>O processo de criação na migração utiliza um comando SQL similar a este:</p>
+            <pre><code>-- SQL executado pela migração para criar o admin padrão:
+INSERT INTO "user" (
   id, name, profile_pick, role, email, "password"
 ) VALUES (
   '9dfce170-5094-436f-9413-f5afc769a75e',
   'Admin User',
-  'https://l1nq.com/icone-de-perfil-de-avatar-padrao',
+  'https://avatar/icone-de-perfil-de-avatar-padrao',
   'admin',
   'admin@example.com',
-  '$2b$10$yG9D2ihkLL6hTh5KCw/l5.BqAqJ3i49GIvksxCBStGSMEJtTHS2ey' -- Senha: admin123
+  '$2b$10$yG9D2ihkLL6hTh5KCw/l5.BqAqJ3i49GIvksxCBStGSMEJtTHS2ey' -- Senha hasheada para: admin123
 );</code></pre>
-            <p>
-                Este comando criará um usuário com as seguintes credenciais prontas para uso:
-                <ul>
-                    <li><strong>Email para login:</strong> <code>admin@example.com</code></li>
-                    <li><strong>Senha para login:</strong> <code>admin123</code></li>
-                    <li><strong>Nível de acesso (Role):</strong> <code>admin</code></li>
-                    <li><strong>ID do Usuário:</strong> <code>9dfce170-5094-436f-9413-f5afc769a75e</code></li>
-                </ul>
-            </p>
-            <p><strong>Importante:</strong> Por questões de segurança, é altamente recomendável que você altere a senha deste usuário padrão assim que possível, especialmente se estiver configurando um ambiente de homologação ou produção.</p>
 
             <h3>Visitor / Organizer</h3>
             <p>Visitantes e Organizadores podem se registrar de forma independente através do endpoint público da API:</p>
@@ -107,7 +109,6 @@ Content-Type: application/json
             <p><a href="https://github.com/vyctor-carvalho/Trace_Point" target="_blank" rel="noopener noreferrer">Ver Projeto no GitHub</a></p>
         </footer>
     </div>
-    {/* Mantenha o seu script aqui, por exemplo: <script src="js/main.js" defer></script> ou <script src="script.js" defer></script> */}
     <script src="script.js" defer></script> 
 </body>
 </html>

@@ -3,14 +3,16 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "typeorm": "typeorm-ts-node-commonjs",
-    "migration:run": "ts-node ./node_modules/typeorm/cli.js migration:run -d src/db_config/AppDataSource.ts",
-    "migration:generate": "typeorm-ts-node-commonjs migration:generate src/migrations/GeneratedMigration --dataSource src/db_config/AppDataSource.ts",
-    "migration:revert": "ts-node --esm ./node_modules/typeorm/cli.js migration:revert -d src/db_config/AppDataSource.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
     "build": "tsc",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+
+    "typeorm": "cross-env TYPEORM_MIGRATIONS=src/migrations/*.ts ts-node ./node_modules/typeorm/cli.js",
+    "migration:generate": "npm run typeorm -- -d src/db_config/AppDataSource.ts migration:generate",
+    "migration:create": "npm run typeorm -- -d src/db_config/AppDataSource.ts migration:create",
+    "migration:run": "npm run typeorm -- -d src/db_config/AppDataSource.ts migration:run",
+    "migration:revert": "npm run typeorm -- -d src/db_config/AppDataSource.ts migration:revert"
   },
   "keywords": [],
   "author": "",
@@ -33,6 +35,8 @@
     "@types/express": "^5.0.2",
     "@types/jsonwebtoken": "^9.0.9",
     "@types/node": "^22.15.19",
+    "cross-env": "^7.0.3",
+    "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.8.3"
   }

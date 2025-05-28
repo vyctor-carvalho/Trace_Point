@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estrutura do Projeto & DER - Trace Point API</title>
+    <title>Estrutura do Projeto e Arquitetura - Trace Point API</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -23,19 +23,80 @@
                 <li><a href="instalacao.html">Instalação</a></li>
                 <li><a href="autenticacao_usuarios.html">Usuários & Acesso</a></li>
                 <li><a href="api_referencia.html">API Referência</a></li>
-                <li><a href="estrutura_projeto.html">Projeto & DER</a></li>
+                <li><a href="estrutura_projeto.html" class="active">Estrutura do Projeto</a></li>
+                <li><a href="dependencias_tecnologias.html">Dependências</a></li>
+                <li><a href="modelo_relacional.html">Modelo Relacional</a></li>
             </ul>
         </div>
     </nav>
 
     <div class="container">
         <header class="page-header">
-            <h1 class="project-title">Estrutura do Projeto e DER</h1>
+            <h1 class="project-title">Estrutura e Arquitetura do Projeto</h1>
+            <p class="project-subtitle">Entenda como o backend da API Trace Point está organizado e a arquitetura de software empregada.</p>
         </header>
 
+        <section id="arquitetura-projeto">
+            <h2><span class="section-number">9.1.</span> Arquitetura da Aplicação</h2>
+            <p>A API Trace Point adota uma arquitetura em camadas (Layered Architecture), um padrão comum para aplicações backend robustas e manuteníveis. Esta abordagem promove a separação de responsabilidades, facilitando o desenvolvimento, testes e a evolução do sistema. As principais camadas são:</p>
+            <ul>
+                <li>
+                    <strong>Camada de Rotas (<code>src/routes/</code>):</strong>
+                    <p>Responsável por definir os endpoints da API (URLs e métodos HTTP). Cada arquivo de rota agrupa os endpoints de um recurso específico (ex: <code>UserRoutes.ts</code> para usuários). As rotas recebem as requisições HTTP e as direcionam para os <em>Controllers</em> apropriados, aplicando middlewares de nível de rota quando necessário (ex: para autenticação específica).</p>
+                </li>
+                <li>
+                    <strong>Camada de Controladores (<code>src/controllers/</code>):</strong>
+                    <p>Atua como intermediária entre as rotas e os serviços. Os controllers extraem dados da requisição (parâmetros, corpo, queries), validam esses dados (frequentemente utilizando DTOs e <code>class-validator</code>), invocam os métodos da camada de <em>Serviço</em> para executar a lógica de negócios, e então formatam e enviam a resposta HTTP de volta ao cliente.</p>
+                </li>
+                <li>
+                    <strong>Camada de Serviços (<code>src/service/</code>):</strong>
+                    <p>Contém a lógica de negócios central da aplicação. Os serviços orquestram as operações, manipulam os dados, realizam cálculos complexos e interagem com a camada de <em>Repositório</em> para persistência de dados. Esta camada mantém os controllers "magros" e focados na interação HTTP.</p>
+                </li>
+                <li>
+                    <strong>Camada de Repositórios (<code>src/repositories/</code>):</strong>
+                    <p>Responsável pelo acesso e manipulação de dados no banco de dados. Utilizando o TypeORM, os repositórios abstraem as consultas SQL complexas, permitindo que a camada de Serviço interaja com o banco de forma mais orientada a objetos. Cada entidade geralmente possui seu próprio repositório.</p>
+                </li>
+                <li>
+                    <strong>Modelos/Entidades (<code>src/models/</code>):</strong>
+                    <p>Definem a estrutura dos dados da aplicação e como eles são mapeados para as tabelas do banco de dados. São classes TypeScript decoradas com anotações do TypeORM (<code>@Entity</code>, <code>@Column</code>, etc.) que representam as tabelas e seus relacionamentos.</p>
+                </li>
+                <li>
+                    <strong>DTOs - Data Transfer Objects (<code>src/DTO/</code>):</strong>
+                    <p>São objetos simples usados para transferir dados entre as camadas, especialmente entre o cliente e os controllers, e entre controllers e services. Ajudam a definir a "forma" dos dados esperados e retornados, e são frequentemente usados para validação de entrada.</p>
+                </li>
+                <li>
+                    <strong>Middlewares (<code>src/middleware/</code>):</strong>
+                    <p>Funções que têm acesso aos objetos de requisição (<code>req</code>), resposta (<code>res</code>) e à próxima função de middleware no ciclo de requisição-resposta da aplicação. São usados para tarefas como autenticação (<code>JwtRequired.ts</code>), autorização (<code>RoleCheck.ts</code>), tratamento de erros global (<code>ErrorsHandler.ts</code>), e validações específicas (<code>ValidateId.ts</code>).</p>
+                </li>
+                <li>
+                    <strong>Utilitários (<code>src/utils/</code>):</strong>
+                    <p>Módulos contendo funções e classes auxiliares reutilizáveis em várias partes da aplicação, como gerenciamento de tokens (<code>TokenManager.ts</code>), validadores customizados (<code>ExistsValidator.ts</code>, <code>ValidateRequestBody.ts</code>), etc.</p>
+                </li>
+                <li>
+                    <strong>Configurações (<code>src/config/</code> e <code>src/db_config/</code>):</strong>
+                    <p>Arquivos para configurações da aplicação, como carregamento de variáveis de ambiente (<code>EsportEnv.ts</code>) e a configuração da conexão com o banco de dados (<code>AppDataSource.ts</code>).</p>
+                </li>
+            </ul>
+            <p><strong>Fluxo de uma Requisição (Exemplo Simplificado):</strong></p>
+            <ol>
+                <li>O cliente envia uma requisição HTTP para um endpoint da API.</li>
+                <li>O Express.js recebe a requisição e a encaminha para a Rota correspondente.</li>
+                <li>Middlewares de rota (ex: autenticação) são executados.</li>
+                <li>A Rota chama o método apropriado no Controller.</li>
+                <li>O Controller valida os dados de entrada (usando DTOs) e chama o Serviço.</li>
+                <li>O Serviço executa a lógica de negócios, possivelmente chamando um ou mais Repositórios.</li>
+                <li>O Repositório interage com o banco de dados (via TypeORM) para ler ou escrever dados.</li>
+                <li>Os dados (ou um status de sucesso/erro) retornam pela mesma cadeia: Repositório -> Serviço -> Controller.</li>
+                <li>O Controller formata a resposta e a envia de volta ao cliente.</li>
+                <li>Se ocorrer um erro em qualquer ponto, ele pode ser capturado e tratado pelo middleware de Erros global.</li>
+            </ol>
+        </section>
+
+        <hr class="section-divider">
+
         <section id="estrutura-pastas">
-            <h2><span class="section-number">9.</span> Estrutura do Projeto</h2>
-            <p>A estrutura de pastas e arquivos principais do projeto é organizada da seguinte forma:</p>
+            <h2><span class="section-number">9.2.</span> Estrutura de Pastas Detalhada</h2>
+            <p>A organização de pastas e arquivos principais do projeto é a seguinte:</p>
             <pre><code>Trace_Point/
 ├── .env                       # Variáveis de ambiente (local, não versionado)
 ├── .env.copy                  # Arquivo de exemplo para .env
@@ -47,7 +108,7 @@
 ├── README.md                  # Documentação principal do projeto (Markdown)
 └── src/                       # Código fonte da aplicação
     ├── index.ts               # Ponto de entrada principal da aplicação, inicia o servidor
-    ├── server.ts              # Configuração do servidor Express e inicialização do AppDataSource]
+    ├── server.ts              # Configuração do servidor Express e inicialização do AppDataSource
     │
     ├── config/
     │   └── EsportEnv.ts       # Carrega e exporta variáveis de ambiente da aplicação
@@ -67,72 +128,64 @@
     │   ├── EventDTO.ts        # DTO para criação/atualização de Eventos
     │   ├── PlaceDTO.ts        # DTO para criação/atualização de Locais
     │   ├── UserDTO.ts         # DTO para criação/atualização de Usuários
-    │   └── VisitedDTO.ts      # DTO para registro/atualização de Visitas (ou VisitedDOT.ts)
+    │   └── VisitedDTO.ts      # DTO para registro/atualização de Visitas
     │
     ├── error/                 # Classes e manipuladores de erro customizados
     │   ├── ErrorsHandler.ts   # Middleware global para tratamento de erros
     │   └── HttpException.ts   # Classe base para exceções HTTP customizadas
     │
     ├── middleware/            # Middlewares Express para diversas funcionalidades
-    │   ├── ErrorsHandler.ts   # (Arquivo do middleware de erro, usado no final da pilha)
-    │   ├── JwtRequired.ts     # Middleware para exigir autenticação JWT em rotas protegidas
-    │   ├── RoleCheck.ts       # Middleware para verificação de papéis (roles) de usuário
-    │   └── ValidateId.ts      # Middleware para validar formato de IDs em parâmetros de rota
+    │   ├── ErrorsHandler.ts   # (Arquivo do middleware de erro)
+    │   ├── JwtRequired.ts     # Middleware para exigir autenticação JWT
+    │   ├── RoleCheck.ts       # Middleware para verificação de papéis de usuário
+    │   └── ValidateId.ts      # Middleware para validar formato de IDs
     │
     ├── migrations/            # Arquivos de migração de banco de dados (TypeORM)
     │
     ├── models/                # Entidades do banco de dados (TypeORM) e Enums
-    │   ├── enum/              # Enumerações utilizadas nos modelos e DTOs
-    │   │   ├── PlaceType.ts   # Enum para os tipos de Local (ex: cultural, restaurante)
-    │   │   └── UserRole.ts    # Enum para os papéis de Usuário (ex: admin, visitor)
-    │   ├── wrappers/          # Classes embutidas ou auxiliares para modelos complexos
+    │   ├── enum/              # Enumerações
+    │   │   ├── PlaceType.ts   # Enum para os tipos de Local
+    │   │   └── UserRole.ts    # Enum para os papéis de Usuário
+    │   ├── wrappers/          # Classes embutidas para modelos
     │   │   ├── Address.ts     # Classe/entidade embutida para Endereço
     │   │   └── LoginInfo.ts   # Classe/entidade embutida para Informações de Login
-    │   ├── Event.ts           # Entidade Evento (tabela 'event')
-    │   ├── Place.ts           # Entidade Local (tabela 'place')
-    │   ├── User.ts            # Entidade Usuário (tabela 'user')
-    │   └── VisitedPlaces.ts   # Entidade para Locais Visitados (tabela 'visited_places')
+    │   ├── Event.ts           # Entidade Evento
+    │   ├── Place.ts           # Entidade Local
+    │   ├── User.ts            # Entidade Usuário
+    │   └── VisitedPlaces.ts   # Entidade para Locais Visitados
     │
-    ├── repositories/          # Camada de acesso a dados (interação direta com o banco via TypeORM)
-    │   ├── EventRepository.ts   # Exemplo: Repositório para a entidade Evento
-    │   ├── PlaceRepository.ts   # Exemplo: Repositório para a entidade Local
-    │   ├── UserRepository.ts    # Exemplo: Repositório para a entidade Usuário
-    │   └── VisitedRepository.ts # Exemplo: Repositório para a entidade VisitedPlaces
+    ├── repositories/          # Camada de acesso a dados (TypeORM Repositories)
+    │   ├── EventRepository.ts   # Exemplo: Repositório para Evento
+    │   ├── PlaceRepository.ts   # Exemplo: Repositório para Local
+    │   ├── UserRepository.ts    # Exemplo: Repositório para Usuário
+    │   └── VisitedRepository.ts # Exemplo: Repositório para Visitas
     │
-    ├── routes/                # Definição das rotas da API (endpoints)
-    │   ├── AuthRoutes.ts      # Rotas relacionadas à autenticação
-    │   ├── EventRoutes.ts     # Rotas para o recurso Evento
-    │   ├── PlaceRoutes.ts     # Rotas para o recurso Local
-    │   ├── UserRoutes.ts      # Rotas para o recurso Usuário
-    │   └── VisitedRoutes.ts   # Rotas para o recurso Visitas
+    ├── routes/                # Definição das rotas da API
+    │   ├── AuthRoutes.ts      # Rotas de autenticação
+    │   ├── EventRoutes.ts     # Rotas de Eventos
+    │   ├── PlaceRoutes.ts     # Rotas de Locais
+    │   ├── UserRoutes.ts      # Rotas de Usuários
+    │   └── VisitedRoutes.ts   # Rotas de Visitas
     │
-    ├── service/               # Camada de serviço (lógica de negócios da aplicação)
-    │   ├── AuthService.ts     # Serviço para lógica de autenticação
-    │   ├── EventService.ts    # Serviço para lógica de negócios de Eventos
-    │   ├── PlaceService.ts    # Serviço para lógica de negócios de Locais
-    │   ├── UserService.ts     # Serviço para lógica de negócios de Usuários
-    │   └── VisitedService.ts  # Serviço para lógica de negócios de Visitas
+    ├── service/               # Camada de serviço (lógica de negócios)
+    │   ├── AuthService.ts     # Serviço de autenticação
+    │   ├── EventService.ts    # Serviço de Eventos
+    │   ├── PlaceService.ts    # Serviço de Locais
+    │   ├── UserService.ts     # Serviço de Usuários
+    │   └── VisitedService.ts  # Serviço de Visitas
     │
-    ├── utils/                 # Funções e classes utilitárias diversas
-    │   ├── ExistsValidator.ts # Utilitário para validar a existência de objetos/entidades
-    │   ├── TokenManager.ts    # Utilitário para gerar e verificar tokens JWT
-    │   └── ValidateRequestBody.ts # Utilitário para validar corpos de requisição usando class-validator
+    ├── utils/                 # Funções e classes utilitárias
+    │   ├── ExistsValidator.ts # Validador de existência
+    │   ├── TokenManager.ts    # Gerenciador de tokens JWT
+    │   └── ValidateRequestBody.ts # Validador de corpo de requisição
     │
     ├── db_config/
-    │   └── AppDataSource.ts   # Configuração da fonte de dados TypeORM (conexão com o banco)
+    │   └── AppDataSource.ts   # Configuração da fonte de dados TypeORM
     │
     └── @types/                # Arquivos de definição de tipos TypeScript
         └── express/
-            └── index.d.ts     # Extensões de tipo para o Express (ex: para req.user)</code></pre>
-            <p>Para uma exploração mais detalhada, navegue pelo <a href="https://github.com/vyctor-carvalho/Trace_Point" target="_blank" rel="noopener noreferrer">repositório no GitHub</a>.</p>
-        </section>
-
-        <section id="der">
-            <h2>10. Diagrama Entidade-Relacionamento (DER)</h2>
-            <p>O diagrama abaixo ilustra as principais entidades do banco de dados e seus relacionamentos:</p>
-            <div class="der-image-container">
-                <img src="./img/der.jpeg" alt="Diagrama Entidade-Relacionamento do Trace Point" style="border:1px solid #ccc; max-width:100%;">
-            </div>
+            └── index.d.ts     # Extensões de tipo para o Express (ex: req.user)</code></pre>
+            <p>Para uma exploração mais detalhada dos arquivos, navegue pelo <a href="https://github.com/vyctor-carvalho/Trace_Point" target="_blank" rel="noopener noreferrer">repositório no GitHub</a>.</p>
         </section>
 
         <hr class="section-divider">
@@ -141,7 +194,7 @@
             <p style="text-align: center; margin-top: 25px;">
                 <a href="index.html" class="button-link">Voltar para Visão Geral</a>
                 <a href="api_referencia.html" class="button-link">Referência da API</a>
-                <a href="instalacao.html" class="button-link">Guia de Instalação</a>
+                <a href="modelo_relacional.html" class="button-link">Modelo Relacional (DER)</a>
             </p>
         </section>
 
@@ -149,9 +202,7 @@
             <p>Trace Point API &copy; 2025</p>
             <p><a href="https://github.com/vyctor-carvalho/Trace_Point" target="_blank" rel="noopener noreferrer">Ver Projeto no GitHub</a></p>
         </footer>
-
-        <script src="script.js"></script>
-
     </div>
+    <script src="script.js" defer></script>
 </body>
 </html>

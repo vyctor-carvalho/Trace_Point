@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dependências e Tecnologias Detalhadas - Trace Point API</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo"><h1>Trace Point API</h1></div>
+        <button class="hamburger-menu" id="hamburgerMenu" aria-label="Toggle navigation" aria-expanded="false">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </button>
+        <div class="nav-links" id="navLinks">
+            <div class="sidebar-header">
+                <h1>Trace Point API</h1>
+            </div>
+            <ul>
+                <li><a href="index.html">Visão Geral</a></li>
+                <li><a href="instalacao.html">Instalação</a></li>
+                <li><a href="autenticacao_usuarios.html">Usuários & Acesso</a></li>
+                <li><a href="api_referencia.html">API Referência</a></li>
+                <li><a href="estrutura_projeto.html">Estrutura do Projeto</a></li> 
+                <li><a href="dependencias_tecnologias.html">Dependências</a></li>
+                <li><a href="modelo_relacional.html">Modelo Relacional</a></li> 
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header class="page-header">
+            <h1 class="project-title">Dependências e Tecnologias Detalhadas</h1>
+            <p class="project-subtitle">Uma visão sobre as principais bibliotecas e ferramentas que compõem o backend da API Trace Point e como foram utilizadas.</p>
+        </header>
+
+        <section id="nodejs-express">
+            <h2>Node.js e Express.js</h2>
+            <p>O <a href="https://nodejs.org/" target="_blank" rel="noopener noreferrer">Node.js</a> é o ambiente de execução JavaScript no servidor, permitindo a construção de aplicações backend eficientes. O <a href="https://expressjs.com/pt-br/" target="_blank" rel="noopener noreferrer">Express.js</a> é um framework minimalista e flexível para Node.js, usado para construir a estrutura da nossa API RESTful.</p>
+            <ul>
+                <li><strong><code>express</code></strong>: Framework principal para roteamento e middlewares.
+                    <ul>
+                        <li>Utilizado para: Criar a instância do servidor (<code>express()</code>), definir rotas (<code>server.get()</code>, <code>server.post()</code>, etc.), aplicar middlewares globais (<code>server.use(express.json())</code>) e middlewares de rota.</li>
+                        <li>Importações chave: <code>Request</code>, <code>Response</code>, <code>NextFunction</code>, <code>Router</code> de <code>express</code>.</li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+
+        <hr class="section-divider">
+
+        <section id="typeorm-postgresql">
+            <h2>TypeORM e PostgreSQL</h2>
+            <p>O <a href="https://www.postgresql.org/" target="_blank" rel="noopener noreferrer">PostgreSQL</a> é o sistema de gerenciamento de banco de dados relacional escolhido. O <a href="https://typeorm.io/" target="_blank" rel="noopener noreferrer">TypeORM</a> é um ORM (Object-Relational Mapper) que facilita a interação com o banco de dados de forma orientada a objetos em TypeScript.</p>
+            <ul>
+                <li><strong><code>typeorm</code></strong>: Biblioteca ORM.
+                    <ul>
+                        <li>Utilizado para: Definir entidades (<code>@Entity</code>, <code>@Column</code>, <code>@PrimaryGeneratedColumn</code>, etc.), criar relacionamentos (<code>@ManyToOne</code>, <code>@OneToMany</code>, <code>@ManyToMany</code>, <code>@JoinColumn</code>, <code>@JoinTable</code>), configurar a fonte de dados (<code>DataSource</code>), e realizar operações de banco (<code>save</code>, <code>find</code>, <code>findOneBy</code>, <code>delete</code>, <code>queryRunner.query</code> em migrações).</li>
+                        <li>Importações chave: Decorators de entidade, <code>DataSource</code>, <code>MigrationInterface</code>, <code>QueryRunner</code>.</li>
+                    </ul>
+                </li>
+                <li><strong><code>pg</code></strong>: Driver Node.js para PostgreSQL, usado pelo TypeORM para se comunicar com o banco.
+                    <ul>
+                        <li>Utilizado indiretamente pelo TypeORM.</li>
+                    </ul>
+                </li>
+                <li><strong><code>reflect-metadata</code></strong>: Necessário para o TypeORM funcionar com decoradores e metadados de reflexão.
+                    <ul>
+                        <li>Importado globalmente (<code>import "reflect-metadata";</code>), geralmente no ponto de entrada da aplicação ou na configuração do DataSource.</li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+
+        <hr class="section-divider">
+
+        <section id="validacao-transformacao">
+            <h2>Validação e Transformação de Dados</h2>
+            <p>Para garantir a integridade e o formato correto dos dados que entram e saem da API, utilizamos as seguintes bibliotecas:</p>
+            <ul>
+                <li><strong><code>class-validator</code></strong>: Validação de objetos baseada em decoradores.
+                    <ul>
+                        <li>Utilizado para: Validar DTOs (Data Transfer Objects) aplicando decoradores como <code>@IsNotEmpty()</code>, <code>@IsString()</code>, <code>@IsEmail()</code>, <code>@IsUUID()</code>, <code>@IsDate()</code>, <code>@IsEnum()</code>, <code>@IsOptional()</code>, <code>@ValidateNested()</code>, <code>@IsIn()</code>, <code>@IsNumber()</code>, <code>@IsPostalCode()</code>. A função <code>validate()</code> é usada para executar as validações.</li>
+                        <li>Importações chave: Decoradores de validação, <code>validate</code>, <code>ValidationError</code>.</li>
+                    </ul>
+                </li>
+                <li><strong><code>class-transformer</code></strong>: Transformação de objetos (plain objects para instâncias de classes e vice-versa).
+                    <ul>
+                        <li>Utilizado para: Converter o corpo da requisição (plain JSON) em instâncias tipadas dos nossos DTOs (<code>plainToInstance()</code>). O decorator <code>@Type()</code> é usado para transformações de tipos aninhados ou específicos, como datas.</li>
+                        <li>Importações chave: <code>plainToInstance</code>, <code>Type</code>.</li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+
+        <hr class="section-divider">
+
+        <section id="autenticacao-seguranca">
+            <h2>Autenticação e Segurança</h2>
+            <ul>
+                <li><strong><code>jsonwebtoken</code></strong>: Para criação e verificação de JSON Web Tokens (JWT).
+                    <ul>
+                        <li>Utilizado para: Gerar tokens de acesso e refresh (<code>sign()</code>) e verificar a validade e o conteúdo dos tokens recebidos (<code>verify()</code>).</li>
+                        <li>Importações chave: <code>sign</code>, <code>verify</code>, <code>JwtPayload</code> (interface).</li>
+                    </ul>
+                </li>
+                <li><strong><code>bcrypt</code></strong>: Para hashing de senhas.
+                    <ul>
+                        <li>Utilizado para: Gerar o hash seguro de senhas de usuários antes de armazená-las no banco (<code>hash()</code>) e comparar senhas fornecidas durante o login com os hashes armazenados (<code>compare()</code>).</li>
+                        <li>Importações chave: <code>hash</code>, <code>compare</code>. (Você também tem <code>@types/bcrypt</code> nas devDependencies para tipagem).</li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+
+        <hr class="section-divider">
+
+        <section id="ambiente-dev">
+            <h2>Ambiente e Desenvolvimento</h2>
+            <ul>
+                <li><strong><code>dotenv</code></strong>: Para carregar variáveis de ambiente de um arquivo <code>.env</code>.
+                    <ul>
+                        <li>Utilizado para: Carregar configurações sensíveis ou específicas do ambiente (<code>dotenv.config()</code>) para <code>process.env</code>.</li>
+                        <li>Importações chave: <code>* as dotenv</code>.</li>
+                    </ul>
+                </li>
+                <li><strong><code>typescript</code></strong> (devDependencies): Superset do JavaScript que adiciona tipagem estática.
+                    <ul>
+                        <li>Linguagem principal do projeto, compilada para JavaScript para produção.</li>
+                    </ul>
+                </li>
+                <li><strong><code>ts-node</code></strong> (devDependencies): Permite executar arquivos TypeScript diretamente no Node.js sem pré-compilação explícita.
+                    <ul>
+                        <li>Utilizado para: Executar scripts da CLI do TypeORM e, possivelmente, em desenvolvimento.</li>
+                    </ul>
+                </li>
+                <li><strong><code>ts-node-dev</code></strong> (devDependencies): Ferramenta para desenvolvimento que reinicia o servidor Node.js automaticamente quando arquivos TypeScript são alterados.
+                    <ul>
+                        <li>Utilizado no script <code>npm run dev</code> para agilizar o ciclo de desenvolvimento.</li>
+                    </ul>
+                </li>
+                <li><strong><code>cross-env</code></strong> (devDependencies): Permite definir variáveis de ambiente de forma compatível entre diferentes sistemas operacionais nos scripts NPM.
+                    <ul>
+                        <li>Utilizado nos scripts NPM para configurar variáveis como <code>TYPEORM_DATA_SOURCE</code> para os comandos da CLI do TypeORM.</li>
+                    </ul>
+                </li>
+                 <li><strong><code>@types/*</code></strong> (devDependencies): Pacotes que fornecem definições de tipo TypeScript para bibliotecas JavaScript que não as incluem nativamente (ex: <code>@types/express</code>, <code>@types/jsonwebtoken</code>, <code>@types/bcrypt</code>, <code>@types/node</code>).</li>
+            </ul>
+        </section>
+
+        <hr class="section-divider">
+
+        <section id="navegacao-final">
+            <p style="text-align: center; margin-top: 25px;">
+                <a href="index.html" class="button-link">Voltar para Visão Geral</a>
+                <a href="instalacao.html" class="button-link">Guia de Instalação</a>
+                <a href="api_referencia.html" class="button-link">Referência da API</a>
+            </p>
+        </section>
+
+        <footer>
+            <p>Trace Point API &copy; 2025</p>
+            <p><a href="https://github.com/vyctor-carvalho/Trace_Point" target="_blank" rel="noopener noreferrer">Ver Projeto no GitHub</a></p>
+        </footer>
+    </div>
+    <script src="js/main.js" defer></script> {/* Ou script.js dependendo do seu setup */}
+</body>
+</html>

@@ -183,6 +183,75 @@ pre {
 code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace; }
 p > code, li > code, td > code, h3 > code, h4 > code { background-color: #d9ead3; color: #004d00; padding: 0.2em 0.5em; border-radius: 4px; font-size: 0.9em; font-weight: normal; }
 
+details.migration-info { /* Adicionada classe para especificidade */
+    background-color: #e0f0e0; /* Verde claro, similar ao tech-list */
+    border: 1px solid #c9dcc9;
+    border-radius: 6px;
+    margin: 25px 0; /* Aumentado margin vertical */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    transition: all 0.3s ease-in-out; /* Transição suave para abertura */
+}
+
+details.migration-info summary {
+    font-weight: bold;
+    color: #004d00; /* Verde escuro principal */
+    padding: 15px 20px;
+    cursor: pointer;
+    outline: none; /* Remove o outline padrão do foco */
+    display: flex; /* Para alinhar o marcador e o texto */
+    justify-content: space-between; /* Para empurrar o marcador padrão para a direita (em alguns navegadores) */
+    align-items: center;
+    transition: background-color 0.2s ease;
+}
+
+details.migration-info summary:hover {
+    background-color: #d0e0d0; /* Um verde um pouco mais escuro no hover */
+}
+
+/* Estilo do marcador (seta) - pode variar entre navegadores, este é um genérico */
+details.migration-info summary::marker {
+    color: #004d00;
+}
+/* Para Chrome/Safari especificamente */
+details.migration-info summary::-webkit-details-marker {
+    color: #004d00; 
+}
+
+
+details.migration-info[open] {
+    background-color: #e8f5e9; /* Fundo um pouco diferente quando aberto */
+}
+
+details.migration-info[open] summary {
+    border-bottom: 1px solid #c9dcc9;
+    background-color: #d0e0d0;
+}
+
+.migration-details-content {
+    padding: 15px 20px 20px 20px;
+    border-top: 1px solid #c9dcc9; /* Linha separadora se a summary não tiver border-bottom quando aberta */
+}
+
+.migration-details-content p,
+.migration-details-content ul {
+    margin-bottom: 1em;
+    font-size: 0.95rem; /* Levemente menor para conteúdo dentro do details */
+}
+
+.migration-details-content code {
+    font-size: 0.9em; /* Código um pouco menor aqui */
+    /* Estilos de código inline (p > code) já devem se aplicar */
+}
+
+.migration-details-content ul {
+    list-style-type: disc;
+    padding-left: 25px;
+}
+.migration-details-content ul li {
+    margin-bottom: 0.5em;
+}
+
+
 .der-image-container { text-align: center; margin: 30px 0; }
 .der-image-container img { max-width: 100%; height: auto; border: 1px solid #ccc; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
 
@@ -190,7 +259,7 @@ footer { margin-top: 50px; padding: 30px 0; border-top: 1px solid #d9ead3; font-
 footer p { margin-bottom: 0.5em; }
 
 /* Media Queries para Responsividade */
-@media (max-width: 768px) {
+@media (max-width: 1070px) {
     /* Ajusta o tamanho do logo principal na navbar em telas menores */
     .navbar .logo h1 {
         font-size: 1.3em;

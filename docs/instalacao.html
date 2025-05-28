@@ -20,10 +20,12 @@
             </div>
             <ul>
                 <li><a href="index.html">Visão Geral</a></li>
-                <li><a href="instalacao.html" class="active">Instalação</a></li>
+                <li><a href="instalacao.html">Instalação</a></li>
                 <li><a href="autenticacao_usuarios.html">Usuários & Acesso</a></li>
                 <li><a href="api_referencia.html">API Referência</a></li>
-                <li><a href="estrutura_projeto.html">Projeto & DER</a></li>
+                <li><a href="estrutura_projeto.html">Estrutura do Projeto</a></li>
+                <li><a href="dependencias_tecnologias.html">Dependências</a></li>
+                <li><a href="modelo_relacional.html">Modelo Relacional</a></li> 
             </ul>
         </div>
     </nav>
@@ -66,52 +68,35 @@ cd Trace_Point</code></pre>
             <h4>Passo 1: Copie e Configure o Arquivo de Ambiente</h4>
             <p>O projeto utiliza um arquivo <code>.env</code> para configurar as variáveis de ambiente. Copie o arquivo de exemplo <code>.env.copy</code> para criar seu próprio arquivo <code>.env</code>:</p>
             <pre><code>cp .env.copy .env</code></pre>
-            <p>Para a configuração padrão com Docker, o conteúdo do <code>.env</code> copiado de <code>.env.copy</code> que já está otimizado e deve ser semelhante a este:</p>
+            <p>Para a configuração padrão com Docker, o conteúdo do <code>.env</code> copiado de <code>.env.copy</code> geralmente já está otimizado e deve ser semelhante a este (verifique o seu <code>.env.copy</code> para os valores exatos):</p>
             <pre><code># Configurações para Docker
 DB_HOST=db
 DB_PORT=5432
 DB_USER=postgres
 DB_PASSWORD=postgres
 DB_NAME=tracepoint
-
-# Porta da API (pode ser definida aqui ou usada a padrão do Docker Compose)
 SYSTEM_API_PORT=3000 
-
-# Configurações de JWT (substitua por valores seguros em um ambiente real)
 JWT_SECRET=sua_chave_secreta_docker
 REFRESH_SECRET=sua_outra_chave_secreta_docker
 JWT_EXPIRES_IN=3600
 REFRSH_TOKEN_EXPIRES_IN=604800</code></pre>
-            <p><em>Nota: As variáveis de JWT e `SYSTEM_API_PORT` no <code>.env.copy</code> podem variar. Ajuste-as se necessário, mas as de banco de dados (<code>DB_*</code>) são cruciais para a comunicação entre o container da aplicação e o container do banco de dados (`db`).</em></p>
-
+            
             <h4>Passo 2: Suba os Contêineres</h4>
             <p>Com o Docker e Docker Compose instalados e o arquivo <code>.env</code> configurado, execute o seguinte comando na raiz do projeto para construir as imagens (se ainda não existirem) e iniciar os contêineres:</p>
             <pre><code>docker-compose up --build</code></pre>
-            <p>Este comando pode levar alguns minutos na primeira vez. Após a conclusão, a API estará rodando e o banco de dados estará acessível.</p>
-
+            
             <h3><span class="section-number">5.3.</span> Acesso via pgAdmin (com Docker)</h3>
-            <p>Se o seu <code>docker-compose.yml</code> inclui o serviço do pgAdmin, você poderá acessá-lo. Conforme a documentação do projeto, ele estaria em <code>http://localhost:8080</code> (verifique a porta no seu `docker-compose.yml` se for diferente).</p>
-            <p>Para conectar-se ao banco de dados PostgreSQL que está rodando no container `db`:</p>
-            <ul>
-                <li><strong>Servidor/Host:</strong> <code>db</code> (este é o nome do serviço do banco de dados definido no <code>docker-compose.yml</code>)</li>
-                <li><strong>Porta:</strong> <code>5432</code> (porta padrão do PostgreSQL, exposta internamente entre os containers)</li>
-                <li><strong>Usuário:</strong> <code>postgres</code> (ou o valor de <code>DB_USER</code> no seu <code>.env</code>)</li>
-                <li><strong>Senha:</strong> <code>postgres</code> (ou o valor de <code>DB_PASSWORD</code> no seu <code>.env</code>)</li>
-                <li><strong>Banco de Dados para Manutenção:</strong> pode ser `postgres` ou o nome do seu banco principal (`tracepoint`).</li>
-            </ul>
-            <p>Após conectar ao servidor, você poderá ver e gerenciar o banco de dados <code>tracepoint</code>.</p>
+            <p>Se o seu <code>docker-compose.yml</code> inclui o serviço do pgAdmin, você poderá acessá-lo. (Ex: <code>http://localhost:8080</code>, verifique a porta no seu <code>docker-compose.yml</code>).</p>
+            <p>Conecte-se ao banco de dados PostgreSQL (serviço <code>db</code>) com as credenciais definidas no seu <code>.env</code> (padrão: usuário <code>postgres</code>, senha <code>postgres</code>, host <code>db</code>, porta <code>5432</code>).</p>
 
             <h3><span class="section-number">5.4.</span> Execução Manual (Sem Docker)</h3>
             <p>Se preferir não usar Docker, você pode configurar e rodar a aplicação diretamente na sua máquina.</p>
 
             <h4>Passo 1: Instale as Dependências</h4>
-            <p>Certifique-se de ter o Node.js (v18+) e NPM instalados. Navegue até a raiz do projeto e instale as dependências listadas no `package.json`:</p>
             <pre><code>npm install</code></pre>
 
             <h4>Passo 2: Configure o Arquivo de Ambiente (<code>.env</code>)</h4>
-            <p>Copie o arquivo <code>.env.copy</code> para <code>.env</code> (se ainda não o fez):</p>
-            <pre><code>cp .env.copy .env</code></pre>
-            <p>Agora, edite o arquivo <code>.env</code> com as configurações para o seu ambiente local. Você precisará fornecer os detalhes da sua instância PostgreSQL local e definir segredos para JWT. Um exemplo completo seria:</p>
+            <p>Copie <code>.env.copy</code> para <code>.env</code> e edite-o com as configurações para o seu ambiente local. Um exemplo completo seria:</p>
             <pre><code># Configurações do servidor
 SYSTEM_API_PORT=3001 # Defina a porta em que sua API local irá rodar
 
@@ -123,27 +108,57 @@ DB_PASSWORD=sua_senha_postgres # A senha do seu usuário do PostgreSQL
 DB_NAME=tracepoint   # O nome do banco de dados que você criou para este projeto
 
 # Configurações de JWT - JSON Web Token
-# IMPORTANTE: Use chaves fortes, longas e aleatórias em um ambiente real!
 JWT_SECRET=minhaChaveSecretaMuitoForteParaDesenvolvimento123!@#
 REFRESH_SECRET=outraChaveSecretaMaisForteAindaParaRefreshTokenABC#$%
-JWT_EXPIRES_IN=3600      # Tempo de expiração do token de acesso em segundos (1 hora)
-REFRSH_TOKEN_EXPIRES_IN=604800 # Tempo de expiração do refresh token em segundos (7 dias)</code></pre>
-            <p><strong>Importante:</strong> Substitua os valores de exemplo (como `seu_usuario_postgres`, `sua_senha_postgres`, e as chaves JWT) pelos seus próprios valores. As chaves JWT devem ser strings longas, complexas e secretas.</p>
+JWT_EXPIRES_IN=3600      
+REFRSH_TOKEN_EXPIRES_IN=604800</code></pre>
+            <p><strong>Importante:</strong> Substitua os valores de exemplo pelos seus próprios valores seguros.</p>
 
             <h4>Passo 3: Rode as Migrações do Banco de Dados</h4>
-            <p>Com o banco de dados PostgreSQL em execução e o <code>.env</code> configurado, aplique as migrações para criar as tabelas e a estrutura necessárias no banco:</p>
+            <p>Com o banco de dados PostgreSQL em execução e o <code>.env</code> configurado, aplique as migrações para criar as tabelas:</p>
             <pre><code>npm run migration:run</code></pre>
-            <p>Este comando executará todos os arquivos de migração pendentes localizados na pasta de migrações.</p>
+            
+            <details class="migration-info">
+                <summary>Clique para saber mais sobre os comandos de migração</summary>
+                <div class="migration-details-content">
+                    <p>As migrações do TypeORM são usadas para gerenciar e versionar o esquema do seu banco de dados de forma incremental. Cada migração representa uma alteração no banco (como criar uma tabela, adicionar uma coluna, etc.).</p>
+                    <p>Configuramos alguns scripts NPM no seu <code>package.json</code> para facilitar o uso dos comandos de migração do TypeORM. Lembre-se que o script base <code>typeorm</code> (ou <code>typeorm:cli</code>) configura o DataSource para esses comandos, geralmente lendo as variáveis de ambiente `TYPEORM_*` ou o arquivo `AppDataSource.ts`.</p>
+                    <ul>
+                        <li>
+                            <strong><code>npm run migration:create -- src/migrations/NomeDaSuaMigracao</code></strong>
+                            <p>Cria um novo arquivo de migração em branco na pasta <code>src/migrations/</code> com o nome fornecido (ex: <code>CreateUsersTable</code>). Você então edita este arquivo para adicionar seus comandos SQL (usando <code>queryRunner.query("SEU SQL AQUI")</code>) ou métodos do QueryBuilder do TypeORM nos métodos <code>up</code> (para aplicar) e <code>down</code> (para reverter).</p>
+                            <p>Exemplo para criar a seed do admin que discutimos:</p>
+                            <pre><code>npm run migration:create -- src/migrations/CreateDefaultAdminUserSeed</code></pre>
+                            <p>Depois, você editaria o arquivo <code>...-CreateDefaultAdminUserSeed.ts</code> gerado.</p>
+                        </li>
+                        <li>
+                            <strong><code>npm run migration:generate -- src/migrations/NomeDaSuaMigracao</code></strong>
+                            <p>Tenta gerar automaticamente os comandos SQL para uma nova migração com base nas mudanças que você fez nas suas entidades TypeORM (definidas em <code>src/models/</code>) desde a última migração. É crucial revisar cuidadosamente o arquivo gerado antes de aplicá-lo, pois a geração automática pode não cobrir todos os casos perfeitamente.</p>
+                        </li>
+                        <li>
+                            <strong><code>npm run migration:run</code></strong>
+                            <p>Executa todas as migrações pendentes que ainda não foram aplicadas ao banco de dados. É o comando que você usa para atualizar seu banco para o estado mais recente definido pelas suas migrações.</p>
+                        </li>
+                        <li>
+                            <strong><code>npm run migration:revert</code></strong>
+                            <p>Reverte a última migração que foi aplicada. Útil se você precisar desfazer a alteração mais recente no banco de dados que foi feita por uma migração.</p>
+                        </li>
+                    </ul>
+                    <p>Para que esses comandos funcionem corretamente, seu `AppDataSource.ts` deve estar configurado com os caminhos corretos para suas entidades e migrações, e as credenciais de banco de dados devem estar acessíveis (geralmente via variáveis de ambiente lidas pelo `AppDataSource.ts` ou pelas variáveis `TYPEORM_*` definidas no script npm).</p>
+                </div>
+            </details>
 
-            <h4>Passo 4: Inicie o Servidor de Desenvolvimento</h4>
+            <h4>Passo 4: Inicie o Servidor de Desenvolvimento (Após Migrações)</h4>
             <p>Finalmente, inicie a aplicação em modo de desenvolvimento:</p>
             <pre><code>npm run dev</code></pre>
-            <p>O servidor deverá iniciar na porta que você especificou em `SYSTEM_API_PORT` (ou a padrão, se não definida). Você verá uma mensagem no console indicando que o servidor está rodando.</p>
+            <p>O servidor deverá iniciar na porta que você especificou em `SYSTEM_API_PORT`.</p>
         </section>
 
         <hr class="section-divider">
 
         <section id="navegacao">
+            <h2>Navegue pela Documentação</h2>
+            <p>Após configurar o ambiente, explore como os usuários são gerenciados ou veja os detalhes dos endpoints da API:</p>
             <p style="text-align: center; margin-top: 25px;">
                 <a href="index.html" class="button-link">Voltar para Visão Geral</a>
                 <a href="autenticacao_usuarios.html" class="button-link">Usuários e Autenticação</a>
@@ -157,6 +172,6 @@ REFRSH_TOKEN_EXPIRES_IN=604800 # Tempo de expiração do refresh token em segund
         </footer>
     </div>
     {/* Mantenha o seu script aqui, por exemplo: <script src="js/main.js" defer></script> ou <script src="script.js" defer></script> */}
-    <script src="script.js" defer></script>
+    <script src="script.js" defer></script> 
 </body>
 </html>

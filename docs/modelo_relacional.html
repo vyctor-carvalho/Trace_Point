@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modelo Relacional (DER) - Trace Point API</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo"><h1>Trace Point API</h1></div>
+        <button class="hamburger-menu" id="hamburgerMenu" aria-label="Toggle navigation" aria-expanded="false">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </button>
+        <div class="nav-links" id="navLinks">
+            <div class="sidebar-header">
+                <h1>Trace Point API</h1>
+            </div>
+            <ul>
+                <li><a href="index.html">Visão Geral</a></li>
+                <li><a href="instalacao.html">Instalação</a></li>
+                <li><a href="autenticacao_usuarios.html">Usuários & Acesso</a></li>
+                <li><a href="api_referencia.html">API Referência</a></li>
+                <li><a href="estrutura_projeto.html">Estrutura do Projeto</a></li>
+                <li><a href="dependencias_tecnologias.html">Dependências</a></li>
+                <li><a href="modelo_relacional.html" class="active">Modelo Relacional</a></li> 
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header class="page-header">
+            <h1 class="project-title">Modelo Relacional do Banco de Dados (DER)</h1>
+            <p class="project-subtitle">Diagrama Entidade-Relacionamento ilustrando as tabelas e seus relacionamentos no banco de dados da API Trace Point.</p>
+        </header>
+
+        <section id="der-diagrama">
+            <h2><span class="section-number">10.</span> Diagrama Entidade-Relacionamento</h2>
+            <p>O diagrama abaixo ilustra as principais entidades do banco de dados, seus atributos e os relacionamentos entre elas, fornecendo uma visão clara da estrutura de dados da aplicação:</p>
+            <div class="der-image-container">
+                <img src="img/der.jpeg" alt="Diagrama Entidade-Relacionamento do Trace Point" style="border:1px solid #ccc; max-width:100%;">
+                </div>
+        </section>
+
+        <hr class="section-divider">
+
+        <section id="navegacao">
+            <p style="text-align: center; margin-top: 25px;">
+                <a href="index.html" class="button-link">Voltar para Visão Geral</a>
+                <a href="estrutura_projeto.html" class="button-link">Estrutura do Projeto</a>
+                <a href="api_referencia.html" class="button-link">Referência da API</a>
+            </p>
+        </section>
+
+        <footer>
+            <p>Trace Point API &copy; 2025</p>
+            <p><a href="https://github.com/vyctor-carvalho/Trace_Point" target="_blank" rel="noopener noreferrer">Ver Projeto no GitHub</a></p>
+        </footer>
+    </div>
+    <script src="script.js" defer></script>
+</body>
+</html>

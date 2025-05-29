@@ -25,7 +25,7 @@
                 <li><a href="api_referencia.html">API Referência</a></li>
                 <li><a href="estrutura_projeto.html">Estrutura do Projeto</a></li>
                 <li><a href="dependencias_tecnologias.html">Dependências</a></li>
-                <li><a href="modelo_relacional.html" class="active">Modelo Relacional</a></li> 
+                <li><a href="modelo_relacional.html" class="active">Modelo Relacional</a></li>
             </ul>
         </div>
     </nav>
@@ -33,15 +33,86 @@
     <div class="container">
         <header class="page-header">
             <h1 class="project-title">Modelo Relacional do Banco de Dados (DER)</h1>
-            <p class="project-subtitle">Diagrama Entidade-Relacionamento ilustrando as tabelas e seus relacionamentos no banco de dados da API Trace Point.</p>
+            <p class="project-subtitle">Diagrama Entidade-Relacionamento e descrição detalhada das tabelas e seus relacionamentos no banco de dados da API Trace Point.</p>
         </header>
 
         <section id="der-diagrama">
-            <h2><span class="section-number">11.</span> Diagrama Entidade-Relacionamento</h2>
-            <p>O diagrama abaixo ilustra as principais entidades do banco de dados, seus atributos e os relacionamentos entre elas, fornecendo uma visão clara da estrutura de dados da aplicação:</p>
+            <h2><span class="section-number">11.</span> Diagrama Entidade-Relacionamento Visual</h2>
+            <p>O diagrama abaixo ilustra as principais <strong>tabelas</strong> do banco de dados, suas <strong>colunas com respectivos tipos de dados</strong>, e os relacionamentos entre elas, fornecendo uma visão clara da estrutura de dados da aplicação. A explicação detalhada de cada tabela e relacionamento segue abaixo.</p>
             <div class="der-image-container">
-                <img src="img/der.jpeg" alt="Diagrama Entidade-Relacionamento do Trace Point" style="border:1px solid #ccc; max-width:100%;">
-                </div>
+                <img src="img/banco_relacional.png" alt="Diagrama Entidade-Relacionamento do Trace Point" style="border:1px solid #ccc; max-width:100%;">
+            </div>
+        </section>
+
+        <hr class="section-divider">
+
+        <section id="schema-explicacao">
+            <h2><span class="section-number">11.1.</span> Detalhamento do Esquema do Banco de Dados</h2>
+            <p>O banco de dados <code>trace_point</code> é projetado para gerenciar usuários, locais, eventos e os relacionamentos entre eles, como quais usuários visitaram quais locais e quais usuários estão inscritos em quais eventos. A seguir, uma descrição de cada tabela baseada no esquema fornecido.</p>
+
+            <h3>Entidades Principais</h3>
+
+            <h4>Tabela: <code>user</code> (Usuário)</h4>
+            <p>Armazena informações sobre os usuários da plataforma.</p>
+            <ul>
+                <li><code>id</code> (UUID, Chave Primária, Obrigatório, Padrão: Geração automática de UUID)</li>
+                <li><code>name</code> (VARCHAR(50), Obrigatório) - Nome completo do usuário.</li>
+                <li><code>profile_pick</code> (VARCHAR(60), Opcional) - URL para a foto de perfil.</li>
+                <li><code>role</code> (ENUM <code>public.user_role_enum</code>, Obrigatório, Padrão: 'visitor') - Papel do usuário (ex: 'admin', 'visitor', 'organizer').</li>
+                <li><code>email</code> (VARCHAR(40), Obrigatório, Único) - Email de login do usuário.</li>
+                <li><code>password</code> (VARCHAR(60), Obrigatório) - Senha do usuário (armazenada como hash).</li>
+            </ul>
+            <p><em>Referenciada por:</em> Tabela <code>booking</code> (via <code>user_id</code>), Tabela <code>visited_places</code> (via <code>user_id</code>).</p>
+
+            <h4>Tabela: <code>place</code> (Local)</h4>
+            <p>Representa os locais físicos cadastrados na aplicação.</p>
+            <ul>
+                <li><code>id</code> (UUID, Chave Primária, Obrigatório, Padrão: Geração automática de UUID)</li>
+                <li><code>name</code> (VARCHAR(40), Obrigatório) - Nome do local.</li>
+                <li><code>type</code> (ENUM <code>public.place_type_enum</code>, Obrigatório, Padrão: 'turistc') - Tipo do local (ex: 'cultural', 'restaurant').</li>
+                <li><code>postal_code</code> (VARCHAR(10), Obrigatório) - CEP do local.</li>
+                <li><code>street</code> (VARCHAR(30), Obrigatório) - Rua/Logradouro do local.</li>
+                <li><code>number_house</code> (VARCHAR(6), Obrigatório) - Número do endereço.</li>
+                <li><code>complement</code> (VARCHAR(100), Obrigatório) - Complemento do endereço.</li>
+            </ul>
+            <p><em>Referenciada por:</em> Tabela <code>event</code> (via <code>place_id</code>), Tabela <code>visited_places</code> (via <code>place_id</code>).</p>
+
+            <h4>Tabela: <code>event</code> (Evento)</h4>
+            <p>Descreve os eventos que ocorrerão e podem ser gerenciados pela plataforma.</p>
+            <ul>
+                <li><code>id</code> (UUID, Chave Primária, Obrigatório, Padrão: Geração automática de UUID)</li>
+                <li><code>title</code> (VARCHAR(40), Obrigatório) - Título do evento.</li>
+                <li><code>event_date</code> (TIMESTAMP without time zone, Obrigatório) - Data e hora do evento.</li>
+                <li><code>description</code> (VARCHAR(150), Obrigatório) - Descrição do evento.</li>
+                <li><code>place_id</code> (UUID, Chave Estrangeira para <code>place.id</code>, Opcional) - Identificador do local onde o evento ocorre. Pode ser NULO se um evento não tiver um local específico ou ainda não definido.</li>
+            </ul>
+            <p><em>Referenciada por:</em> Tabela <code>booking</code> (via <code>event_id</code>).</p>
+
+            <h3>Tabelas de Relacionamento (Junção)</h3>
+
+            <h4>Tabela: <code>booking</code> (Reserva/Inscrição em Evento)</h4>
+            <p>Implementa o relacionamento Muitos-para-Muitos entre Usuários (<code>user</code>) e Eventos (<code>event</code>).</p>
+            <ul>
+                <li><code>event_id</code> (UUID, Parte da Chave Primária, Obrigatório, Chave Estrangeira para <code>event.id</code>) - Identificador do evento. Ações em cascata: ON UPDATE CASCADE, ON DELETE CASCADE.</li>
+                <li><code>user_id</code> (UUID, Parte da Chave Primária, Obrigatório, Chave Estrangeira para <code>user.id</code>) - Identificador do usuário.</li>
+            </ul>
+            <p>A combinação de <code>event_id</code> e <code>user_id</code> é a chave primária, garantindo que um usuário só possa se inscrever uma vez em cada evento.</p>
+
+            <h4>Tabela: <code>visited_places</code> (Locais Visitados)</h4>
+            <p>Implementa o relacionamento Muitos-para-Muitos entre Usuários (<code>user</code>) e Locais (<code>place</code>), e armazena a data da visita.</p>
+            <ul>
+                <li><code>user_id</code> (UUID, Parte da Chave Primária, Obrigatório, Chave Estrangeira para <code>user.id</code>) - Identificador do usuário. Ação em cascata: ON DELETE CASCADE.</li>
+                <li><code>place_id</code> (UUID, Parte da Chave Primária, Obrigatório, Chave Estrangeira para <code>place.id</code>) - Identificador do local. Ação em cascata: ON DELETE CASCADE.</li>
+                <li><code>visit_date</code> (TIMESTAMP without time zone, Obrigatório, Padrão: <code>now()</code>) - Data e hora em que a visita ocorreu.</li>
+            </ul>
+            <p>A combinação de <code>user_id</code> e <code>place_id</code> é assumida como a chave primária para este relacionamento, indicando que um usuário só pode ter um registro de visita para um local específico nesta tabela; a <code>visit_date</code> armazena quando essa única visita registrada ocorreu. Para registrar múltiplas visitas de um mesmo usuário ao mesmo local em datas diferentes, a <code>visit_date</code> precisaria ser incluída na chave primária (formando uma PK composta por <code>user_id, place_id, visit_date</code>) ou a tabela <code>visited_places</code> deveria ter um identificador único próprio (como um campo <code>id</code> do tipo UUID).</p>
+            
+            <h3>Resumo dos Relacionamentos Principais</h3>
+            <ul>
+                <li><strong>Usuários ↔ Eventos (<code>booking</code>):</strong> Muitos-para-Muitos. Um usuário pode participar de vários eventos, e um evento pode ter vários usuários participantes.</li>
+                <li><strong>Usuários ↔ Locais (<code>visited_places</code>):</strong> Muitos-para-Muitos com atributo (<code>visit_date</code>). Um usuário pode visitar vários locais, e um local pode ser visitado por vários usuários, registrando-se a data de cada visita (considerando a discussão sobre a chave primária de <code>visited_places</code> para permitir múltiplos registros por par usuário-local).</li>
+                <li><strong>Eventos ↔ Locais (<code>event.place_id</code>):</strong> Muitos-para-Zero-ou-Um (lado do Local). Um evento pode opcionalmente estar associado a um único local (pois <code>place_id</code> em <code>event</code> é uma chave estrangeira que pode ser NULA). Múltiplos eventos diferentes podem estar associados ao mesmo local. Um local pode ter vários eventos associados a ele ou nenhum.</li>
+            </ul>
         </section>
 
         <hr class="section-divider">

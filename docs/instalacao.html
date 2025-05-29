@@ -70,14 +70,18 @@ cd Trace_Point</code></pre>
             <pre><code>cp .env.copy .env</code></pre>
             <p>Para a configuração padrão com Docker, o conteúdo do <code>.env</code> copiado de <code>.env.copy</code> geralmente já está otimizado e deve ser semelhante a este (verifique o seu <code>.env.copy</code> para os valores exatos):</p>
             <pre><code># Configurações para Docker
+SYSTEM_API_PORT=3000
+
+# Dados do banco
 DB_HOST=db
-DB_PORT=5432
 DB_USER=postgres
+DB_PORT=sua_porta
 DB_PASSWORD=postgres
-DB_NAME=tracepoint
-SYSTEM_API_PORT=3000 
-JWT_SECRET=sua_chave_secreta_docker
-REFRESH_SECRET=sua_outra_chave_secreta_docker
+DB_NAME=trace_point
+
+# JWT
+JWT_SECRET=sua_chave_secreta
+REFRESH_SECRET=sua_chave
 JWT_EXPIRES_IN=3600
 REFRSH_TOKEN_EXPIRES_IN=604800</code></pre>
             
@@ -105,7 +109,7 @@ DB_HOST=localhost    # Ou o IP/host do seu servidor PostgreSQL local
 DB_PORT=5432         # A porta em que seu PostgreSQL está escutando
 DB_USER=seu_usuario_postgres  # Seu nome de usuário do PostgreSQL
 DB_PASSWORD=sua_senha_postgres # A senha do seu usuário do PostgreSQL
-DB_NAME=tracepoint   # O nome do banco de dados que você criou para este projeto
+DB_NAME=trace_point   # O nome do banco de dados que você criou para este projeto
 
 # Configurações de JWT - JSON Web Token
 JWT_SECRET=minhaChaveSecretaMuitoForteParaDesenvolvimento123!@#

@@ -8,7 +8,7 @@
     "build": "tsc",
     "start": "node dist/index.js",
 
-    "typeorm": "cross-env TYPEORM_MIGRATIONS=src/migrations/*.ts ts-node ./node_modules/typeorm/cli.js",
+    "typeorm": "TYPEORM_MIGRATIONS=src/migrations/*.ts ts-node ./node_modules/typeorm/cli.js",
     "migration:generate": "npm run typeorm -- -d src/db_config/AppDataSource.ts migration:generate",
     "migration:create": "npm run typeorm -- -d src/db_config/AppDataSource.ts migration:create",
     "migration:run": "npm run typeorm -- -d src/db_config/AppDataSource.ts migration:run",

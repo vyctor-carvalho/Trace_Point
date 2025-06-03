@@ -55,7 +55,7 @@ function customLogger(level: LogLevel, message: string): void {
  * @constant logger
  * @description Objeto exportado que fornece métodos de logging para diferentes níveis de severidade.
  * Cada método utiliza a função `customLogger` interna para formatar e exibir a mensagem.
- * * @property {function(message: string): void} info - Loga uma mensagem com o nível 'info'.
+ * @property {function(message: string): void} info - Loga uma mensagem com o nível 'info'.
  * @property {function(message: string): void} warn - Loga uma mensagem com o nível 'warn'.
  * @property {function(message: string): void} error - Loga uma mensagem com o nível 'error'.
  * @property {function(message: string): void} debug - Loga uma mensagem com o nível 'debug'.

@@ -126,6 +126,12 @@
                         <li>Importações chave utilizadas: <code>* as dotenv</code> ou <code>import { config } from "dotenv"</code>.</li>
                     </ul>
                 </li>
+                <li> <strong><a href="https://www.npmjs.com/package/colorette" target="_blank" rel="noopener noreferrer"><code>colorette</code></a></strong> (Versão: <code>^2.0.20</code>): Biblioteca para adicionar cores a saídas de texto no terminal.
+                    <ul>
+                        <li>Utilizado para: Colorir os níveis de log (INFO, WARN, ERROR, DEBUG) no <code>customLogger.ts</code>, melhorando a legibilidade dos logs no console durante o desenvolvimento e execução.</li>
+                        <li>Importações chave utilizadas: <code>blueBright</code>, <code>magentaBright</code>, <code>greenBright</code>, <code>yellowBright</code>, <code>redBright</code> (do arquivo <code>customLogger.ts</code>).</li>
+                    </ul>
+                </li>
                 <li><strong><code>typescript</code></strong> (devDependencies): Linguagem principal do projeto.</li>
                 <li><strong><code>ts-node</code></strong> (devDependencies): Executa arquivos TypeScript diretamente. Usado para scripts CLI do TypeORM.</li>
                 <li><strong><code>ts-node-dev</code></strong> (devDependencies): Para desenvolvimento, reinicia o servidor automaticamente após alterações no código. Usado em <code>npm run dev</code>.</li>

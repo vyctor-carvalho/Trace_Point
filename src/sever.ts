@@ -22,7 +22,7 @@ AppDataSource.initialize()
         logger.info("Database initialized");
     })
     .catch((error) => {
-        logger.error(`Error initializing database`);
+        logger.error(`Error initializing database: ${error.message}`);
     })
 
 export default server

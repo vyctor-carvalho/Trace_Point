@@ -1,6 +1,6 @@
 import express from 'express';
-import { AppDataSource } from "./db_config/AppDataSource"
-import path from 'path';
+import { AppDataSource } from "./db_config/AppDataSource";
+import { logger } from "./utils/logger";
 
 /**
  * @file server.ts
@@ -19,10 +19,10 @@ server.use(express.json());
  */
 AppDataSource.initialize()
     .then(() => {
-        console.log("Database initialized");
+        logger.info("Database initialized");
     })
     .catch((error) => {
-        console.error(`Error initializing database`);
+        logger.error(`Error initializing database`);
     })
 
 export default server

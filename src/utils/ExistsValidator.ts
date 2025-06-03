@@ -1,4 +1,4 @@
-import { HttpException } from "../error/HttpException"; // Verifique o caminho
+import { HttpException } from "../error/HttpException";
 
 /**
  * @function existsValidator

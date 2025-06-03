@@ -1,4 +1,5 @@
 import { ErrorRequestHandler, NextFunction, Request, Response } from "express";
+import { logger } from "../utils/logger";
 
 /**
  * Middleware de tratamento de erros para a aplicação Express.
@@ -10,9 +11,7 @@ import { ErrorRequestHandler, NextFunction, Request, Response } from "express";
  * @param {NextFunction} next - A função de callback para o próximo middleware na cadeia.
  */
 export const errorsHandler: ErrorRequestHandler = (error: any, req: Request, res: Response, next: NextFunction) => {
-    console.error({
-        error
-    });
+    logger.error(error.message);
 
     res.status(error.status || 500).json({
         message: error.message || "Internal server error"

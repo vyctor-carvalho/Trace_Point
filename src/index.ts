@@ -6,6 +6,7 @@ import { userRouter } from "./routes/UserRoutes";
 import { eventRouter } from "./routes/EventRoutes";
 import { placeRouter } from "./routes/PlaceRoutes";
 import { visitedRoutes } from "./routes/VisitedRoutes";
+import { logger } from "./utils/logger";
 
 /**
  * @file index.ts
@@ -34,5 +35,5 @@ server.use(errorsHandler);
 
 // Inicia o servidor na porta especificada
 server.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+  logger.info(`Server is running on http://localhost:${port}`);
 });

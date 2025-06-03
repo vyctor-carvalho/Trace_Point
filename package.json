@@ -7,7 +7,6 @@
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
-
     "typeorm": "TYPEORM_MIGRATIONS=src/migrations/*.ts ts-node ./node_modules/typeorm/cli.js",
     "migration:generate": "npm run typeorm -- -d src/db_config/AppDataSource.ts migration:generate",
     "migration:create": "npm run typeorm -- -d src/db_config/AppDataSource.ts migration:create",
@@ -24,6 +23,7 @@
     "bcrypt": "^6.0.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.2",
+    "colorette": "^2.0.20",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "jsonwebtoken": "^8.5.1",
